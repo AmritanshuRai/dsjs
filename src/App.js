@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// import Highlight from "react-highlight.js";
+import HomePage from './pages/homepae/homepage.page';
+import Solution from './components/solution/solution.component';
+
+class App extends React.Component{
+  render(){
+    return (
+      <div className='App'>
+        {/* <Highlight language="javascript">
+          {
+            `   const rootElement = document.getElementById("root"); 
+            ReactDOM.render(<App />, rootElement);`
+          }
+        </Highlight> */}
+               <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/solution/:id' component={Solution} />
+        </Switch>
+      </div>
+    )
+  }
 }
-
+// function App() {
+//   return (
+//     <Highlight language="javascript">
+//       {`const rootElement = document.getElementById("root"); 
+// ReactDOM.render(<App />, rootElement);`}
+//     </Highlight>
+//   );
+// }
 export default App;
