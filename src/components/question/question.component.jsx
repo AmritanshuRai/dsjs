@@ -7,7 +7,6 @@ const Question = ({question : {question, id}}) => {
             <Link to={`/solution/${id}`}>
                  {question}
             </Link>
-
         </div>
     )
 }
