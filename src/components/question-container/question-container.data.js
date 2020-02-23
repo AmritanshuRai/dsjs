@@ -1,7 +1,7 @@
 const QUESTION_DATA = [
     {
         id : 1 ,
-        question : "Question number 1",
+        question : "bawal question number 1",
         solution : `import React from 'react';
 
                     const QuestionContainer = () => (
@@ -12,7 +12,7 @@ const QUESTION_DATA = [
     },
     {
         id : 2 ,
-        question : "Question number 2",
+        question : "chudaap 2",
         solution : `import React from 'react';
 
                     const QuestionContainer = () => (
@@ -23,7 +23,7 @@ const QUESTION_DATA = [
     },
     {
         id : 3 ,
-        question : "Question number 3",
+        question : "random randaap question 3",
         solution : `import React from 'react';
 
                     const QuestionContainer = () => (
@@ -34,7 +34,7 @@ const QUESTION_DATA = [
     },
     {
         id : 4 ,
-        question : "Question number 4",
+        question : "lol",
         solution : `import React from 'react';
 
                     const QuestionContainer = () => (

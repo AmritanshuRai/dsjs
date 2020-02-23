@@ -4,7 +4,6 @@ import Question from '../question/question.component';
 // import QUESTION_DATA from './question-container.data';
 
 const QuestionContainer = (props) => {
-    debugger;
        const questions  = props.props;
        return (
            <div className=''>

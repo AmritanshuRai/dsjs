@@ -23,9 +23,9 @@ class App extends React.Component{
     },()  =>  this.updateQuestionData());
   }
 
-  updateQuestionData = () => {
-    let filteredSet = this.QUESTION_DATA.filter((question)=>{
-      return question.solution.includes(this.state.filteredText);
+  updateQuestionData = () => { 
+    let filteredSet = this.QUESTION_DATA.filter(({question})=>{
+      return question.includes(this.state.filteredText);
     });
     this.setState({
       question_data : filteredSet
