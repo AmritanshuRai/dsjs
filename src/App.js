@@ -13,7 +13,8 @@ class App extends React.Component{
 
     this.state = {
       question_data : QUESTION_DATA,
-      filteredText : ""
+      filteredText : "",
+      showSearchField : true
     };
   }
   handleChange = (e) => {
@@ -32,17 +33,28 @@ class App extends React.Component{
     })
   }
 
+  toggleSearchField = () => {
+    this.setState({
+      showSearchField : !this.state.showSearchField
+    }, ()=>console.log(this.state))
+
+  }
+
   render(){
     return (
       <div className='App'>
-        <Header handleChange={this.handleChange} filteredText={this.state.filteredText}/>
+        <Header handleChange={this.handleChange} showSearchField={this.state.showSearchField} filteredText={this.state.filteredText}/>
         <Switch>
           <Route exact path='/' render={()=>{
             return (
               <HomePage props={this.state.question_data}/>
             )
           }} />
-          <Route path='/solution/:id' component={Solution} />
+          <Route path='/solution/:id' render={(props)=>{
+            return (
+              <Solution toggleSearchField={this.toggleSearchField} {...props}/>
+            )
+          }}/>
         </Switch>
       </div>
     )
