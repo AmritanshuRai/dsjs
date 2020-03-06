@@ -1,5 +1,7 @@
 import React from 'react';
 import Highlight from "react-highlight.js";
+import {connect} from 'react-redux'
+import {toggleSearchField} from '../../redux/question/question.action'
 import QUESTION_DATA from '../question-container/question-container.data';
 
 
@@ -19,8 +21,11 @@ class Solution extends React.Component {
             </Highlight>
         )
     }
-
-
 }
-
-export default Solution;
+const mapStateToProps = (state) => ({
+    // toggleSearchField : state.question.toggleSearchField
+});
+const mapDispatchToProps = dispatch => ({
+    toggleSearchField : () => dispatch(toggleSearchField())
+})
+export default connect(mapStateToProps,mapDispatchToProps)(Solution);
