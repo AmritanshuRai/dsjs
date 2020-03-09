@@ -1,36 +1,37 @@
 const QUESTION_DATA = [
     {
         id : 1 ,
-        question : "bawal question number 1",
-        solution : `import React from 'react';
-
-                    const QuestionContainer = () => (
-                        <div className='questionContainer1'>
-                
-                        </div>
-                    );`
+        question : "Write a JavaScript function to check whether an `input` is a string or not",
+        solution : `function even_or_odd(number) {
+                         if(number%2===0){
+                            return"Even";
+                        } else {
+                    return "Odd";
+                        }
+                    }`
     },
     {
         id : 2 ,
-        question : "chudaap 2",
-        solution : `import React from 'react';
-
-                    const QuestionContainer = () => (
-                        <div className='questionContainer2'>
-                
-                        </div>
-                    );`
+        question : "Convert a Number to a String!",
+        solution : `numberToString = String;`
     },
     {
         id : 3 ,
-        question : "random randaap question 3",
-        solution : `import React from 'react';
-
-                    const QuestionContainer = () => (
-                        <div className='questionContainer3'>
-                
-                        </div>
-                    );`
+        question : "Detect Pangram",
+        solution : `function isPangram(str){
+            let newArr = [];
+              newArr = [...str].map(function(char){
+                let code = char.toLowerCase().charCodeAt(0);
+                 if( code>=97 && code<=122){
+                   return char.toLowerCase();
+                 }
+               }).join("");
+              let uniqueChars =  [...new Set(newArr)];
+              if(uniqueChars.length === 26){
+                return true;
+              }
+              return false;
+            }`
     },
     {
         id : 4 ,

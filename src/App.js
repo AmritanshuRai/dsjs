@@ -3,6 +3,7 @@ import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from './pages/homepae/homepage.page';
 import Solution from './components/solution/solution.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component';
 
 class App extends React.Component{
@@ -22,6 +23,7 @@ class App extends React.Component{
               <Solution  {...props}/>
             )
           }}/>
+          <Route path='/signin' component={SignInAndSignUpPage} />
         </Switch>
       </div>
     )
