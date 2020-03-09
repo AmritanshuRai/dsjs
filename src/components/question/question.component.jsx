@@ -1,14 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-const Question = ({question : {question, id}}) => {
+const Question = ({ question: { question, id } }) => {
     return (
         <div>
-            <Link to={`/solution/${id}`}>
-                 {question}
-            </Link>
+            <Link to={`/solution/${id}`}>{question}</Link>
         </div>
-    )
-}
+    );
+};
 
 export default Question;
