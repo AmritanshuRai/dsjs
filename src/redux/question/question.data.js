@@ -37,14 +37,17 @@ const QUESTION_DATA = [
     },
     {
         id: 4,
-        question: "lol",
-        solution: `import React from 'react';
-
-                    const QuestionContainer = () => (
-                        <div className='questionContainer4'>
-                
-                        </div>
-                    );`
+        question: "Persistent Bugger.",
+        solution: `function persistence(num) {
+                    let totalCount = 0;
+                      while([...num+''].length !== 1){
+                        totalCount++;
+                      num = [...num+''].reduce(function(p,n){
+                        return p*n;
+                        },1);
+                        }
+                    return totalCount;
+                    }`
     }
 ];
 
