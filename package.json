@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "code-prettify": "^0.1.0",
+    "firebase" : "^7.10.0",
     "highlight.js": "^9.18.1",
     "js-beautify": "^1.10.3",
     "node-sass": "^4.13.1",
