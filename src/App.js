@@ -6,6 +6,7 @@ import Solution from "./components/solution/solution.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import Loader from "./components/loader/loader.component";
 
 class App extends React.Component {
     state = {
@@ -47,6 +48,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
+                <Loader />
                 <Header currentUser={this.state.currentUser} />
                 <Switch>
                     <Route
