@@ -7,6 +7,12 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import Loader from "./components/loader/loader.component";
+import { connect } from "react-redux";
+import {
+    toggleLoader,
+    setQuestionData
+} from "./redux/question/question.action";
+import { firestore } from "./firebase/firebase.utils";
 
 class App extends React.Component {
     state = {
@@ -38,8 +44,17 @@ class App extends React.Component {
                     () => console.log(this.state.currentUser)
                 );
             }
-            // console.log(user);
         });
+
+        this.fetchData();
+    }
+
+    async fetchData() {
+        this.props.toggleLoader();
+        const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
+        const { questions } = await (await userRef.get()).data();
+        this.props.setQuestionData(questions);
+        this.props.toggleLoader();
     }
 
     componentWillUnmount() {
@@ -49,26 +64,31 @@ class App extends React.Component {
         return (
             <div className="App">
                 <Loader />
-                <Header currentUser={this.state.currentUser} />
-                <Switch>
-                    <Route
-                        exact
-                        path="/"
-                        render={() => {
-                            return <HomePage />;
-                        }}
-                    />
-                    <Route
-                        path="/solution/:id"
-                        render={props => {
-                            return <Solution {...props} />;
-                        }}
-                    />
-                    <Route path="/signin" component={SignInAndSignUpPage} />
-                </Switch>
+                <div className="App_container">
+                    <Header currentUser={this.state.currentUser} />
+                    <Switch>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => {
+                                return <HomePage />;
+                            }}
+                        />
+                        <Route
+                            path="/solution/:id"
+                            render={props => {
+                                return <Solution {...props} />;
+                            }}
+                        />
+                        <Route path="/signin" component={SignInAndSignUpPage} />
+                    </Switch>
+                </div>
             </div>
         );
     }
 }
-
-export default App;
+const mapDispatchToProps = dispatch => ({
+    toggleLoader: () => dispatch(toggleLoader()),
+    setQuestionData: data => dispatch(setQuestionData(data))
+});
+export default connect(null, mapDispatchToProps)(App);

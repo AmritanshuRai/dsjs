@@ -1,12 +1,11 @@
 import React from "react";
 
 import hljs from "highlight.js/lib/highlight";
-import "highlight.js/styles/github.css";
+import "highlight.js/scss/github.scss";
 import javascript from "highlight.js/lib/languages/javascript";
 
 import { connect } from "react-redux";
 import { toggleSearchField } from "../../redux/question/question.action";
-import QUESTION_DATA from "../../redux/question/question.data";
 // import jsbeautifier from 'js-beautify/js';
 import beautify from "js-beautify/js";
 
@@ -32,20 +31,32 @@ class Solution extends React.Component {
 
     render() {
         const id = this.props.match.params.id;
+
+        // if (this.props.EVERY_QUESTION.length === 0) return <></>;
+
+        //highlight not working on page reload
         return (
-            <pre>
-                <code>
-                    {beautify(
-                        QUESTION_DATA[id - 1].solution,
-                        this.beautifyConfig()
-                    )}
-                </code>
-            </pre>
+            <div>
+                {this.props.EVERY_QUESTION.length !== 0 ? (
+                    <pre>
+                        <code>
+                            {beautify(
+                                this.props.EVERY_QUESTION[id - 1].solution,
+                                this.beautifyConfig()
+                            )}
+                        </code>
+                    </pre>
+                ) : (
+                    <></>
+                )}
+            </div>
         );
     }
 }
-
+const mapStateToProps = state => ({
+    EVERY_QUESTION: state.question.EVERY_QUESTION
+});
 const mapDispatchToProps = dispatch => ({
     toggleSearchField: () => dispatch(toggleSearchField())
 });
-export default connect(null, mapDispatchToProps)(Solution);
+export default connect(mapStateToProps, mapDispatchToProps)(Solution);
