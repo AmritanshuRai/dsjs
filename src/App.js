@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import HomePage from "./pages/homepae/homepage.page";
 import Solution from "./components/solution/solution.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
@@ -68,16 +68,29 @@ class App extends React.Component {
                                 return <Solution {...props} />;
                             }}
                         />
-                        <Route path="/signin" component={SignInAndSignUpPage} />
+                        <Route
+                            exact
+                            path="/signin"
+                            render={() => {
+                                return this.props.currentUser ? (
+                                    <Redirect to="/" />
+                                ) : (
+                                    <SignInAndSignUpPage />
+                                );
+                            }}
+                        />
                     </Switch>
                 </div>
             </div>
         );
     }
 }
+const mapStateToProps = ({ user }) => ({
+    currentUser: user.currentUser
+});
 const mapDispatchToProps = dispatch => ({
     toggleLoader: () => dispatch(toggleLoader()),
     setQuestionData: data => dispatch(setQuestionData(data)),
     setCurrentUser: user => dispatch(setCurrentUser(user))
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
