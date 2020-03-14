@@ -12,37 +12,25 @@ import {
     toggleLoader,
     setQuestionData
 } from "./redux/question/question.action";
+import { setCurrentUser } from "./redux/user/user.action";
 import { firestore } from "./firebase/firebase.utils";
 
 class App extends React.Component {
-    state = {
-        currentUser: null
-    };
-
     unsubscribeFromAuth = null;
 
     componentDidMount() {
+        const { setCurrentUser } = this.props;
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
             if (userAuth) {
                 const userRef = await createUserProfileDocument(userAuth);
                 userRef.onSnapshot(snapshot => {
-                    this.setState(
-                        {
-                            currentUser: {
-                                id: snapshot.id,
-                                ...snapshot.data()
-                            }
-                        },
-                        () => console.log(this.state.currentUser)
-                    );
+                    setCurrentUser({
+                        id: snapshot.id,
+                        ...snapshot.data()
+                    });
                 });
             } else {
-                this.setState(
-                    {
-                        currentUser: userAuth
-                    },
-                    () => console.log(this.state.currentUser)
-                );
+                setCurrentUser(userAuth);
             }
         });
 
@@ -65,7 +53,7 @@ class App extends React.Component {
             <div className="App">
                 <Loader />
                 <div className="App_container">
-                    <Header currentUser={this.state.currentUser} />
+                    <Header />
                     <Switch>
                         <Route
                             exact
@@ -89,6 +77,7 @@ class App extends React.Component {
 }
 const mapDispatchToProps = dispatch => ({
     toggleLoader: () => dispatch(toggleLoader()),
-    setQuestionData: data => dispatch(setQuestionData(data))
+    setQuestionData: data => dispatch(setQuestionData(data)),
+    setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 export default connect(null, mapDispatchToProps)(App);

@@ -36,7 +36,8 @@ const Header = ({
 
 const mapStateToProps = state => ({
     showSearchField: state.question.showSearchField,
-    filteredText: state.question.filteredText
+    filteredText: state.question.filteredText,
+    currentUser: state.user.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({
