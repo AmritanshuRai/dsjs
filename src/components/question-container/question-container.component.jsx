@@ -2,6 +2,7 @@ import React from "react";
 import "./question-container.styles.scss";
 import Question from "../question/question.component";
 import { connect } from "react-redux";
+import { selectQuestionData } from "../../redux/question/question.selector";
 
 const QuestionContainer = ({ question_data }) => {
     return (
@@ -13,6 +14,6 @@ const QuestionContainer = ({ question_data }) => {
     );
 };
 const mapStateToProps = state => ({
-    question_data: state.question.question_data
+    question_data: selectQuestionData(state)
 });
 export default connect(mapStateToProps)(QuestionContainer);

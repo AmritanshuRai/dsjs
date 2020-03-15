@@ -1,5 +1,5 @@
 import React from "react";
-
+import { selectEveryQuestion } from "../../redux/question/question.selector";
 import hljs from "highlight.js/lib/highlight";
 import "highlight.js/scss/github.scss";
 import javascript from "highlight.js/lib/languages/javascript";
@@ -54,7 +54,7 @@ class Solution extends React.Component {
     }
 }
 const mapStateToProps = state => ({
-    EVERY_QUESTION: state.question.EVERY_QUESTION
+    EVERY_QUESTION: selectEveryQuestion(state)
 });
 const mapDispatchToProps = dispatch => ({
     toggleSearchField: () => dispatch(toggleSearchField())

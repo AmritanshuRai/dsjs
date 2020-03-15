@@ -6,8 +6,7 @@ const INITIAL_DATA = {
     question_data: [],
     EVERY_QUESTION: [],
     filteredText: "",
-    showSearchField: true,
-    loading: false
+    showSearchField: true
 };
 
 const questionReducer = (state = INITIAL_DATA, action) => {
@@ -24,11 +23,6 @@ const questionReducer = (state = INITIAL_DATA, action) => {
             return {
                 ...state,
                 showSearchField: !state.showSearchField
-            };
-        case "TOGGLE_LOADER":
-            return {
-                ...state,
-                loading: !state.loading
             };
         case "SET_QUESTION_DATA":
             return {

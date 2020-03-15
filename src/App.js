@@ -8,12 +8,11 @@ import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import Loader from "./components/loader/loader.component";
 import { connect } from "react-redux";
-import {
-    toggleLoader,
-    setQuestionData
-} from "./redux/question/question.action";
+import { setQuestionData } from "./redux/question/question.action";
+import { toggleLoader } from "./redux/universal/universal.action";
 import { setCurrentUser } from "./redux/user/user.action";
 import { firestore } from "./firebase/firebase.utils";
+import { selectCurrentUser } from "./redux/user/user.selector";
 
 class App extends React.Component {
     unsubscribeFromAuth = null;
@@ -85,8 +84,8 @@ class App extends React.Component {
         );
     }
 }
-const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
+const mapStateToProps = state => ({
+    currentUser: selectCurrentUser(state)
 });
 const mapDispatchToProps = dispatch => ({
     toggleLoader: () => dispatch(toggleLoader()),

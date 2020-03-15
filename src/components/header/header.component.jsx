@@ -4,7 +4,13 @@ import { connect } from "react-redux";
 import { handleSearchChange } from "../../redux/question/question.action";
 import { auth } from "../../firebase/firebase.utils";
 import { Link } from "react-router-dom";
+import {
+    selectShowSearchField,
+    selectFilteredText
+} from "../../redux/question/question.selector";
+import { selectCurrentUser } from "../../redux/user/user.selector";
 
+// import Search from "../search/search.component";s
 const Header = ({
     showSearchField,
     filteredText,
@@ -25,6 +31,7 @@ const Header = ({
             ) : null}
 
             <div>About me</div>
+            {/* <Search /> */}
             {currentUser ? (
                 <div onClick={() => auth.signOut()}>Sign out</div>
             ) : (
@@ -35,9 +42,9 @@ const Header = ({
 };
 
 const mapStateToProps = state => ({
-    showSearchField: state.question.showSearchField,
-    filteredText: state.question.filteredText,
-    currentUser: state.user.currentUser
+    showSearchField: selectShowSearchField(state),
+    filteredText: selectFilteredText(state),
+    currentUser: selectCurrentUser(state)
 });
 
 const mapDispatchToProps = dispatch => ({
