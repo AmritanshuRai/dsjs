@@ -8,10 +8,7 @@ import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import Loader from "./components/loader/loader.component";
 import { connect } from "react-redux";
-import { setQuestionData } from "./redux/question/question.action";
-import { toggleLoader } from "./redux/universal/universal.action";
 import { setCurrentUser } from "./redux/user/user.action";
-import { firestore } from "./firebase/firebase.utils";
 import { selectCurrentUser } from "./redux/user/user.selector";
 
 class App extends React.Component {
@@ -32,16 +29,6 @@ class App extends React.Component {
                 setCurrentUser(userAuth);
             }
         });
-
-        this.fetchData();
-    }
-
-    async fetchData() {
-        this.props.toggleLoader();
-        const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
-        const { questions } = await (await userRef.get()).data();
-        this.props.setQuestionData(questions);
-        this.props.toggleLoader();
     }
 
     componentWillUnmount() {
@@ -88,8 +75,6 @@ const mapStateToProps = state => ({
     currentUser: selectCurrentUser(state)
 });
 const mapDispatchToProps = dispatch => ({
-    toggleLoader: () => dispatch(toggleLoader()),
-    setQuestionData: data => dispatch(setQuestionData(data)),
     setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);

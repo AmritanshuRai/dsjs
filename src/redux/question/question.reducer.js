@@ -12,6 +12,7 @@ const INITIAL_DATA = {
 const questionReducer = (state = INITIAL_DATA, action) => {
     switch (action.type) {
         case "HANDLE_SEARCH_CHANGE":
+            debugger;
             return {
                 ...state,
                 filteredText: action.payload,

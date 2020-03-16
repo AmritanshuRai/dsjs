@@ -33,7 +33,6 @@ class Solution extends React.Component {
         const id = this.props.match.params.id;
 
         // if (this.props.EVERY_QUESTION.length === 0) return <></>;
-
         //highlight not working on page reload
         return (
             <div>
