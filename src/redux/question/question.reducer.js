@@ -5,8 +5,7 @@
 const INITIAL_DATA = {
     question_data: [],
     EVERY_QUESTION: [],
-    filteredText: "",
-    showSearchField: true
+    filteredText: ""
 };
 
 const questionReducer = (state = INITIAL_DATA, action) => {
@@ -19,11 +18,6 @@ const questionReducer = (state = INITIAL_DATA, action) => {
                 question_data: state.EVERY_QUESTION.filter(({ question }) => {
                     return question.includes(action.payload);
                 })
-            };
-        case "TOGGLE_SEARCH_FIELD":
-            return {
-                ...state,
-                showSearchField: !state.showSearchField
             };
         case "SET_QUESTION_DATA":
             return {

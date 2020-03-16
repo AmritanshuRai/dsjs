@@ -5,7 +5,7 @@ import "highlight.js/scss/github.scss";
 import javascript from "highlight.js/lib/languages/javascript";
 
 import { connect } from "react-redux";
-import { toggleSearchField } from "../../redux/question/question.action";
+import { toggleSearchField } from "../../redux/universal/universal.action";
 // import jsbeautifier from 'js-beautify/js';
 import beautify from "js-beautify/js";
 

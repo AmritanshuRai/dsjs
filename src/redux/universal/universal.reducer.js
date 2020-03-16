@@ -1,5 +1,6 @@
 const INITIAL_DATA = {
-    loading: false
+    loading: false,
+    showSearchField: true
 };
 
 const universalReducer = (state = INITIAL_DATA, action) => {
@@ -8,6 +9,11 @@ const universalReducer = (state = INITIAL_DATA, action) => {
             return {
                 ...state,
                 loading: !state.loading
+            };
+        case "TOGGLE_SEARCH_FIELD":
+            return {
+                ...state,
+                showSearchField: !state.showSearchField
             };
         default:
             return state;

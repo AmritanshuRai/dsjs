@@ -3,10 +3,6 @@ export const handleSearchChange = value => ({
     payload: value
 });
 
-export const toggleSearchField = () => ({
-    type: "TOGGLE_SEARCH_FIELD"
-});
-
 export const setQuestionData = data => ({
     type: "SET_QUESTION_DATA",
     payload: data

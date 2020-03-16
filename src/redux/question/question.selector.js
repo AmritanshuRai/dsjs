@@ -16,8 +16,3 @@ export const selectFilteredText = createSelector(
     [selectQuestion],
     question => question.filteredText
 );
-
-export const selectShowSearchField = createSelector(
-    [selectQuestion],
-    question => question.showSearchField
-);

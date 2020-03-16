@@ -6,3 +6,8 @@ export const selectToggleLoader = createSelector(
     [selectUniversal],
     universal => universal.loading
 );
+
+export const selectShowSearchField = createSelector(
+    [selectUniversal],
+    universal => universal.showSearchField
+);

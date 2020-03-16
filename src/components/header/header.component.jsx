@@ -4,10 +4,8 @@ import { connect } from "react-redux";
 import { handleSearchChange } from "../../redux/question/question.action";
 import { auth } from "../../firebase/firebase.utils";
 import { Link } from "react-router-dom";
-import {
-    selectShowSearchField,
-    selectFilteredText
-} from "../../redux/question/question.selector";
+import { selectFilteredText } from "../../redux/question/question.selector";
+import { selectShowSearchField } from "../../redux/universal/universal.selector";
 import { selectCurrentUser } from "../../redux/user/user.selector";
 
 // import Search from "../search/search.component";s
