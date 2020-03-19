@@ -14,6 +14,7 @@ import { setQuestionData } from './redux/question/question.action';
 import { toggleLoader } from './redux/universal/universal.action';
 import { firestore } from './firebase/firebase.utils';
 import MyEditor from './pages/upload/upload.page';
+import Donate from './pages/donate/donate.page';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -81,6 +82,7 @@ class App extends React.Component {
               }}
             />
             <Route exact path='/upload' component={MyEditor}></Route>
+            <Route exact path='/donate' component={Donate}></Route>
           </Switch>
         </div>
       </div>
