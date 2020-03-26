@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import {
   EditorState,
   convertToRaw,
@@ -35,7 +36,7 @@ class MyEditor extends Component {
     finalShow: '',
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { titleState, solutionState, explanationState } = this.state
     let value = solutionState.getCurrentContent().getPlainText()
     // let value1 = convertFromRaw(value)
@@ -46,8 +47,12 @@ class MyEditor extends Component {
         convertToRaw(explanationState.getCurrentContent()),
       ),
     }
-
-    createQuestion(dataObj)
+    try {
+      await createQuestion(dataObj)
+      this.props.history.push(`/`)
+    } catch (error) {
+      console.log('lauda lag gaya')
+    }
   }
 
   onEditorStateChange = (editorState, type) => {
@@ -111,4 +116,4 @@ class MyEditor extends Component {
     )
   }
 }
-export default MyEditor
+export default withRouter(MyEditor)

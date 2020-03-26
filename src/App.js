@@ -23,6 +23,7 @@ class App extends React.Component {
     if (this.props.location.pathname === '/') {
       this.fetchData()
     }
+    // this.fetchData()
     const { setCurrentUser } = this.props
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
