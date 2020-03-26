@@ -17,8 +17,8 @@ const someFunc = htmlStr => {
 class Question extends React.Component {
   render() {
     const {
-      id,
-      question: { title },
+      id = 1,
+      question: { title = '' },
     } = this.props
 
     return (
