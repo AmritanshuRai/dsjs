@@ -1,12 +1,12 @@
-import React from 'react';
-import './header.styles.scss';
-import { connect } from 'react-redux';
-import { handleSearchChange } from '../../redux/question/question.action';
-import { auth } from '../../firebase/firebase.utils';
-import { Link } from 'react-router-dom';
-import { selectFilteredText } from '../../redux/question/question.selector';
-import { selectShowSearchField } from '../../redux/universal/universal.selector';
-import { selectCurrentUser } from '../../redux/user/user.selector';
+import React from 'react'
+import './header.styles.scss'
+import { connect } from 'react-redux'
+import { handleSearchChange } from '../../redux/question/question.action'
+import { auth } from '../../firebase/firebase.utils'
+import { Link } from 'react-router-dom'
+import { selectFilteredText } from '../../redux/question/question.selector'
+import { selectShowSearchField } from '../../redux/universal/universal.selector'
+import { selectCurrentUser } from '../../redux/user/user.selector'
 
 // import Search from "../search/search.component";s
 const Header = ({
@@ -17,7 +17,8 @@ const Header = ({
 }) => {
   return (
     <div className='header'>
-      <div>Home</div>
+      <Link to='/'>Home</Link>
+      <Link to='/upload'>Upload</Link>
       {showSearchField ? (
         <div>
           <input
@@ -37,17 +38,17 @@ const Header = ({
       )}
       <Link to='/donate'>Donate</Link>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = state => ({
   showSearchField: selectShowSearchField(state),
   filteredText: selectFilteredText(state),
   currentUser: selectCurrentUser(state),
-});
+})
 
 const mapDispatchToProps = dispatch => ({
   handleSearchChange: e => dispatch(handleSearchChange(e.target.value)),
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
