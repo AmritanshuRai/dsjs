@@ -4,9 +4,6 @@ const INITIAL_DATA = {
   question_data: {},
   EVERY_QUESTION: {},
   filteredText: '',
-  titleState: EditorState.createEmpty(),
-  solutionState: EditorState.createEmpty(),
-  explanationState: EditorState.createEmpty(),
 }
 
 const questionReducer = (state = INITIAL_DATA, action) => {
@@ -24,21 +21,6 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         ...state,
         question_data: action.payload,
         EVERY_QUESTION: action.payload,
-      }
-    case 'SET_TITLE_STATE':
-      return {
-        ...state,
-        titleState: action.payload,
-      }
-    case 'SET_SOLUTION_STATE':
-      return {
-        ...state,
-        solutionState: action.payload,
-      }
-    case 'SET_EXPLANATION_STATE':
-      return {
-        ...state,
-        explanationState: action.payload,
       }
 
     default:

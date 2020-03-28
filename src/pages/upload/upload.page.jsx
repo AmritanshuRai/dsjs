@@ -20,12 +20,12 @@ import {
   setTitleState,
   setSolutionState,
   setExplanationState,
-} from '../../redux/question/question.action'
+} from '../../redux/editor/editor.action'
 import {
   selectExplanationState,
   selectSolutionState,
   selectTitleState,
-} from '../../redux/question/question.selector'
+} from '../../redux/editor/editor.selector'
 
 // const someFunc = htmlStr => {
 //   const sampleMarkup = htmlStr
@@ -97,9 +97,9 @@ class MyEditor extends Component {
           wrapperClassName='demo-wrapper defaultWrapper'
           placeholder='Enter title'
           editorClassName='demo-editor defaultEditor'
-          onEditorStateChange={editorState =>
+          onEditorStateChange={editorState => {
             this.props.setTitleState(editorState)
-          }
+          }}
         />
         <Editor
           editorState={solutionState}
@@ -107,9 +107,9 @@ class MyEditor extends Component {
           placeholder='Enter your program/code only'
           wrapperClassName='demo-wrapper defaultWrapper'
           editorClassName='demo-editor defaultEditor'
-          onEditorStateChange={editorState =>
+          onEditorStateChange={editorState => {
             this.props.setSolutionState(editorState)
-          }
+          }}
         />
         <Editor
           editorState={explanationState}
@@ -117,9 +117,9 @@ class MyEditor extends Component {
           placeholder='Please explain your code in detail'
           wrapperClassName='demo-wrapper defaultWrapper'
           editorClassName='demo-editor defaultEditor'
-          onEditorStateChange={editorState =>
+          onEditorStateChange={editorState => {
             this.props.setExplanationState(editorState)
-          }
+          }}
         />
         <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
         {/* <Editor toolbarHidden editorState={this.state.finalShow} readOnly /> */}

@@ -16,17 +16,3 @@ export const selectFilteredText = createSelector(
   [selectQuestion],
   question => question.filteredText,
 )
-export const selectTitleState = createSelector(
-  [selectQuestion],
-  question => question.titleState,
-)
-
-export const selectSolutionState = createSelector(
-  [selectQuestion],
-  question => question.solutionState,
-)
-
-export const selectExplanationState = createSelector(
-  [selectQuestion],
-  question => question.explanationState,
-)
