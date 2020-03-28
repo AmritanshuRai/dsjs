@@ -1,4 +1,4 @@
-import { EditorState } from 'draft-js'
+// import { EditorState } from 'draft-js'
 
 const INITIAL_DATA = {
   titleState: '',

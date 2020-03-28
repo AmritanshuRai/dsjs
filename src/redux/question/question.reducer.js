@@ -1,5 +1,3 @@
-import { EditorState } from 'draft-js'
-
 const INITIAL_DATA = {
   question_data: {},
   EVERY_QUESTION: {},
