@@ -31,46 +31,37 @@ class MyEditor extends Component {
   constructor(props) {
     super(props);
 
-    const titleStateRaw = localStorage.getItem('titleStateRaw');
-    const solutionStateRaw = localStorage.getItem('solutionStateRaw');
-    const explanationStateRaw = localStorage.getItem('explanationStateRaw');
-
-    if (titleStateRaw || solutionStateRaw || explanationStateRaw) {
-      const rawContentTitleState = convertFromRaw(JSON.parse(titleStateRaw));
-      const rawContentSolutionState = convertFromRaw(
-        JSON.parse(solutionStateRaw),
-      );
-      const rawContentExplanationState = convertFromRaw(
-        JSON.parse(explanationStateRaw),
-      );
-
-      this.props.setTitleState(
-        EditorState.createWithContent(rawContentTitleState),
-      );
-      this.props.setSolutionState(
-        EditorState.createWithContent(rawContentSolutionState),
-      );
-      this.props.setExplanationState(
-        EditorState.createWithContent(rawContentExplanationState),
-      );
-    } else {
-      this.props.setTitleState(EditorState.createEmpty());
-      this.props.setSolutionState(EditorState.createEmpty());
-      this.props.setExplanationState(EditorState.createEmpty());
-    }
+    const titleStateRaw = localStorage.getItem('rawTitleState');
+    const solutionStateRaw = localStorage.getItem('rawSolutionState');
+    const explanationStateRaw = localStorage.getItem('rawExplanationState');
+    titleStateRaw
+      ? this.initEditorData(titleStateRaw, 'TitleState')
+      : this.props.setTitleState(EditorState.createEmpty());
+    solutionStateRaw
+      ? this.initEditorData(solutionStateRaw, 'SolutionState')
+      : this.props.setSolutionState(EditorState.createEmpty());
+    explanationStateRaw
+      ? this.initEditorData(explanationStateRaw, 'ExplanationState')
+      : this.props.setExplanationState(EditorState.createEmpty());
   }
+
+  initEditorData = (rawData, stateStr) => {
+    const rawContent = convertFromRaw(JSON.parse(rawData));
+
+    this.props['set' + stateStr](EditorState.createWithContent(rawContent));
+  };
 
   saveEditorData = stateStr => {
     let stateVar = this.props[stateStr];
     let rawstate = convertToRaw(stateVar.getCurrentContent());
-
-    localStorage.setItem(stateStr + 'Raw', JSON.stringify(rawstate));
+    const toUpperCase = stateStr.charAt(0).toUpperCase() + stateStr.slice(1);
+    localStorage.setItem('raw' + toUpperCase, JSON.stringify(rawstate));
   };
 
   removeEditorData = () => {
-    localStorage.removeItem('titleStateRaw');
-    localStorage.removeItem('solutionStateRaw');
-    localStorage.removeItem('explanationStateRaw');
+    localStorage.removeItem('rawTitleState');
+    localStorage.removeItem('rawSolutionState');
+    localStorage.removeItem('rawExplanationState');
   };
 
   handleSubmit = async () => {
