@@ -1,8 +1,8 @@
-import React from 'react'
-import './question-container.styles.scss'
-import Question from '../question/question.component'
-import { connect } from 'react-redux'
-import { selectQuestionData } from '../../redux/question/question.selector'
+import React from 'react';
+import './question-container.styles.scss';
+import Question from '../question/question.component';
+import { connect } from 'react-redux';
+import { selectQuestionData } from '../../redux/question/question.selector';
 
 class QuestionContainer extends React.Component {
   render() {
@@ -19,10 +19,10 @@ class QuestionContainer extends React.Component {
                     <Question key={question.id} question={question} />
                 ))} */}
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = state => ({
   question_data: selectQuestionData(state),
-})
-export default connect(mapStateToProps)(QuestionContainer)
+});
+export default connect(mapStateToProps)(QuestionContainer);

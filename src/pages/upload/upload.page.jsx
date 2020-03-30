@@ -26,6 +26,10 @@ import {
   selectSolutionState,
   selectTitleState,
 } from '../../redux/editor/editor.selector';
+import {
+  toggleLoader,
+  shouldFetchData,
+} from '../../redux/universal/universal.action';
 
 class MyEditor extends Component {
   constructor(props) {
@@ -65,6 +69,7 @@ class MyEditor extends Component {
   };
 
   handleSubmit = async () => {
+    this.props.toggleLoader();
     const { titleState, solutionState, explanationState } = this.props;
 
     const dataObj = {
@@ -74,12 +79,15 @@ class MyEditor extends Component {
         convertToRaw(explanationState.getCurrentContent()),
       ),
     };
+    this.props.shouldFetchData(true);
     try {
       await createQuestion(dataObj);
       this.removeEditorData();
       this.props.history.push(`/`);
     } catch (error) {
       console.log('lauda lag gaya');
+    } finally {
+      this.props.toggleLoader();
     }
   };
 
@@ -136,6 +144,8 @@ const mapDispatchToProps = dispatch => ({
   setTitleState: data => dispatch(setTitleState(data)),
   setSolutionState: data => dispatch(setSolutionState(data)),
   setExplanationState: data => dispatch(setExplanationState(data)),
+  shouldFetchData: data => dispatch(shouldFetchData(data)),
+  toggleLoader: () => dispatch(toggleLoader()),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(MyEditor),

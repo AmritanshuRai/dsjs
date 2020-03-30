@@ -1,13 +1,18 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
 const selectUniversal = state => state.universal;
 
 export const selectToggleLoader = createSelector(
-    [selectUniversal],
-    universal => universal.loading
+  [selectUniversal],
+  universal => universal.loading,
 );
 
 export const selectShowSearchField = createSelector(
-    [selectUniversal],
-    universal => universal.showSearchField
+  [selectUniversal],
+  universal => universal.showSearchField,
+);
+
+export const selectShouldFetchData = createSelector(
+  [selectUniversal],
+  universal => universal.shouldFetch,
 );

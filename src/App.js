@@ -1,66 +1,67 @@
-import React from 'react'
-import './App.css'
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
-import HomePage from './pages/homepae/homepage.page'
-import Solution from './components/solution/solution.component'
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
-import Header from './components/header/header.component'
-import { auth, createUserProfileDocument } from './firebase/firebase.utils'
-import Loader from './components/loader/loader.component'
-import { connect } from 'react-redux'
-import { setCurrentUser } from './redux/user/user.action'
-import { selectCurrentUser } from './redux/user/user.selector'
-import { setQuestionData } from './redux/question/question.action'
-import { toggleLoader } from './redux/universal/universal.action'
-import { firestore } from './firebase/firebase.utils'
-import MyEditor from './pages/upload/upload.page'
-import Donate from './pages/donate/donate.page'
+import React from 'react';
+import './App.css';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import HomePage from './pages/homepae/homepage.page';
+import Solution from './components/solution/solution.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+import Header from './components/header/header.component';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import Loader from './components/loader/loader.component';
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.action';
+import { selectCurrentUser } from './redux/user/user.selector';
+import { setQuestionData } from './redux/question/question.action';
+import { toggleLoader } from './redux/universal/universal.action';
+
+import { firestore } from './firebase/firebase.utils';
+import MyEditor from './pages/upload/upload.page';
+import Donate from './pages/donate/donate.page';
 
 class App extends React.Component {
-  unsubscribeFromAuth = null
+  unsubscribeFromAuth = null;
 
   componentDidMount() {
     if (this.props.location.pathname === '/') {
-      this.fetchData()
+      this.fetchData();
     }
     // this.fetchData()
-    const { setCurrentUser } = this.props
+    const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth)
+        const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapshot => {
           setCurrentUser({
             id: snapshot.id,
             ...snapshot.data(),
-          })
-        })
+          });
+        });
       } else {
-        setCurrentUser(userAuth)
+        setCurrentUser(userAuth);
       }
-    })
+    });
   }
 
   async fetchData() {
-    this.props.toggleLoader()
+    this.props.toggleLoader();
     // const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
     // const { questions } = await (await userRef.get()).data();
-    let questions = {}
+    let questions = {};
     const value = await firestore
       .collection('questions')
       .orderBy('timestamp', 'desc')
-      .get()
+      .get();
     value.forEach(doc => {
       // console.log(`${doc.id} => ${doc.data()}`);
-      questions[doc.id] = doc.data()
-    })
+      questions[doc.id] = doc.data();
+    });
 
-    this.props.setQuestionData(questions)
+    this.props.setQuestionData(questions);
 
-    this.props.toggleLoader()
+    this.props.toggleLoader();
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromAuth()
+    this.unsubscribeFromAuth();
   }
   render() {
     return (
@@ -73,13 +74,13 @@ class App extends React.Component {
               exact
               path='/'
               render={() => {
-                return <HomePage />
+                return <HomePage />;
               }}
             />
             <Route
               path='/solution/:id'
               render={props => {
-                return <Solution {...props} />
+                return <Solution {...props} />;
               }}
             />
             <Route
@@ -90,7 +91,7 @@ class App extends React.Component {
                   <Redirect to='/' />
                 ) : (
                   <SignInAndSignUpPage />
-                )
+                );
               }}
             />
             <Route exact path='/upload' component={MyEditor}></Route>
@@ -98,15 +99,16 @@ class App extends React.Component {
           </Switch>
         </div>
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = state => ({
   currentUser: selectCurrentUser(state),
-})
+});
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user)),
   toggleLoader: () => dispatch(toggleLoader()),
+
   setQuestionData: data => dispatch(setQuestionData(data)),
-})
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+});
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

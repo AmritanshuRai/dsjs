@@ -10,7 +10,7 @@ const persistConfig = {
   key: 'root',
   storage,
   // whitelist: ["question"]
-  blacklist: ['editor'],
+  blacklist: ['editor', 'universal'],
   timeout: null,
 };
 
