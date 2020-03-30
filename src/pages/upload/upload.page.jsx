@@ -1,94 +1,100 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import {
-  // EditorState,
+  EditorState,
   convertToRaw,
-  // convertFromRaw,
+  convertFromRaw,
   // ContentState,
   // convertFromHTML,
-} from 'draft-js'
-import { Editor } from 'react-draft-wysiwyg'
+} from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
 // import draftToMarkdown from 'draftjs-to-markdown'
-import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import draftToHtml from 'draftjs-to-html'
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import draftToHtml from 'draftjs-to-html';
 // import htmlToDraft from 'html-to-draftjs';
-import './upload.styles.scss'
-import CustomButton from '../../components/custom-button/custom-button.component'
-import { createQuestion } from '../../firebase/firebase.utils'
+import './upload.styles.scss';
+import CustomButton from '../../components/custom-button/custom-button.component';
+import { createQuestion } from '../../firebase/firebase.utils';
 import {
   setTitleState,
   setSolutionState,
   setExplanationState,
-} from '../../redux/editor/editor.action'
+} from '../../redux/editor/editor.action';
 import {
   selectExplanationState,
   selectSolutionState,
   selectTitleState,
-} from '../../redux/editor/editor.selector'
-
-// const someFunc = htmlStr => {
-//   const sampleMarkup = htmlStr
-//   const blocksFromHTML = convertFromHTML(sampleMarkup)
-//   const state = ContentState.createFromBlockArray(
-//     blocksFromHTML.contentBlocks,
-//     blocksFromHTML.entityMap,
-//   )
-
-//   const editorState = EditorState.createWithContent(state)
-//   return editorState
-// }
+} from '../../redux/editor/editor.selector';
 
 class MyEditor extends Component {
-  // state = {
-  //   titleState: EditorState.createEmpty(),
-  //   solutionState: EditorState.createEmpty(),
-  //   explanationState: EditorState.createEmpty(),
-  //   finalShow: '',
-  // }
+  constructor(props) {
+    super(props);
+
+    const titleStateRaw = localStorage.getItem('titleStateRaw');
+    const solutionStateRaw = localStorage.getItem('solutionStateRaw');
+    const explanationStateRaw = localStorage.getItem('explanationStateRaw');
+
+    if (titleStateRaw || solutionStateRaw || explanationStateRaw) {
+      const rawContentTitleState = convertFromRaw(JSON.parse(titleStateRaw));
+      const rawContentSolutionState = convertFromRaw(
+        JSON.parse(solutionStateRaw),
+      );
+      const rawContentExplanationState = convertFromRaw(
+        JSON.parse(explanationStateRaw),
+      );
+
+      this.props.setTitleState(
+        EditorState.createWithContent(rawContentTitleState),
+      );
+      this.props.setSolutionState(
+        EditorState.createWithContent(rawContentSolutionState),
+      );
+      this.props.setExplanationState(
+        EditorState.createWithContent(rawContentExplanationState),
+      );
+    } else {
+      this.props.setTitleState(EditorState.createEmpty());
+      this.props.setSolutionState(EditorState.createEmpty());
+      this.props.setExplanationState(EditorState.createEmpty());
+    }
+  }
+
+  saveEditorData = stateStr => {
+    let stateVar = this.props[stateStr];
+    let rawstate = convertToRaw(stateVar.getCurrentContent());
+
+    localStorage.setItem(stateStr + 'Raw', JSON.stringify(rawstate));
+  };
+
+  removeEditorData = () => {
+    localStorage.removeItem('titleStateRaw');
+    localStorage.removeItem('solutionStateRaw');
+    localStorage.removeItem('explanationStateRaw');
+  };
 
   handleSubmit = async () => {
-    const { titleState, solutionState, explanationState } = this.props
-    // let value = solutionState.getCurrentContent().getPlainText()
-    // let value1 = convertFromRaw(value)
+    const { titleState, solutionState, explanationState } = this.props;
+
     const dataObj = {
-      title: draftToHtml(convertToRaw(titleState.getCurrentContent())),
+      title: titleState.getCurrentContent().getPlainText(),
       solution: solutionState.getCurrentContent().getPlainText(),
       explanation: draftToHtml(
         convertToRaw(explanationState.getCurrentContent()),
       ),
-    }
+    };
     try {
-      await createQuestion(dataObj)
-      this.props.history.push(`/`)
+      await createQuestion(dataObj);
+      this.removeEditorData();
+      this.props.history.push(`/`);
     } catch (error) {
-      console.log('lauda lag gaya')
+      console.log('lauda lag gaya');
     }
-  }
-
-  // onEditorStateChange = (editorState, type) => {
-  //   switch (type) {
-  //     case 'title':
-  //       this.setState({
-  //         titleState: editorState,
-  //       })
-  //       break
-  //     case 'solution':
-  //       this.setState({
-  //         solutionState: editorState,
-  //       })
-  //       break
-  //     case 'explanation':
-  //       this.setState({
-  //         explanationState: editorState,
-  //       })
-  //       break
-  //     default:
-  //   }
-  // }
+  };
 
   render() {
-    const { titleState, solutionState, explanationState } = this.props
+    const { titleState, solutionState, explanationState } = this.props;
+
     return (
       <div className='myEditor'>
         <Editor
@@ -98,8 +104,9 @@ class MyEditor extends Component {
           placeholder='Enter title'
           editorClassName='demo-editor defaultEditor'
           onEditorStateChange={editorState => {
-            this.props.setTitleState(editorState)
+            this.props.setTitleState(editorState);
           }}
+          onContentStateChange={() => this.saveEditorData('titleState')}
         />
         <Editor
           editorState={solutionState}
@@ -108,8 +115,9 @@ class MyEditor extends Component {
           wrapperClassName='demo-wrapper defaultWrapper'
           editorClassName='demo-editor defaultEditor'
           onEditorStateChange={editorState => {
-            this.props.setSolutionState(editorState)
+            this.props.setSolutionState(editorState);
           }}
+          onContentStateChange={() => this.saveEditorData('solutionState')}
         />
         <Editor
           editorState={explanationState}
@@ -118,13 +126,13 @@ class MyEditor extends Component {
           wrapperClassName='demo-wrapper defaultWrapper'
           editorClassName='demo-editor defaultEditor'
           onEditorStateChange={editorState => {
-            this.props.setExplanationState(editorState)
+            this.props.setExplanationState(editorState);
           }}
+          onContentStateChange={() => this.saveEditorData('explanationState')}
         />
         <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
-        {/* <Editor toolbarHidden editorState={this.state.finalShow} readOnly /> */}
       </div>
-    )
+    );
   }
 }
 
@@ -132,12 +140,12 @@ const mapStateToProps = state => ({
   titleState: selectTitleState(state),
   solutionState: selectSolutionState(state),
   explanationState: selectExplanationState(state),
-})
+});
 const mapDispatchToProps = dispatch => ({
   setTitleState: data => dispatch(setTitleState(data)),
   setSolutionState: data => dispatch(setSolutionState(data)),
   setExplanationState: data => dispatch(setExplanationState(data)),
-})
+});
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(MyEditor),
-)
+);
