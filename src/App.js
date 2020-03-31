@@ -13,16 +13,20 @@ import { selectCurrentUser } from './redux/user/user.selector';
 import { setQuestionData } from './redux/question/question.action';
 import { toggleLoader } from './redux/universal/universal.action';
 
-import { firestore } from './firebase/firebase.utils';
+// import { firestore } from './firebase/firebase.utils';
 import MyEditor from './pages/upload/upload.page';
 import Donate from './pages/donate/donate.page';
+import { fetchData } from './utils/fetchData';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.location.pathname === '/') {
-      this.fetchData();
+      this.props.toggleLoader();
+      let fetchedData = await fetchData();
+      this.props.setQuestionData(fetchedData);
+      this.props.toggleLoader();
     }
     // this.fetchData()
     const { setCurrentUser } = this.props;
@@ -41,24 +45,24 @@ class App extends React.Component {
     });
   }
 
-  async fetchData() {
-    this.props.toggleLoader();
-    // const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
-    // const { questions } = await (await userRef.get()).data();
-    let questions = {};
-    const value = await firestore
-      .collection('questions')
-      .orderBy('timestamp', 'desc')
-      .get();
-    value.forEach(doc => {
-      // console.log(`${doc.id} => ${doc.data()}`);
-      questions[doc.id] = doc.data();
-    });
+  // async fetchData() {
+  //   this.props.toggleLoader();
+  //   // const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
+  //   // const { questions } = await (await userRef.get()).data();
+  //   let questions = {};
+  //   const value = await firestore
+  //     .collection('questions')
+  //     .orderBy('timestamp', 'desc')
+  //     .get();
+  //   value.forEach(doc => {
+  //     // console.log(`${doc.id} => ${doc.data()}`);
+  //     questions[doc.id] = doc.data();
+  //   });
 
-    this.props.setQuestionData(questions);
+  //   this.props.setQuestionData(questions);
 
-    this.props.toggleLoader();
-  }
+  //   this.props.toggleLoader();
+  // }
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
