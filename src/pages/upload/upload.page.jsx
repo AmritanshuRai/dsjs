@@ -69,7 +69,7 @@ class MyEditor extends Component {
   };
 
   handleSubmit = async () => {
-    this.props.toggleLoader();
+    this.props.toggleLoader(true);
     const { titleState, solutionState, explanationState } = this.props;
 
     const dataObj = {
@@ -87,7 +87,7 @@ class MyEditor extends Component {
     } catch (error) {
       console.log('lauda lag gaya');
     } finally {
-      this.props.toggleLoader();
+      this.props.toggleLoader(false);
     }
   };
 
@@ -145,7 +145,7 @@ const mapDispatchToProps = dispatch => ({
   setSolutionState: data => dispatch(setSolutionState(data)),
   setExplanationState: data => dispatch(setExplanationState(data)),
   shouldFetchData: data => dispatch(shouldFetchData(data)),
-  toggleLoader: () => dispatch(toggleLoader()),
+  toggleLoader: data => dispatch(toggleLoader(data)),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(MyEditor),
