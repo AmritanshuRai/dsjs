@@ -20,15 +20,14 @@ import { fetchData } from './utils/fetchData';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
-
-  async componentDidMount() {
+  unsubscribeFromQuestions = null;
+  componentDidMount() {
     if (this.props.location.pathname === '/') {
-      this.props.toggleLoader();
-      let fetchedData = await fetchData();
-      this.props.setQuestionData(fetchedData);
-      this.props.toggleLoader();
+      this.unsubscribeFromQuestions = fetchData(this.onFetchedData, {
+        toggleLoader: this.props.toggleLoader,
+      });
     }
-    // this.fetchData()
+
     const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -44,7 +43,9 @@ class App extends React.Component {
       }
     });
   }
-
+  onFetchedData = fetchedData => {
+    this.props.setQuestionData(fetchedData);
+  };
   // async fetchData() {
   //   this.props.toggleLoader();
   //   // const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
@@ -66,6 +67,7 @@ class App extends React.Component {
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
+    this.unsubscribeFromQuestions();
   }
   render() {
     return (
@@ -111,7 +113,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user)),
-  toggleLoader: () => dispatch(toggleLoader()),
+  toggleLoader: data => dispatch(toggleLoader(data)),
 
   setQuestionData: data => dispatch(setQuestionData(data)),
 });

@@ -9,7 +9,7 @@ const universalReducer = (state = INITIAL_DATA, action) => {
     case 'TOGGLE_LOADER':
       return {
         ...state,
-        loading: !state.loading,
+        loading: action.payload,
       };
     case 'TOGGLE_SEARCH_FIELD':
       return {

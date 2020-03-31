@@ -1,13 +1,19 @@
 import { firestore } from '../firebase/firebase.utils';
 
-export const fetchData = async () => {
+export const fetchData = (onFetchedData, obj) => {
+  obj.toggleLoader(true);
+  let unsubscribeFromQuestions = null;
   let questions = {};
-  const value = await firestore
+  unsubscribeFromQuestions = firestore
     .collection('questions')
     .orderBy('timestamp', 'desc')
-    .get();
-  value.forEach(doc => {
-    questions[doc.id] = doc.data();
-  });
-  return questions;
+    .onSnapshot(value => {
+      questions = {};
+      value.forEach(doc => {
+        questions[doc.id] = doc.data();
+      });
+      onFetchedData(questions);
+      obj.toggleLoader(false);
+    });
+  return unsubscribeFromQuestions;
 };

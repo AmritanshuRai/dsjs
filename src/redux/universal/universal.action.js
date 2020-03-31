@@ -1,5 +1,6 @@
-export const toggleLoader = () => ({
+export const toggleLoader = data => ({
   type: 'TOGGLE_LOADER',
+  payload: data,
 });
 
 export const toggleSearchField = () => ({
