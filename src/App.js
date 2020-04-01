@@ -23,6 +23,7 @@ class App extends React.Component {
   unsubscribeFromQuestions = null;
   componentDidMount() {
     if (this.props.location.pathname === '/') {
+      this.props.toggleLoader(true);
       this.unsubscribeFromQuestions = fetchData(this.onFetchedData, {
         toggleLoader: this.props.toggleLoader,
       });
@@ -45,6 +46,9 @@ class App extends React.Component {
   }
   onFetchedData = fetchedData => {
     this.props.setQuestionData(fetchedData);
+    if (this.props.location.pathname === '/') {
+      this.props.toggleLoader(false);
+    }
   };
   // async fetchData() {
   //   this.props.toggleLoader();

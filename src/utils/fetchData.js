@@ -1,7 +1,7 @@
 import { firestore } from '../firebase/firebase.utils';
 
 export const fetchData = (onFetchedData, obj) => {
-  obj.toggleLoader(true);
+  //   obj.toggleLoader(true);
   let unsubscribeFromQuestions = null;
   let questions = {};
   unsubscribeFromQuestions = firestore
@@ -12,8 +12,9 @@ export const fetchData = (onFetchedData, obj) => {
       value.forEach(doc => {
         questions[doc.id] = doc.data();
       });
+
       onFetchedData(questions);
-      obj.toggleLoader(false);
+      //   obj.toggleLoader(false);
     });
   return unsubscribeFromQuestions;
 };

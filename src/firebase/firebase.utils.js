@@ -1,6 +1,6 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 const config = {
   apiKey: 'AIzaSyDC-ynUqcD8Vtwutf_-Tdmxelp7BHnZpkE',
@@ -11,16 +11,16 @@ const config = {
   messagingSenderId: '185845221249',
   appId: '1:185845221249:web:97f1804966694b39544a80',
   measurementId: 'G-F2WE6JMEE5',
-}
+};
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-  if (!userAuth) return
+  if (!userAuth) return;
 
-  const userRef = firestore.doc(`users/${userAuth.uid}`)
-  const snapShot = await userRef.get()
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const snapShot = await userRef.get();
 
   if (!snapShot.exists) {
-    const { displayName, email } = userAuth
-    const createdAt = new Date()
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
 
     try {
       userRef.set({
@@ -28,23 +28,25 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         email,
         createdAt,
         ...additionalData,
-      })
+      });
     } catch (error) {
-      console.log('error creating user', error.message)
+      console.log('error creating user', error.message);
     }
   }
 
-  return userRef
-}
+  return userRef;
+};
 
 export const createQuestion = async ({ title, solution, explanation }) => {
   //   const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
+
   await firestore.collection('questions').add({
     title,
     solution,
     explanation,
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  })
+  });
+
   //   const snapShot = await userRef.get();
 
   //   const createdAt = new Date();
@@ -68,19 +70,19 @@ export const createQuestion = async ({ title, solution, explanation }) => {
   //   value.forEach(doc => {
   //     console.log(`${doc.id} => ${doc.data()}`);
   //   });
-}
+};
 
 // getQuestions();
-firebase.initializeApp(config)
+firebase.initializeApp(config);
 
-export const auth = firebase.auth()
-export const firestore = firebase.firestore()
-const provider = new firebase.auth.GoogleAuthProvider()
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
+const provider = new firebase.auth.GoogleAuthProvider();
 
 provider.setCustomParameters({
   prompt: 'select_account',
-})
+});
 
-export const signInWithGoogle = () => auth.signInWithPopup(provider)
+export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
-export default firebase
+export default firebase;
