@@ -5,7 +5,7 @@ import 'highlight.js/scss/github.scss';
 import javascript from 'highlight.js/lib/languages/javascript';
 
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { toggleSearchField } from '../../redux/universal/universal.action';
 // import jsbeautifier from 'js-beautify/js';
 import beautify from 'js-beautify/js';
@@ -75,7 +75,7 @@ class Solution extends React.Component {
             />
           </div>
         ) : (
-          <></>
+          this.props.history.push('/404')
         )}
       </div>
     );
