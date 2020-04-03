@@ -16,6 +16,7 @@ import { toggleLoader } from './redux/universal/universal.action';
 // import { firestore } from './firebase/firebase.utils';
 import MyEditor from './pages/upload/upload.page';
 import Donate from './pages/donate/donate.page';
+import Preview from './pages/preview/preview.page';
 import { fetchData } from './utils/fetchData';
 
 class App extends React.Component {
@@ -106,6 +107,7 @@ class App extends React.Component {
             />
             <Route exact path='/upload' component={MyEditor}></Route>
             <Route exact path='/donate' component={Donate}></Route>
+            <Route exact path='/preview' component={Preview}></Route>
           </Switch>
         </div>
       </div>

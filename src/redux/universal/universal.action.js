@@ -6,7 +6,3 @@ export const toggleLoader = data => ({
 export const toggleSearchField = () => ({
   type: 'TOGGLE_SEARCH_FIELD',
 });
-export const shouldFetchData = data => ({
-  type: 'SHOULD_FETCH_DATA',
-  payload: data,
-});

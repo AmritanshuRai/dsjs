@@ -15,7 +15,7 @@ import draftToHtml from 'draftjs-to-html';
 // import htmlToDraft from 'html-to-draftjs';
 import './upload.styles.scss';
 import CustomButton from '../../components/custom-button/custom-button.component';
-import { createQuestion } from '../../firebase/firebase.utils';
+// import { createQuestion } from '../../firebase/firebase.utils';
 import {
   setTitleState,
   setSolutionState,
@@ -26,10 +26,7 @@ import {
   selectSolutionState,
   selectTitleState,
 } from '../../redux/editor/editor.selector';
-import {
-  toggleLoader,
-  shouldFetchData,
-} from '../../redux/universal/universal.action';
+// import { toggleLoader } from '../../redux/universal/universal.action';
 
 class MyEditor extends Component {
   constructor(props) {
@@ -62,14 +59,7 @@ class MyEditor extends Component {
     localStorage.setItem('raw' + toUpperCase, JSON.stringify(rawstate));
   };
 
-  removeEditorData = () => {
-    localStorage.removeItem('rawTitleState');
-    localStorage.removeItem('rawSolutionState');
-    localStorage.removeItem('rawExplanationState');
-  };
-
-  handleSubmit = async () => {
-    this.props.toggleLoader(true);
+  handlePreview = () => {
     const { titleState, solutionState, explanationState } = this.props;
 
     const dataObj = {
@@ -79,16 +69,9 @@ class MyEditor extends Component {
         convertToRaw(explanationState.getCurrentContent()),
       ),
     };
-    this.props.shouldFetchData(true);
-    try {
-      await createQuestion(dataObj);
-      this.removeEditorData();
-      this.props.history.push(`/`);
-    } catch (error) {
-      console.log('lauda lag gaya');
-    } finally {
-      this.props.toggleLoader(false);
-    }
+
+    localStorage.setItem('finalData', JSON.stringify(dataObj));
+    this.props.history.push(`/preview`);
   };
 
   render() {
@@ -107,6 +90,7 @@ class MyEditor extends Component {
           }}
           onContentStateChange={() => this.saveEditorData('titleState')}
         />
+
         <Editor
           editorState={solutionState}
           toolbarOnFocus
@@ -118,6 +102,7 @@ class MyEditor extends Component {
           }}
           onContentStateChange={() => this.saveEditorData('solutionState')}
         />
+
         <Editor
           editorState={explanationState}
           toolbarOnFocus
@@ -129,7 +114,7 @@ class MyEditor extends Component {
           }}
           onContentStateChange={() => this.saveEditorData('explanationState')}
         />
-        <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
+        <CustomButton onClick={this.handlePreview}>Preview</CustomButton>
       </div>
     );
   }
@@ -144,8 +129,8 @@ const mapDispatchToProps = dispatch => ({
   setTitleState: data => dispatch(setTitleState(data)),
   setSolutionState: data => dispatch(setSolutionState(data)),
   setExplanationState: data => dispatch(setExplanationState(data)),
-  shouldFetchData: data => dispatch(shouldFetchData(data)),
-  toggleLoader: data => dispatch(toggleLoader(data)),
+
+  // toggleLoader: () => dispatch(toggleLoader()),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(MyEditor),

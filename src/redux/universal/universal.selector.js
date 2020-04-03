@@ -11,8 +11,3 @@ export const selectShowSearchField = createSelector(
   [selectUniversal],
   universal => universal.showSearchField,
 );
-
-export const selectShouldFetchData = createSelector(
-  [selectUniversal],
-  universal => universal.shouldFetch,
-);
