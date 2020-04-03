@@ -31,7 +31,7 @@ const Header = ({
           </div>
         ) : null}
 
-        <div>About me</div>
+        <div>About mee</div>
         {/* <Search /> */}
         {currentUser ? (
           <div onClick={() => auth.signOut()}>Sign out</div>
