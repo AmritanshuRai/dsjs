@@ -29,9 +29,10 @@ import {
 // import { toggleLoader } from '../../redux/universal/universal.action';
 
 class MyEditor extends Component {
-  constructor(props) {
-    super(props);
-
+  // constructor(props) {
+  //   super(props);
+  // }
+  componentDidMount() {
     const titleStateRaw = localStorage.getItem('rawTitleState');
     const solutionStateRaw = localStorage.getItem('rawSolutionState');
     const explanationStateRaw = localStorage.getItem('rawExplanationState');
@@ -45,7 +46,6 @@ class MyEditor extends Component {
       ? this.initEditorData(explanationStateRaw, 'ExplanationState')
       : this.props.setExplanationState(EditorState.createEmpty());
   }
-
   initEditorData = (rawData, stateStr) => {
     const rawContent = convertFromRaw(JSON.parse(rawData));
 
@@ -57,14 +57,33 @@ class MyEditor extends Component {
     let rawstate = convertToRaw(stateVar.getCurrentContent());
     const toUpperCase = stateStr.charAt(0).toUpperCase() + stateStr.slice(1);
     localStorage.setItem('raw' + toUpperCase, JSON.stringify(rawstate));
+    this.previewBtnState();
+  };
+
+  previewBtnState = () => {
+    const { titleState, solutionState, explanationState } = this.props;
+
+    const { generatePlainText } = this;
+    this.buttonEnabled =
+      !!generatePlainText(titleState) &&
+      !!generatePlainText(solutionState) &&
+      !!generatePlainText(explanationState);
+    localStorage.setItem('buttonEnabled', this.buttonEnabled);
+  };
+
+  generatePlainText = editorState => {
+    return editorState.getCurrentContent().getPlainText();
   };
 
   handlePreview = () => {
+    if (!this.buttonEnabled) {
+      return;
+    }
     const { titleState, solutionState, explanationState } = this.props;
 
     const dataObj = {
-      title: titleState.getCurrentContent().getPlainText(),
-      solution: solutionState.getCurrentContent().getPlainText(),
+      title: this.generatePlainText(titleState),
+      solution: this.generatePlainText(solutionState),
       explanation: draftToHtml(
         convertToRaw(explanationState.getCurrentContent()),
       ),
@@ -77,6 +96,8 @@ class MyEditor extends Component {
   render() {
     const { titleState, solutionState, explanationState } = this.props;
 
+    this.buttonEnabled = false;
+    this.previewBtnState();
     return (
       <div className='myEditor'>
         <Editor
@@ -90,6 +111,7 @@ class MyEditor extends Component {
           }}
           onContentStateChange={() => this.saveEditorData('titleState')}
         />
+        <div></div>
 
         <Editor
           editorState={solutionState}
@@ -114,7 +136,14 @@ class MyEditor extends Component {
           }}
           onContentStateChange={() => this.saveEditorData('explanationState')}
         />
-        <CustomButton onClick={this.handlePreview}>Preview</CustomButton>
+
+        <CustomButton
+          // className={`${this.buttonEnabled ? 'btnEnabled' : 'btnDisabled'`}'}
+          inactive={!this.buttonEnabled}
+          onClick={this.handlePreview}
+        >
+          Preview
+        </CustomButton>
       </div>
     );
   }

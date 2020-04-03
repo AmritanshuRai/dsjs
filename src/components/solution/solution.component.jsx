@@ -44,10 +44,15 @@ class Solution extends React.Component {
 
   render() {
     let finalData = {};
+    let buttonEnabled = false;
+    let renderThisPage = true;
+
     const previewModeActivated = this.props.match.path === '/preview';
 
     if (previewModeActivated) {
       finalData = JSON.parse(localStorage.getItem('finalData'));
+      buttonEnabled = JSON.parse(localStorage.getItem('buttonEnabled'));
+      renderThisPage = finalData && buttonEnabled;
     } else {
       const id = this.props.match.params.id;
       finalData = this.props.EVERY_QUESTION[id];
@@ -55,7 +60,7 @@ class Solution extends React.Component {
 
     return (
       <div>
-        {finalData && Object.keys(finalData).length ? (
+        {renderThisPage && Object.keys(finalData).length ? (
           <div>
             <div>TITLE</div>
             <Editor

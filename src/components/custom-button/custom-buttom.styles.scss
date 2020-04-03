@@ -29,4 +29,15 @@
       border: none;
     }
   }
+
+  &.btnDisabled {
+    background-color: #e8e8e8;
+    cursor: not-allowed;
+    outline: none;
+    &:hover {
+      background-color: #e8e8e8;
+      color: white;
+      border: none;
+    }
+  }
 }
