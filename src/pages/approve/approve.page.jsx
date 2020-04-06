@@ -1,4 +1,5 @@
 import React from 'react';
+import './approve.styles.scss';
 import { connect } from 'react-redux';
 import { fetchData } from '../../utils/fetchData';
 import { withRouter } from 'react-router-dom';
@@ -23,7 +24,8 @@ class Approve extends React.Component {
 
   render() {
     return (
-      <div className='homepage'>
+      <div className='homepage approve'>
+        <div className='approveHeading'>Verification Mode</div>
         <QuestionContainer />
       </div>
     );

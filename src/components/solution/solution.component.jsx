@@ -65,8 +65,10 @@ class Solution extends React.Component {
         : 'pendingQuestions';
     try {
       await createData(finalData);
+      if (finalData.collectionName === 'questions') {
+        await deleteData(JSON.parse(localStorage.getItem('id')));
+      }
 
-      await deleteData(JSON.parse(localStorage.getItem('id')));
       this.removeEditorData();
       this.props.history.push(`/`);
     } catch (error) {
