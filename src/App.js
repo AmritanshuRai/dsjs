@@ -17,19 +17,22 @@ import { toggleLoader } from './redux/universal/universal.action';
 import MyEditor from './pages/upload/upload.page';
 import Donate from './pages/donate/donate.page';
 import Preview from './pages/preview/preview.page';
+import Approve from './pages/approve/approve.page';
 import PageNotFound from './pages/404/404.page';
-import { fetchData } from './utils/fetchData';
-
+// import { fetchData } from './utils/fetchData';
 class App extends React.Component {
   unsubscribeFromAuth = null;
-  unsubscribeFromQuestions = null;
+
   componentDidMount() {
-    if (this.props.location.pathname === '/') {
-      this.props.toggleLoader(true);
-      this.unsubscribeFromQuestions = fetchData(this.onFetchedData, {
-        toggleLoader: this.props.toggleLoader,
-      });
-    }
+    // if (this.props.location.pathname === '/') {
+    //   this.props.toggleLoader(true);
+    //   const fetchedData = await fetchData(this.onFetchedData, {
+    //     toggleLoader: this.props.toggleLoader,
+    //   });
+    //   this.props.setQuestionData(fetchedData);
+    //   this.props.toggleLoader(false);
+    // document.addEventListener('keydown', this.handleKeyPress, false);
+    // }
 
     const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -46,12 +49,12 @@ class App extends React.Component {
       }
     });
   }
-  onFetchedData = fetchedData => {
-    this.props.setQuestionData(fetchedData);
-    if (this.props.location.pathname === '/') {
-      this.props.toggleLoader(false);
-    }
-  };
+  // onFetchedData = fetchedData => {
+  //   this.props.setQuestionData(fetchedData);
+  //   if (this.props.location.pathname === '/') {
+  //     this.props.toggleLoader(false);
+  //   }
+  // };
   // async fetchData() {
   //   this.props.toggleLoader();
   //   // const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
@@ -70,10 +73,15 @@ class App extends React.Component {
 
   //   this.props.toggleLoader();
   // }
-
+  // handleKeyPress = event => {
+  //   event.preventDefault();
+  //   if (event.keyCode === 32 && !!event.shiftKey) {
+  //     this.props.history.push('/approve');
+  //   }
+  // };
   componentWillUnmount() {
     this.unsubscribeFromAuth();
-    this.unsubscribeFromQuestions();
+    document.removeEventListener('keydown', this.handleKeyPress, false);
   }
   render() {
     return (
@@ -109,6 +117,7 @@ class App extends React.Component {
             <Route exact path='/upload' component={MyEditor}></Route>
             <Route exact path='/donate' component={Donate}></Route>
             <Route exact path='/preview' component={Preview}></Route>
+            <Route exact path='/approve' component={Approve}></Route>
             <Route path='/404' component={PageNotFound} />
             <Redirect to='/404' />
           </Switch>

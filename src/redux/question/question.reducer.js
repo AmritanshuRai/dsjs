@@ -2,6 +2,7 @@ const INITIAL_DATA = {
   question_data: {},
   EVERY_QUESTION: {},
   filteredText: '',
+  currentModule: '',
 };
 
 const questionReducer = (state = INITIAL_DATA, action) => {
@@ -20,6 +21,11 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         ...state,
         question_data: action.payload,
         EVERY_QUESTION: action.payload,
+      };
+    case 'SET_CURRENT_MODULE':
+      return {
+        ...state,
+        currentModule: action.payload,
       };
 
     default:

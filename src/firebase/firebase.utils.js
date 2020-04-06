@@ -37,10 +37,15 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-export const createQuestion = async ({ title, solution, explanation }) => {
+export const createData = async ({
+  title,
+  solution,
+  explanation,
+  collectionName,
+}) => {
   //   const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
 
-  await firestore.collection('questions').add({
+  await firestore.collection(collectionName).add({
     title,
     solution,
     explanation,
@@ -70,6 +75,13 @@ export const createQuestion = async ({ title, solution, explanation }) => {
   //   value.forEach(doc => {
   //     console.log(`${doc.id} => ${doc.data()}`);
   //   });
+};
+
+export const deleteData = async id => {
+  await firestore
+    .collection('pendingQuestions')
+    .doc(id)
+    .delete();
 };
 
 // getQuestions();

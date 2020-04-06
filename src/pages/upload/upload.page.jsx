@@ -5,8 +5,8 @@ import {
   EditorState,
   convertToRaw,
   convertFromRaw,
-  // ContentState,
-  // convertFromHTML,
+  ContentState,
+  convertFromHTML,
 } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 // import draftToMarkdown from 'draftjs-to-markdown'
@@ -26,13 +26,47 @@ import {
   selectSolutionState,
   selectTitleState,
 } from '../../redux/editor/editor.selector';
+import { selectCurrentModule } from '../../redux/question/question.selector';
 // import { toggleLoader } from '../../redux/universal/universal.action';
 
 class MyEditor extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  toEditorState = htmlStr => {
+    const sampleMarkup = htmlStr;
+    const blocksFromHTML = convertFromHTML(sampleMarkup);
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap,
+    );
+
+    const editorState = EditorState.createWithContent(state);
+    return editorState;
+  };
+
   componentDidMount() {
+    if (
+      this.props.currentModule === 'pendingQuestions' &&
+      localStorage.getItem('finalData')
+    ) {
+      const finalData = JSON.parse(localStorage.getItem('finalData'));
+      localStorage.removeItem('rawTitleState');
+      localStorage.removeItem('rawSolutionState');
+      localStorage.removeItem('rawExplanationState');
+      this.props.setTitleState(this.toEditorState(finalData.title));
+      this.props.setSolutionState(this.toEditorState(finalData.solution));
+      this.props.setExplanationState(this.toEditorState(finalData.explanation));
+    } else {
+      this.convertFromRawEditorState();
+    }
+  }
+  componentWillUpdate() {}
+
+  componentDidUpdate() {
+    this.saveEditorData('titleState');
+    this.saveEditorData('solutionState');
+    this.saveEditorData('explanationState');
+    localStorage.removeItem('finalData');
+  }
+  convertFromRawEditorState = () => {
     const titleStateRaw = localStorage.getItem('rawTitleState');
     const solutionStateRaw = localStorage.getItem('rawSolutionState');
     const explanationStateRaw = localStorage.getItem('rawExplanationState');
@@ -45,7 +79,8 @@ class MyEditor extends Component {
     explanationStateRaw
       ? this.initEditorData(explanationStateRaw, 'ExplanationState')
       : this.props.setExplanationState(EditorState.createEmpty());
-  }
+  };
+
   initEditorData = (rawData, stateStr) => {
     const rawContent = convertFromRaw(JSON.parse(rawData));
 
@@ -138,7 +173,6 @@ class MyEditor extends Component {
         />
 
         <CustomButton
-          // className={`${this.buttonEnabled ? 'btnEnabled' : 'btnDisabled'`}'}
           inactive={!this.buttonEnabled}
           onClick={this.handlePreview}
         >
@@ -153,6 +187,7 @@ const mapStateToProps = state => ({
   titleState: selectTitleState(state),
   solutionState: selectSolutionState(state),
   explanationState: selectExplanationState(state),
+  currentModule: selectCurrentModule(state),
 });
 const mapDispatchToProps = dispatch => ({
   setTitleState: data => dispatch(setTitleState(data)),

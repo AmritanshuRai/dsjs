@@ -15,11 +15,26 @@ const Header = ({
   handleSearchChange,
   currentUser,
   location: { pathname },
+  history,
 }) => {
   return (
     pathname === '/404' || (
       <div className='header'>
-        <Link to='/'>Home</Link>
+        <div
+          onClick={() => {
+            localStorage.removeItem('rawTitleState');
+            localStorage.removeItem('rawSolutionState');
+            localStorage.removeItem('rawExplanationState');
+            localStorage.removeItem('buttonEnabled');
+            localStorage.removeItem('finalData');
+            localStorage.removeItem('id');
+
+            history.push('/');
+          }}
+        >
+          Home
+        </div>
+
         <Link to='/upload'>Upload</Link>
         {showSearchField ? (
           <div>
