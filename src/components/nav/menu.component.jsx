@@ -12,6 +12,7 @@ import { auth } from '../../firebase/firebase.utils';
 import { Link, withRouter } from 'react-router-dom';
 import { selectCurrentNav } from '../../redux/nav/nav.selector';
 import { setCurrentNav, setDrawerVisible } from '../../redux/nav/nav.action';
+import { selectCurrentUser } from '../../redux/user/user.selector';
 
 class Navmenu extends React.Component {
   handleClick = e => {
@@ -34,7 +35,6 @@ class Navmenu extends React.Component {
       navStyle,
       currentNav,
       itemStyle,
-      signComponentStyle,
       currentUser,
       showSignIn,
     } = this.props;
@@ -55,14 +55,10 @@ class Navmenu extends React.Component {
         </Menu.Item>
         <Menu.Item style={itemStyle} key='alipay'>
           <CoffeeOutlined />
-          <span>Donate</span>
+          <Link to='/donate'>Donate</Link>
         </Menu.Item>
         {showSignIn ? (
-          <Menu.Item
-            style={itemStyle}
-            key='mail'
-            className={signComponentStyle}
-          >
+          <Menu.Item style={itemStyle} key='mail' className='nav-sign'>
             <MailOutlined />
             {currentUser ? (
               <span onClick={() => auth.signOut()}>Sign out</span>
@@ -77,6 +73,7 @@ class Navmenu extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  currentUser: selectCurrentUser(state),
   currentNav: selectCurrentNav(state),
 });
 

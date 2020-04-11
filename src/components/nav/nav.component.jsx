@@ -46,14 +46,13 @@ class Nav extends React.Component {
           onClose={() => this.props.setDrawerVisible(false)}
           visible={this.props.drawerVisible}
         >
-          <Navmenu mode='inline' signComponentStyle='nav-sign' />
+          <Navmenu mode='inline' />
         </Drawer>
 
         <Navmenu
           navStyle='nav nav-desktop'
           mode='horizontal'
           itemStyle={this.itemStyle}
-          signComponentStyle='nav-sign'
           showSignIn
         />
       </div>
