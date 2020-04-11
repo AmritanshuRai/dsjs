@@ -1,10 +1,12 @@
 import React from 'react';
+
+import 'antd/dist/antd.css';
 import './App.css';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import HomePage from './pages/homepae/homepage.page';
 import Solution from './components/solution/solution.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import Header from './components/header/header.component';
+// import Header from './components/header/header.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import Loader from './components/loader/loader.component';
 import { connect } from 'react-redux';
@@ -19,6 +21,9 @@ import Donate from './pages/donate/donate.page';
 import Preview from './pages/preview/preview.page';
 import Approve from './pages/approve/approve.page';
 import PageNotFound from './pages/404/404.page';
+
+import Nav from './components/nav/nav.component';
+import { Layout } from 'antd';
 // import { fetchData } from './utils/fetchData';
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -85,10 +90,10 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className='App'>
+      <div>
         <Loader />
-        <div className='App_container'>
-          <Header />
+        <Nav />
+        <Layout className='App'>
           <Switch>
             <Route
               exact
@@ -121,7 +126,7 @@ class App extends React.Component {
             <Route path='/404' component={PageNotFound} />
             <Redirect to='/404' />
           </Switch>
-        </div>
+        </Layout>
       </div>
     );
   }

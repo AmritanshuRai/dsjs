@@ -1,0 +1,19 @@
+.nav {
+  padding: 0 80px;
+  display: flex;
+  height: 48px;
+  &-mobile {
+    @media only screen and(min-width:767px) {
+      display: none;
+    }
+  }
+  &-desktop {
+    @media only screen and(max-width:767px) {
+      display: none;
+    }
+  }
+
+  &-sign {
+    margin-left: auto;
+  }
+}
