@@ -2,6 +2,12 @@
   padding: 0 80px;
   display: flex;
   height: 48px;
+  @media only screen and (max-width: 767px) {
+    padding: 0 40px;
+  }
+  @media only screen and (max-width: 420px) {
+    padding: 0;
+  }
   &-mobile {
     @media only screen and(min-width:767px) {
       display: none;

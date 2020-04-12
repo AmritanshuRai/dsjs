@@ -3,11 +3,12 @@ import './question-container.styles.scss';
 import Question from '../question/question.component';
 import { connect } from 'react-redux';
 import { selectQuestionData } from '../../redux/question/question.selector';
+import { Row } from 'antd';
 
 class QuestionContainer extends React.Component {
   render() {
     return (
-      <div className='questionContainer'>
+      <Row gutter={[48, 48]}>
         {Object.keys(this.props.question_data).map((key, index) => (
           <Question
             key={key}
@@ -15,10 +16,7 @@ class QuestionContainer extends React.Component {
             question={this.props.question_data[key]}
           />
         ))}
-        {/* {this.props.question_data.map(question => (
-                    <Question key={question.id} question={question} />
-                ))} */}
-      </div>
+      </Row>
     );
   }
 }
