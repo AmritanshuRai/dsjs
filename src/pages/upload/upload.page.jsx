@@ -58,7 +58,6 @@ class MyEditor extends Component {
       this.convertFromRawEditorState();
     }
   }
-  componentWillUpdate() {}
 
   componentDidUpdate() {
     this.saveEditorData('titleState');
