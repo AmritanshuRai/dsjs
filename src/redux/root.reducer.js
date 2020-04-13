@@ -4,14 +4,14 @@ import storage from 'redux-persist/lib/storage';
 import questionReducer from './question/question.reducer';
 import userReducer from './user/user.reducer';
 import unisersalReducer from './universal/universal.reducer';
-import editorReducer from './editor/editor.reducer';
+
 import navReducer from './nav/nav.reducer';
 
 const persistConfig = {
   key: 'root',
   storage,
   // whitelist: ["question"]
-  blacklist: ['editor', 'universal'],
+  blacklist: ['universal'],
   timeout: null,
 };
 
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   question: questionReducer,
   user: userReducer,
   universal: unisersalReducer,
-  editor: editorReducer,
+
   nav: navReducer,
 });
 

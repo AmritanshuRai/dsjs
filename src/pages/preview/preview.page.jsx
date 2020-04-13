@@ -30,13 +30,13 @@ class Preview extends Component {
       //code needed here to enter from /preview
     }
   }
-  removeEditorData = () => {
-    localStorage.removeItem('rawTitleState');
-    localStorage.removeItem('rawSolutionState');
-    localStorage.removeItem('rawExplanationState');
-    localStorage.removeItem('buttonEnabled');
-    localStorage.removeItem('finalData');
-  };
+  // removeEditorData = () => {
+  //   localStorage.removeItem('rawTitleState');
+  //   localStorage.removeItem('rawSolutionState');
+  //   localStorage.removeItem('rawExplanationState');
+  //   localStorage.removeItem('buttonEnabled');
+  //   localStorage.removeItem('finalData');
+  // };
   // componentWillUnmount() {
   //   if (this.props.currentModule === 'pendingQuestions') {
   //     this.removeEditorData();
@@ -58,11 +58,11 @@ class Preview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currentModule: selectCurrentModule(state),
 });
-const mapDispatchToProps = dispatch => ({
-  toggleLoader: data => dispatch(toggleLoader(data)),
+const mapDispatchToProps = (dispatch) => ({
+  toggleLoader: (data) => dispatch(toggleLoader(data)),
 });
 
 export default withRouter(
