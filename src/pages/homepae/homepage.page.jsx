@@ -8,8 +8,7 @@ import {
 } from '../../redux/question/question.action';
 class HomePage extends React.Component {
   componentDidMount() {
-    const collectionName = 'questions';
-    this.props.setCurrentModule(collectionName);
+    this.props.setCurrentModule('questions');
     this.props.setQuestionDataAsync();
     document.addEventListener('keydown', this.handleKeyPress, false);
   }

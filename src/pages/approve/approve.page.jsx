@@ -12,10 +12,8 @@ import {
 } from '../../redux/question/question.action';
 class Approve extends React.Component {
   async componentDidMount() {
-    const collectionName = 'pendingQuestions';
-    this.props.setCurrentModule(collectionName);
-
-    let success = await this.props.setQuestionDataAsync();
+    this.props.setCurrentModule('pendingQuestions');
+    const success = await this.props.setQuestionDataAsync();
     if (!success) {
       this.props.history.push('/');
     }
