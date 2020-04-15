@@ -17,7 +17,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import { createData, deleteData } from '../../firebase/firebase.utils';
 import { toggleLoader } from '../../redux/universal/universal.action';
 // import { selectSolutionState } from '../../redux/editor/editor.selector';
-const toEditorState = htmlStr => {
+const toEditorState = (htmlStr) => {
   const sampleMarkup = htmlStr;
   const blocksFromHTML = convertFromHTML(sampleMarkup);
   const state = ContentState.createFromBlockArray(
@@ -111,40 +111,32 @@ class Solution extends React.Component {
     const userMode =
       this.props.currentModule !== 'pendingQuestions' && !this.id;
     return (
-      <div>
+      <>
         {renderThisPage && Object.keys(finalData).length ? (
           <div>
-            <div className='previewBtn'>
-              {userMode ? (
-                <>
-                  <CustomButton
-                    onClick={() => this.props.history.push(`/upload`)}
-                  >
-                    Back to editor
-                  </CustomButton>
-                  <CustomButton onClick={this.handleSubmit}>
-                    Submit
-                  </CustomButton>
-                </>
-              ) : null}
+            {userMode ? (
+              <div className='previewBtn'>
+                <CustomButton
+                  onClick={() => this.props.history.push(`/upload`)}
+                >
+                  Back to editor
+                </CustomButton>
+                <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
+              </div>
+            ) : null}
 
-              {this.props.currentModule === 'pendingQuestions' ? (
-                <>
-                  <CustomButton onClick={this.handleDelete}>
-                    Delete
-                  </CustomButton>
+            {this.props.currentModule === 'pendingQuestions' ? (
+              <div className='previewBtn'>
+                <CustomButton onClick={this.handleDelete}>Delete</CustomButton>
 
-                  <CustomButton
-                    onClick={() => this.props.history.push(`/upload`)}
-                  >
-                    Back to editor
-                  </CustomButton>
-                  <CustomButton onClick={this.handleSubmit}>
-                    Submit
-                  </CustomButton>
-                </>
-              ) : null}
-            </div>
+                <CustomButton
+                  onClick={() => this.props.history.push(`/upload`)}
+                >
+                  Back to editor
+                </CustomButton>
+                <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
+              </div>
+            ) : null}
 
             <div>TITLE</div>
             <Editor
@@ -166,18 +158,18 @@ class Solution extends React.Component {
         ) : (
           this.props.history.push('/404')
         )}
-      </div>
+      </>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   EVERY_QUESTION: selectEveryQuestion(state),
   currentModule: selectCurrentModule(state),
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   toggleSearchField: () => dispatch(toggleSearchField()),
-  setCurrentModule: data => dispatch(setCurrentModule(data)),
-  toggleLoader: data => dispatch(toggleLoader(data)),
+  setCurrentModule: (data) => dispatch(setCurrentModule(data)),
+  toggleLoader: (data) => dispatch(toggleLoader(data)),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(Solution),
