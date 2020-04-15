@@ -18,7 +18,7 @@ import { toggleLoader } from './redux/universal/universal.action';
 // import { firestore } from './firebase/firebase.utils';
 import MyEditor from './pages/upload/upload.page';
 import Donate from './pages/donate/donate.page';
-import Preview from './pages/preview/preview.page';
+// import Preview from './pages/preview/preview.page';
 import Approve from './pages/approve/approve.page';
 import PageNotFound from './pages/404/404.page';
 
@@ -40,10 +40,10 @@ class App extends React.Component {
     // }
 
     const { setCurrentUser } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapshot => {
+        userRef.onSnapshot((snapshot) => {
           setCurrentUser({
             id: snapshot.id,
             ...snapshot.data(),
@@ -104,7 +104,7 @@ class App extends React.Component {
             />
             <Route
               path='/solution/:id'
-              render={props => {
+              render={(props) => {
                 return <Solution {...props} />;
               }}
             />
@@ -121,7 +121,7 @@ class App extends React.Component {
             />
             <Route exact path='/upload' component={MyEditor}></Route>
             <Route exact path='/donate' component={Donate}></Route>
-            <Route exact path='/preview' component={Preview}></Route>
+            <Route exact path='/preview' component={Solution}></Route>
             <Route exact path='/approve' component={Approve}></Route>
             <Route path='/404' component={PageNotFound} />
             <Redirect to='/404' />
@@ -131,13 +131,13 @@ class App extends React.Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
 });
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-  toggleLoader: data => dispatch(toggleLoader(data)),
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  toggleLoader: (data) => dispatch(toggleLoader(data)),
 
-  setQuestionData: data => dispatch(setQuestionData(data)),
+  setQuestionData: (data) => dispatch(setQuestionData(data)),
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

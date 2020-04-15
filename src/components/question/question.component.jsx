@@ -7,7 +7,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import { Col, Collapse } from 'antd';
 
 const { Panel } = Collapse;
-const someFunc = htmlStr => {
+const someFunc = (htmlStr) => {
   const sampleMarkup = htmlStr;
   const blocksFromHTML = convertFromHTML(sampleMarkup);
   const state = ContentState.createFromBlockArray(
@@ -26,6 +26,7 @@ const styleCol = {
 const collapseStyle = {
   backgroundColor: '#fcfcfc',
   fontSize: '16px',
+  overflowWrap: 'break-word',
 };
 class Question extends React.Component {
   render() {

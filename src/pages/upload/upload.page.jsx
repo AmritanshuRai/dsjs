@@ -133,7 +133,7 @@ class MyEditor extends Component {
       <div className='myEditor'>
         <Editor
           editorState={titleState}
-          toolbarOnFocus
+          toolbarHidden
           wrapperClassName='demo-wrapper defaultWrapper'
           placeholder='Enter title'
           editorClassName='demo-editor defaultEditor'
@@ -151,7 +151,7 @@ class MyEditor extends Component {
 
         <Editor
           editorState={solutionState}
-          toolbarOnFocus
+          toolbarHidden
           placeholder='Enter your program/code only'
           wrapperClassName='demo-wrapper defaultWrapper'
           editorClassName='demo-editor defaultEditor'
