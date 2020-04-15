@@ -28,7 +28,7 @@ export const fetchData = async (collectionName) => {
     .orderBy('timestamp', 'desc')
     .get();
 
-  fetchedData.forEach(doc => {
+  fetchedData.forEach((doc) => {
     questions[doc.id] = doc.data();
   });
   return questions;

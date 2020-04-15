@@ -12,7 +12,6 @@ import Loader from './components/loader/loader.component';
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/user.action';
 import { selectCurrentUser } from './redux/user/user.selector';
-import { setQuestionData } from './redux/question/question.action';
 import { toggleLoader } from './redux/universal/universal.action';
 
 // import { firestore } from './firebase/firebase.utils';
@@ -137,7 +136,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
   toggleLoader: (data) => dispatch(toggleLoader(data)),
-
-  setQuestionData: (data) => dispatch(setQuestionData(data)),
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
