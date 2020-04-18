@@ -12,7 +12,6 @@ const persistConfig = {
   storage,
   // whitelist: ["question"]
   blacklist: ['universal'],
-  timeout: null,
 };
 
 const rootReducer = combineReducers({

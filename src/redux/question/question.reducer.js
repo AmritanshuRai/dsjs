@@ -1,13 +1,15 @@
+import QuestionActionTypes from './question.types';
 const INITIAL_DATA = {
   question_data: {},
   EVERY_QUESTION: {},
   filteredText: '',
   currentModule: '',
+  error: null,
 };
 
 const questionReducer = (state = INITIAL_DATA, action) => {
   switch (action.type) {
-    case 'HANDLE_SEARCH_CHANGE':
+    case QuestionActionTypes.HANDLE_SEARCH_CHANGE:
       return {
         ...state,
         filteredText: action.payload,
@@ -16,16 +18,22 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         }),
       };
 
-    case 'SET_QUESTION_DATA':
+    case QuestionActionTypes.SET_QUESTION_DATA:
       return {
         ...state,
         question_data: action.payload,
         EVERY_QUESTION: action.payload,
+        error: null,
       };
-    case 'SET_CURRENT_MODULE':
+    case QuestionActionTypes.SET_CURRENT_MODULE:
       return {
         ...state,
         currentModule: action.payload,
+      };
+    case QuestionActionTypes.FETCH_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       };
 
     default:

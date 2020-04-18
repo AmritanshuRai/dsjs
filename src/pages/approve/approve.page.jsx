@@ -10,13 +10,13 @@ import {
   setCurrentModule,
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
+
+import { selectCurrentModule } from '../../redux/question/question.selector';
 class Approve extends React.Component {
-  async componentDidMount() {
-    this.props.setCurrentModule('pendingQuestions');
-    const success = await this.props.setQuestionDataAsync();
-    if (!success) {
-      this.props.history.push('/');
-    }
+  componentDidMount() {
+    const { setCurrentModule, history, setQuestionDataAsync } = this.props;
+    setCurrentModule('pendingQuestions');
+    setQuestionDataAsync(history);
   }
 
   render() {
@@ -28,10 +28,14 @@ class Approve extends React.Component {
     );
   }
 }
-
+const mapStateToProps = (state) => ({
+  currentModule: selectCurrentModule(state),
+});
 const mapDispatchToProps = (dispatch) => ({
   toggleLoader: (data) => dispatch(toggleLoader(data)),
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
-  setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
+  setQuestionDataAsync: (history) => dispatch(setQuestionDataAsync(history)),
 });
-export default withRouter(connect(null, mapDispatchToProps)(Approve));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Approve),
+);
