@@ -8,14 +8,14 @@ import {
   CoffeeOutlined,
 } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { auth } from '../../firebase/firebase.utils';
 import { Link, withRouter } from 'react-router-dom';
 import { selectCurrentNav } from '../../redux/nav/nav.selector';
 import { setCurrentNav, setDrawerVisible } from '../../redux/nav/nav.action';
 import { selectCurrentUser } from '../../redux/user/user.selector';
+import { signOutStart } from '../../redux/user/user.action';
 
 class Navmenu extends React.Component {
-  handleClick = e => {
+  handleClick = (e) => {
     this.props.setCurrentNav(e.key);
     this.props.setDrawerVisible(false);
   };
@@ -37,6 +37,7 @@ class Navmenu extends React.Component {
       itemStyle,
       currentUser,
       showSignIn,
+      signOutStart,
     } = this.props;
     return (
       <Menu
@@ -61,7 +62,7 @@ class Navmenu extends React.Component {
           <Menu.Item style={itemStyle} key='mail' className='nav-sign'>
             <MailOutlined />
             {currentUser ? (
-              <span onClick={() => auth.signOut()}>Sign out</span>
+              <span onClick={signOutStart}>Sign out</span>
             ) : (
               <Link to='/signin'>Sign In</Link>
             )}
@@ -72,14 +73,15 @@ class Navmenu extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
   currentNav: selectCurrentNav(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentNav: data => dispatch(setCurrentNav(data)),
-  setDrawerVisible: data => dispatch(setDrawerVisible(data)),
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentNav: (data) => dispatch(setCurrentNav(data)),
+  setDrawerVisible: (data) => dispatch(setDrawerVisible(data)),
+  signOutStart: () => dispatch(signOutStart()),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(Navmenu),

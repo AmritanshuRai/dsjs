@@ -4,13 +4,14 @@ import './nav.styles.scss';
 import { MailOutlined, BarsOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { handleSearchChange } from '../../redux/question/question.action';
-import { auth } from '../../firebase/firebase.utils';
+// import { auth } from '../../firebase/firebase.utils';
 import { Link, withRouter } from 'react-router-dom';
 import { selectFilteredText } from '../../redux/question/question.selector';
 import { selectShowSearchField } from '../../redux/universal/universal.selector';
 import { selectCurrentUser } from '../../redux/user/user.selector';
 import { setDrawerVisible } from '../../redux/nav/nav.action';
 import { selectDrawerVisible } from '../../redux/nav/nav.selector';
+import { signOutStart } from '../../redux/user/user.action';
 import Navmenu from './menu.component';
 
 class Nav extends React.Component {
@@ -21,6 +22,7 @@ class Nav extends React.Component {
   };
 
   render() {
+    const { signOutStart } = this.props;
     return (
       <div>
         <Menu className='nav nav-mobile' mode='horizontal'>
@@ -34,7 +36,7 @@ class Nav extends React.Component {
           <Menu.Item style={this.itemStyle} key='mail' className='nav-sign'>
             <MailOutlined />
             {this.props.currentUser ? (
-              <span onClick={() => auth.signOut()}>Sign out</span>
+              <span onClick={signOutStart}>Sign out</span>
             ) : (
               <Link to='/signin'>Sign In</Link>
             )}
@@ -59,15 +61,16 @@ class Nav extends React.Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   showSearchField: selectShowSearchField(state),
   filteredText: selectFilteredText(state),
   currentUser: selectCurrentUser(state),
   drawerVisible: selectDrawerVisible(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  handleSearchChange: e => dispatch(handleSearchChange(e.target.value)),
-  setDrawerVisible: data => dispatch(setDrawerVisible(data)),
+const mapDispatchToProps = (dispatch) => ({
+  handleSearchChange: (e) => dispatch(handleSearchChange(e.target.value)),
+  setDrawerVisible: (data) => dispatch(setDrawerVisible(data)),
+  signOutStart: () => dispatch(signOutStart()),
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Nav));
