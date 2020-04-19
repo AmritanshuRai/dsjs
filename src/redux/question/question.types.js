@@ -4,6 +4,7 @@ const QuestionActionTypes = {
   SET_CURRENT_MODULE: 'SET_CURRENT_MODULE',
   FETCH_START: 'FETCH_START',
   FETCH_FAILURE: 'FETCH_FAILURE',
+  FETCH_SUCCCESS: 'FETCH_SUCCCESS',
 };
 
 export default QuestionActionTypes;

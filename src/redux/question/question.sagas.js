@@ -3,14 +3,14 @@ import { fetchData } from '../../utils/fetchData';
 import { toggleLoader } from '../universal/universal.action';
 import QuestionActionTypes from './question.types';
 import { selectCurrentModule } from './question.selector';
-import { setQuestionData, fetchFailure } from './question.action';
+import { fetchSuccess, fetchFailure } from './question.action';
 
 export function* fetchQuestions(action) {
   const collectionName = yield select(selectCurrentModule);
   try {
     yield put(toggleLoader(true));
     const fetchedData = yield fetchData(collectionName);
-    yield put(setQuestionData(fetchedData));
+    yield put(fetchSuccess(fetchedData));
   } catch (error) {
     yield put(fetchFailure(error));
 

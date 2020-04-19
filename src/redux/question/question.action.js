@@ -5,8 +5,8 @@ export const handleSearchChange = (value) => ({
   payload: value,
 });
 
-export const setQuestionData = (data) => ({
-  type: QuestionActionTypes.SET_QUESTION_DATA,
+export const fetchSuccess = (data) => ({
+  type: QuestionActionTypes.FETCH_SUCCCESS,
   payload: data,
 });
 

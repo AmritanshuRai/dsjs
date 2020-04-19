@@ -18,7 +18,7 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         }),
       };
 
-    case QuestionActionTypes.SET_QUESTION_DATA:
+    case QuestionActionTypes.FETCH_SUCCCESS:
       return {
         ...state,
         question_data: action.payload,
