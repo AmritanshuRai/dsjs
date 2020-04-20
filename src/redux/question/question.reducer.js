@@ -1,4 +1,7 @@
 import QuestionActionTypes from './question.types';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
+
 const INITIAL_DATA = {
   question_data: {},
   EVERY_QUESTION: {},
@@ -48,5 +51,11 @@ const questionReducer = (state = INITIAL_DATA, action) => {
       return state;
   }
 };
+const persistConfig = {
+  key: 'questions',
+  storage,
+  blacklist: ['error'],
+};
+// export default questionReducer;
 
-export default questionReducer;
+export default persistReducer(persistConfig, questionReducer);
