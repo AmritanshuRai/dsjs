@@ -7,14 +7,17 @@ import CustomButton from '../custom-button/custom-button.component';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { toggleSearchField } from '../../redux/universal/universal.action';
-import { setCurrentModule } from '../../redux/question/question.action';
+import {
+  setCurrentModule,
+  postQuestion,
+  deletionStart,
+} from '../../redux/question/question.action';
 import { selectCurrentModule } from '../../redux/question/question.selector';
 // import jsbeautifier from 'js-beautify/js';
 import beautify from 'js-beautify/js';
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 
-import { createData, deleteData } from '../../firebase/firebase.utils';
 import { toggleLoader } from '../../redux/universal/universal.action';
 // import { selectSolutionState } from '../../redux/editor/editor.selector';
 const toEditorState = (htmlStr) => {
@@ -47,6 +50,10 @@ class Solution extends React.Component {
     opts.wrap_line_length = 100;
     return opts;
   }
+  afterSuccessCallback = () => {
+    this.removeEditorData();
+    this.props.history.push('/');
+  };
   removeEditorData = () => {
     localStorage.removeItem('rawTitleState');
     localStorage.removeItem('rawSolutionState');
@@ -57,37 +64,25 @@ class Solution extends React.Component {
   };
 
   handleSubmit = async () => {
-    this.props.toggleLoader(true);
     let finalData = JSON.parse(localStorage.getItem('finalData'));
     finalData.collectionName =
       this.props.currentModule === 'pendingQuestions'
         ? 'questions'
         : 'pendingQuestions';
-    try {
-      await createData(finalData);
-      if (finalData.collectionName === 'questions') {
-        await deleteData(JSON.parse(localStorage.getItem('id')));
-      }
 
-      this.removeEditorData();
-      this.props.history.push(`/`);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.props.toggleLoader(false);
-    }
+    const objData = {
+      afterSuccessCallback: this.afterSuccessCallback,
+      finalData,
+    };
+    this.props.postQuestion(objData);
   };
 
-  handleDelete = async () => {
-    try {
-      await deleteData(JSON.parse(localStorage.getItem('id')));
-      this.removeEditorData();
-      this.props.history.push(`/`);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.props.toggleLoader(false);
-    }
+  handleDelete = () => {
+    const objData = {
+      afterSuccessCallback: this.afterSuccessCallback,
+      id: JSON.parse(localStorage.getItem('id')),
+    };
+    this.props.deletionStart(objData);
   };
 
   render() {
@@ -169,6 +164,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   toggleSearchField: () => dispatch(toggleSearchField()),
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
+  postQuestion: (data) => dispatch(postQuestion(data)),
+  deletionStart: (data) => dispatch(deletionStart(data)),
   toggleLoader: (data) => dispatch(toggleLoader(data)),
 });
 export default withRouter(

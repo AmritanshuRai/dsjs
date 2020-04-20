@@ -24,3 +24,29 @@ export const fetchFailure = (error) => ({
   type: QuestionActionTypes.FETCH_FAILURE,
   payload: error,
 });
+
+export const postQuestion = (data) => ({
+  type: QuestionActionTypes.POST_START,
+  payload: data,
+});
+
+export const postSuccess = () => ({
+  type: QuestionActionTypes.POST_SUCCESS,
+});
+
+export const postFailure = (error) => ({
+  type: QuestionActionTypes.POST_FAILURE,
+  payload: error,
+});
+export const deletionStart = (data) => ({
+  type: QuestionActionTypes.DELETION_START,
+  payload: data,
+});
+export const deletionSuccess = () => ({
+  type: QuestionActionTypes.DELETION_SUCCESS,
+});
+
+export const deleteFailure = (error) => ({
+  type: QuestionActionTypes.DELETION_FAILURE,
+  payload: error,
+});

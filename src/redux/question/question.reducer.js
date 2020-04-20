@@ -25,12 +25,20 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         EVERY_QUESTION: action.payload,
         error: null,
       };
+    case QuestionActionTypes.DELETION_SUCCESS:
+    case QuestionActionTypes.POST_SUCCESS:
+      return {
+        ...state,
+        error: null,
+      };
     case QuestionActionTypes.SET_CURRENT_MODULE:
       return {
         ...state,
         currentModule: action.payload,
       };
+    case QuestionActionTypes.POST_FAILURE:
     case QuestionActionTypes.FETCH_FAILURE:
+    case QuestionActionTypes.DELETION_FAILURE:
       return {
         ...state,
         error: action.payload,
