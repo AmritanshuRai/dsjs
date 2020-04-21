@@ -6,7 +6,7 @@ import StripeCheckoutButton from '../../components/stripe-button/stripe-button.c
 const Donate = () => {
   return (
     <div className='donate'>
-      <StripeCheckoutButton price={1000} />
+      <StripeCheckoutButton price={100} />
       <div>Test Data</div>
       <div>4242424242424242 </div>
       <div>Any 3 digits cvv</div>
