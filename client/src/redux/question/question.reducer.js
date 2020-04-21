@@ -56,6 +56,5 @@ const persistConfig = {
   storage,
   blacklist: ['error'],
 };
-// export default questionReducer;
 
 export default persistReducer(persistConfig, questionReducer);
