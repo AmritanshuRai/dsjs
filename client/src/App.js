@@ -6,6 +6,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 // import Header from './components/header/header.component';
 import Loader from './components/loader/loader.component';
+import PlainLoader from './components/loader/plainLoader.component';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { toggleLoader } from './redux/universal/universal.action';
@@ -82,7 +83,7 @@ class App extends React.Component {
         <Loader />
         <Nav />
         <Layout className='App'>
-          <Suspense fallback={<div>...loading</div>}>
+          <Suspense fallback={<PlainLoader />}>
             <Switch>
               <Route
                 exact

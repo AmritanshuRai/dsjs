@@ -19,7 +19,7 @@ class Loader extends React.Component {
     return loading ? <Loading /> : null;
   }
 }
-//refactor loading todo
+
 const mapStateToProps = (state) => ({
   loading: selectToggleLoader(state),
 });
