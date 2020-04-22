@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import 'antd/dist/antd.css';
 import './App.css';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-import HomePage from './pages/homepae/homepage.page';
-import Solution from './components/solution/solution.component';
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+
 // import Header from './components/header/header.component';
 import Loader from './components/loader/loader.component';
 import { connect } from 'react-redux';
@@ -13,16 +11,21 @@ import { selectCurrentUser } from './redux/user/user.selector';
 import { toggleLoader } from './redux/universal/universal.action';
 
 // import { firestore } from './firebase/firebase.utils';
-import MyEditor from './pages/upload/upload.page';
-import Donate from './pages/donate/donate.page';
-// import Preview from './pages/preview/preview.page';
-import Approve from './pages/approve/approve.page';
-import PageNotFound from './pages/404/404.page';
 
 import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
 // import { fetchData } from './utils/fetchData';
+
+const HomePage = lazy(() => import('./pages/homepae/homepage.page'));
+const Solution = lazy(() => import('./components/solution/solution.component'));
+const SignInAndSignUpPage = lazy(() =>
+  import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
+);
+const Donate = lazy(() => import('./pages/donate/donate.page'));
+const Approve = lazy(() => import('./pages/approve/approve.page'));
+const PageNotFound = lazy(() => import('./pages/404/404.page'));
+const MyEditor = lazy(() => import('./pages/upload/upload.page'));
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
@@ -79,38 +82,40 @@ class App extends React.Component {
         <Loader />
         <Nav />
         <Layout className='App'>
-          <Switch>
-            <Route
-              exact
-              path='/'
-              render={() => {
-                return <HomePage />;
-              }}
-            />
-            <Route
-              path='/solution/:id'
-              render={(props) => {
-                return <Solution {...props} />;
-              }}
-            />
-            <Route
-              exact
-              path='/signin'
-              render={() => {
-                return this.props.currentUser ? (
-                  <Redirect to='/' />
-                ) : (
-                  <SignInAndSignUpPage />
-                );
-              }}
-            />
-            <Route exact path='/upload' component={MyEditor}></Route>
-            <Route exact path='/donate' component={Donate}></Route>
-            <Route exact path='/preview' component={Solution}></Route>
-            <Route exact path='/approve' component={Approve}></Route>
-            <Route path='/404' component={PageNotFound} />
-            <Redirect to='/404' />
-          </Switch>
+          <Suspense fallback={<div>...loading</div>}>
+            <Switch>
+              <Route
+                exact
+                path='/'
+                render={() => {
+                  return <HomePage />;
+                }}
+              />
+              <Route
+                path='/solution/:id'
+                render={(props) => {
+                  return <Solution {...props} />;
+                }}
+              />
+              <Route
+                exact
+                path='/signin'
+                render={() => {
+                  return this.props.currentUser ? (
+                    <Redirect to='/' />
+                  ) : (
+                    <SignInAndSignUpPage />
+                  );
+                }}
+              />
+              <Route exact path='/upload' component={MyEditor}></Route>
+              <Route exact path='/donate' component={Donate}></Route>
+              <Route exact path='/preview' component={Solution}></Route>
+              <Route exact path='/approve' component={Approve}></Route>
+              <Route path='/404' component={PageNotFound} />
+              <Redirect to='/404' />
+            </Switch>
+          </Suspense>
         </Layout>
       </div>
     );
