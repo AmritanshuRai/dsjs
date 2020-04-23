@@ -1,5 +1,6 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
-
+import SuccessMessage from '../../components/message/successMessage.component';
+import FailureMessage from '../../components/message/failureMessage.component';
 import UserActionTypes from './user.types';
 import { toggleLoader } from '../universal/universal.action';
 import {
@@ -29,8 +30,15 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     );
     const userSnapshot = yield userRef.get();
     yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
+
+    const name = yield userSnapshot.data().displayName.split(' ')[0];
+    yield call(
+      SuccessMessage,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`,
+    );
   } catch (error) {
     yield put(signInFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
   }
 }
 
@@ -41,6 +49,7 @@ export function* signInWithGoogle() {
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
   } finally {
     yield put(toggleLoader(false));
   }
@@ -53,6 +62,7 @@ export function* signInWithEmail({ payload: { email, password } }) {
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
   } finally {
     yield put(toggleLoader(false));
   }
@@ -66,6 +76,7 @@ export function* isUserAuthenticated() {
     yield getSnapshotFromUserAuth(userAuth);
   } catch (error) {
     yield put(signInFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
   } finally {
     yield put(hideBtnSkeleton());
   }
@@ -77,6 +88,7 @@ export function* signOut() {
     yield put(signOutSuccess());
   } catch (error) {
     yield put(signOutFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
   }
 }
 
@@ -87,6 +99,7 @@ export function* signUp({ payload: { email, password, displayName } }) {
     yield put(signUpSuccess({ user, additionalData: { displayName } }));
   } catch (error) {
     yield put(signUpFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
     yield put(toggleLoader(false));
   }
 }
@@ -95,6 +108,7 @@ export function* signInAfterSignUp({ payload: { user, additionalData } }) {
   try {
     yield getSnapshotFromUserAuth(user, additionalData);
   } catch (error) {
+    yield call(FailureMessage, error.message.split('.')[0]);
   } finally {
     yield put(toggleLoader(false));
   }
