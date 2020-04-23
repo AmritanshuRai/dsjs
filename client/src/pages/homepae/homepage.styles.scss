@@ -1,0 +1,10 @@
+.ant-skeleton-content .ant-skeleton-title {
+  height: 46px;
+}
+.ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-title,
+.ant-skeleton.ant-skeleton-active
+  .ant-skeleton-content
+  .ant-skeleton-paragraph
+  > li {
+  animation: ant-skeleton-loading 0.5s ease infinite;
+}

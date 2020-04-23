@@ -10,8 +10,11 @@ import {
   setCurrentModule,
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
-
-import { selectCurrentModule } from '../../redux/question/question.selector';
+import HomepageSkeleton from '../homepae/homepage.skeleton';
+import {
+  selectCurrentModule,
+  selectSkeletonLoading,
+} from '../../redux/question/question.selector';
 class Approve extends React.Component {
   componentDidMount() {
     const { setCurrentModule, history, setQuestionDataAsync } = this.props;
@@ -23,13 +26,18 @@ class Approve extends React.Component {
     return (
       <div className='homepage approve'>
         <div className='approveHeading'>Verification Mode</div>
-        <QuestionContainer />
+        {this.props.skeletonLoading ? (
+          <HomepageSkeleton totalItems={15} />
+        ) : (
+          <QuestionContainer />
+        )}
       </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
   currentModule: selectCurrentModule(state),
+  skeletonLoading: selectSkeletonLoading(state),
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleLoader: (data) => dispatch(toggleLoader(data)),

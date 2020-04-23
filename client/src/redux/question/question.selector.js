@@ -26,3 +26,7 @@ export const selectError = createSelector(
   [selectQuestion],
   (question) => question.error,
 );
+export const selectSkeletonLoading = createSelector(
+  [selectQuestion],
+  (question) => question.skeletonLoading,
+);

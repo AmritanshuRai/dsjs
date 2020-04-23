@@ -4,19 +4,15 @@ import 'antd/dist/antd.css';
 import './App.css';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
-// import Header from './components/header/header.component';
 import Loader from './components/loader/loader.component';
 import PlainLoader from './components/loader/plainLoader.component';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { toggleLoader } from './redux/universal/universal.action';
 
-// import { firestore } from './firebase/firebase.utils';
-
 import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
-// import { fetchData } from './utils/fetchData';
 
 const HomePage = lazy(() => import('./pages/homepae/homepage.page'));
 const Solution = lazy(() => import('./components/solution/solution.component'));

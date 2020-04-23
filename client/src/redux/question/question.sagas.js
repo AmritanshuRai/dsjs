@@ -13,22 +13,23 @@ import {
   deletionSuccess,
   deleteFailure,
   deletionStart,
+  showSkeleton,
+  hideSkeleton,
 } from './question.action';
 
 export function* fetchQuestions(action) {
   const collectionName = yield select(selectCurrentModule);
   try {
-    yield put(toggleLoader(true));
+    yield put(showSkeleton());
     const fetchedData = yield fetchData(collectionName);
     yield put(fetchSuccess(fetchedData));
   } catch (error) {
     yield put(fetchFailure(error));
-
     yield collectionName === 'pendingQuestions'
       ? action.payload.push('/')
-      : null;
+      : action.payload.push('/404');
   } finally {
-    yield put(toggleLoader(false));
+    yield put(hideSkeleton());
   }
 }
 export function* onFetchQuestions() {
@@ -53,6 +54,7 @@ export function* postQuestion({
       : yield call(afterSuccessCallback);
   } catch (error) {
     yield put(postFailure(error));
+  } finally {
     yield put(toggleLoader(false));
   }
 }
@@ -68,6 +70,7 @@ export function* deleteQuestion({ payload: { afterSuccessCallback, id } }) {
     yield call(afterSuccessCallback);
   } catch (error) {
     yield put(deleteFailure(error));
+  } finally {
     yield put(toggleLoader(false));
   }
 }

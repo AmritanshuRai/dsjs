@@ -50,3 +50,11 @@ export const deleteFailure = (error) => ({
   type: QuestionActionTypes.DELETION_FAILURE,
   payload: error,
 });
+
+export const showSkeleton = () => ({
+  type: QuestionActionTypes.SHOW_SKELETON,
+});
+
+export const hideSkeleton = () => ({
+  type: QuestionActionTypes.HIDE_SKELETON,
+});

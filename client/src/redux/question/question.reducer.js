@@ -8,6 +8,7 @@ const INITIAL_DATA = {
   filteredText: '',
   currentModule: '',
   error: null,
+  skeletonLoading: false,
 };
 
 const questionReducer = (state = INITIAL_DATA, action) => {
@@ -46,7 +47,16 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         ...state,
         error: action.payload,
       };
-
+    case QuestionActionTypes.SHOW_SKELETON:
+      return {
+        ...state,
+        skeletonLoading: true,
+      };
+    case QuestionActionTypes.HIDE_SKELETON:
+      return {
+        ...state,
+        skeletonLoading: false,
+      };
     default:
       return state;
   }
@@ -54,7 +64,7 @@ const questionReducer = (state = INITIAL_DATA, action) => {
 const persistConfig = {
   key: 'questions',
   storage,
-  blacklist: ['error'],
+  blacklist: ['error', 'skeletonLoading'],
 };
 
 export default persistReducer(persistConfig, questionReducer);
