@@ -7,6 +7,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Loader from './components/loader/loader.component';
 import PlainLoader from './components/loader/plainLoader.component';
 import HomePage from './pages/homepae/homepage.page';
+import Approve from './pages/approve/approve.page';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { toggleLoader } from './redux/universal/universal.action';
@@ -21,7 +22,7 @@ const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
 );
 const Donate = lazy(() => import('./pages/donate/donate.page'));
-const Approve = lazy(() => import('./pages/approve/approve.page'));
+// const Approve = lazy(() => import('./pages/approve/approve.page'));
 const PageNotFound = lazy(() => import('./pages/404/404.page'));
 const MyEditor = lazy(() => import('./pages/upload/upload.page'));
 class App extends React.Component {
