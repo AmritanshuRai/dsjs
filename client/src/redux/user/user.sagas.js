@@ -1,7 +1,7 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 
 import UserActionTypes from './user.types';
-
+import { toggleLoader } from '../universal/universal.action';
 import {
   signInSuccess,
   signInFailure,
@@ -9,6 +9,8 @@ import {
   signOutFailure,
   signUpSuccess,
   signUpFailure,
+  showBtnSkeleton,
+  hideBtnSkeleton,
 } from './user.action';
 
 import {
@@ -34,29 +36,38 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
 
 export function* signInWithGoogle() {
   try {
+    yield put(toggleLoader(true));
     const { user } = yield auth.signInWithPopup(googleProvider);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
+  } finally {
+    yield put(toggleLoader(false));
   }
 }
 
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
+    yield put(toggleLoader(true));
     const { user } = yield auth.signInWithEmailAndPassword(email, password);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
+  } finally {
+    yield put(toggleLoader(false));
   }
 }
 
 export function* isUserAuthenticated() {
   try {
+    yield put(showBtnSkeleton());
     const userAuth = yield getCurrentUser();
     if (!userAuth) return;
     yield getSnapshotFromUserAuth(userAuth);
   } catch (error) {
     yield put(signInFailure(error));
+  } finally {
+    yield put(hideBtnSkeleton());
   }
 }
 
@@ -71,15 +82,22 @@ export function* signOut() {
 
 export function* signUp({ payload: { email, password, displayName } }) {
   try {
+    yield put(toggleLoader(true));
     const { user } = yield auth.createUserWithEmailAndPassword(email, password);
     yield put(signUpSuccess({ user, additionalData: { displayName } }));
   } catch (error) {
     yield put(signUpFailure(error));
+    yield put(toggleLoader(false));
   }
 }
 
 export function* signInAfterSignUp({ payload: { user, additionalData } }) {
-  yield getSnapshotFromUserAuth(user, additionalData);
+  try {
+    yield getSnapshotFromUserAuth(user, additionalData);
+  } catch (error) {
+  } finally {
+    yield put(toggleLoader(false));
+  }
 }
 
 export function* onGoogleSignInStart() {

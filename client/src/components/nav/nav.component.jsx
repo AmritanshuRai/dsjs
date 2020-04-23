@@ -8,12 +8,15 @@ import { handleSearchChange } from '../../redux/question/question.action';
 import { Link, withRouter } from 'react-router-dom';
 import { selectFilteredText } from '../../redux/question/question.selector';
 import { selectShowSearchField } from '../../redux/universal/universal.selector';
-import { selectCurrentUser } from '../../redux/user/user.selector';
+import {
+  selectCurrentUser,
+  selectShowBtnSkeleton,
+} from '../../redux/user/user.selector';
 import { setDrawerVisible } from '../../redux/nav/nav.action';
 import { selectDrawerVisible } from '../../redux/nav/nav.selector';
 import { signOutStart } from '../../redux/user/user.action';
 import Navmenu from './menu.component';
-
+import MenuItemSkeleton from './menuItem.skeleton';
 class Nav extends React.Component {
   itemStyle = {
     border: 'none',
@@ -22,7 +25,7 @@ class Nav extends React.Component {
   };
 
   render() {
-    const { signOutStart } = this.props;
+    const { signOutStart, showBtnSkeleton } = this.props;
     return (
       <div>
         <Menu className='nav nav-mobile' mode='horizontal'>
@@ -34,11 +37,17 @@ class Nav extends React.Component {
             />
           </Menu.Item>
           <Menu.Item style={this.itemStyle} key='mail' className='nav-sign'>
-            <MailOutlined />
-            {this.props.currentUser ? (
-              <span onClick={signOutStart}>Sign out</span>
+            {showBtnSkeleton ? (
+              <MenuItemSkeleton />
             ) : (
-              <Link to='/signin'>Sign In</Link>
+              <>
+                <MailOutlined />
+                {this.props.currentUser ? (
+                  <span onClick={signOutStart}>Sign out</span>
+                ) : (
+                  <Link to='/signin'>Sign In</Link>
+                )}
+              </>
             )}
           </Menu.Item>
         </Menu>
@@ -66,6 +75,7 @@ const mapStateToProps = (state) => ({
   filteredText: selectFilteredText(state),
   currentUser: selectCurrentUser(state),
   drawerVisible: selectDrawerVisible(state),
+  showBtnSkeleton: selectShowBtnSkeleton(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

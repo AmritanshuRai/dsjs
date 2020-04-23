@@ -7,11 +7,15 @@ import {
   HomeOutlined,
   CoffeeOutlined,
 } from '@ant-design/icons';
+import MenuItemSkeleton from './menuItem.skeleton';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { selectCurrentNav } from '../../redux/nav/nav.selector';
 import { setCurrentNav, setDrawerVisible } from '../../redux/nav/nav.action';
-import { selectCurrentUser } from '../../redux/user/user.selector';
+import {
+  selectCurrentUser,
+  selectShowBtnSkeleton,
+} from '../../redux/user/user.selector';
 import { signOutStart } from '../../redux/user/user.action';
 
 class Navmenu extends React.Component {
@@ -38,6 +42,7 @@ class Navmenu extends React.Component {
       currentUser,
       showSignIn,
       signOutStart,
+      showBtnSkeleton,
     } = this.props;
     return (
       <Menu
@@ -58,16 +63,20 @@ class Navmenu extends React.Component {
           <CoffeeOutlined />
           <Link to='/donate'>Donate</Link>
         </Menu.Item>
-        {showSignIn ? (
-          <Menu.Item style={itemStyle} key='mail' className='nav-sign'>
-            <MailOutlined />
-            {currentUser ? (
-              <span onClick={signOutStart}>Sign out</span>
-            ) : (
-              <Link to='/signin'>Sign In</Link>
-            )}
-          </Menu.Item>
-        ) : null}
+        <Menu.Item style={itemStyle} key='mail' className='nav-sign'>
+          {showBtnSkeleton ? (
+            <MenuItemSkeleton />
+          ) : showSignIn ? (
+            <>
+              <MailOutlined />
+              {currentUser ? (
+                <span onClick={signOutStart}>Sign out</span>
+              ) : (
+                <Link to='/signin'>Sign In</Link>
+              )}
+            </>
+          ) : null}
+        </Menu.Item>
       </Menu>
     );
   }
@@ -76,6 +85,7 @@ class Navmenu extends React.Component {
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
   currentNav: selectCurrentNav(state),
+  showBtnSkeleton: selectShowBtnSkeleton(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

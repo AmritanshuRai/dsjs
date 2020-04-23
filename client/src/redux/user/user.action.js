@@ -50,3 +50,9 @@ export const signUpFailure = (error) => ({
   type: UserActionTypes.SIGN_UP_FAILURE,
   payload: error,
 });
+export const showBtnSkeleton = () => ({
+  type: UserActionTypes.SHOW_BTN_SKELETON,
+});
+export const hideBtnSkeleton = () => ({
+  type: UserActionTypes.HIDE_BTN_SKELETON,
+});
