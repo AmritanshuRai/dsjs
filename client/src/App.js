@@ -6,6 +6,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 import Loader from './components/loader/loader.component';
 import PlainLoader from './components/loader/plainLoader.component';
+import HomePage from './pages/homepae/homepage.page';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { toggleLoader } from './redux/universal/universal.action';
@@ -14,7 +15,7 @@ import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
 
-const HomePage = lazy(() => import('./pages/homepae/homepage.page'));
+// const HomePage = lazy(() => import('./pages/homepae/homepage.page'));
 const Solution = lazy(() => import('./components/solution/solution.component'));
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
