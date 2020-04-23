@@ -1,30 +1,26 @@
 import React, { lazy, Suspense } from 'react';
-
 import 'antd/dist/antd.css';
 import './App.css';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-
 import Loader from './components/loader/loader.component';
 import PlainLoader from './components/loader/plainLoader.component';
 import HomePage from './pages/homepae/homepage.page';
-import Approve from './pages/approve/approve.page';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { toggleLoader } from './redux/universal/universal.action';
-
 import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
 
-// const HomePage = lazy(() => import('./pages/homepae/homepage.page'));
 const Solution = lazy(() => import('./components/solution/solution.component'));
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
 );
 const Donate = lazy(() => import('./pages/donate/donate.page'));
-// const Approve = lazy(() => import('./pages/approve/approve.page'));
+const Approve = lazy(() => import('./pages/approve/approve.page'));
 const PageNotFound = lazy(() => import('./pages/404/404.page'));
 const MyEditor = lazy(() => import('./pages/upload/upload.page'));
+
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
@@ -83,29 +79,21 @@ class App extends React.Component {
         <Layout className='App'>
           <Suspense fallback={<PlainLoader />}>
             <Switch>
-              <Route
-                exact
-                path='/'
-                render={() => {
-                  return <HomePage />;
-                }}
-              />
+              <Route exact path='/' render={() => <HomePage />} />
               <Route
                 path='/solution/:id'
-                render={(props) => {
-                  return <Solution {...props} />;
-                }}
+                render={(props) => <Solution {...props} />}
               />
               <Route
                 exact
                 path='/signin'
-                render={() => {
-                  return this.props.currentUser ? (
+                render={() =>
+                  this.props.currentUser ? (
                     <Redirect to='/' />
                   ) : (
                     <SignInAndSignUpPage />
-                  );
-                }}
+                  )
+                }
               />
               <Route exact path='/upload' component={MyEditor}></Route>
               <Route exact path='/donate' component={Donate}></Route>
