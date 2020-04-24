@@ -11,7 +11,7 @@ import { toggleLoader } from './redux/universal/universal.action';
 import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
-
+import ErrorBoundary from './components/error-boundary/error-boundary.component';
 const Solution = lazy(() => import('./components/solution/solution.component'));
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
@@ -77,32 +77,34 @@ class App extends React.Component {
         <Loader />
         <Nav />
         <Layout className='App'>
-          <Suspense fallback={<PlainLoader />}>
-            <Switch>
-              <Route exact path='/' render={() => <HomePage />} />
-              <Route
-                path='/solution/:id'
-                render={(props) => <Solution {...props} />}
-              />
-              <Route
-                exact
-                path='/signin'
-                render={() =>
-                  this.props.currentUser ? (
-                    <Redirect to='/' />
-                  ) : (
-                    <SignInAndSignUpPage />
-                  )
-                }
-              />
-              <Route exact path='/upload' component={MyEditor}></Route>
-              <Route exact path='/donate' component={Donate}></Route>
-              <Route exact path='/preview' component={Solution}></Route>
-              <Route exact path='/approve' component={Approve}></Route>
-              <Route path='/404' component={PageNotFound} />
-              <Redirect to='/404' />
-            </Switch>
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<PlainLoader />}>
+              <Switch>
+                <Route exact path='/' render={() => <HomePage />} />
+                <Route
+                  path='/solution/:id'
+                  render={(props) => <Solution {...props} />}
+                />
+                <Route
+                  exact
+                  path='/signin'
+                  render={() =>
+                    this.props.currentUser ? (
+                      <Redirect to='/' />
+                    ) : (
+                      <SignInAndSignUpPage />
+                    )
+                  }
+                />
+                <Route exact path='/upload' component={MyEditor}></Route>
+                <Route exact path='/donate' component={Donate}></Route>
+                <Route exact path='/preview' component={Solution}></Route>
+                <Route exact path='/approve' component={Approve}></Route>
+                <Route path='/404' component={PageNotFound} />
+                <Redirect to='/404' />
+              </Switch>
+            </Suspense>
+          </ErrorBoundary>
         </Layout>
       </div>
     );
