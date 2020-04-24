@@ -30,8 +30,10 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     );
     const userSnapshot = yield userRef.get();
     yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
-
-    const name = yield userSnapshot.data().displayName.split(' ')[0];
+    const displayName = yield !!userSnapshot.data().displayName
+      ? userSnapshot.data().displayName
+      : additionalData.displayName;
+    const name = yield displayName.split(' ')[0];
     yield call(
       SuccessMessage,
       `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`,
