@@ -3,15 +3,16 @@ import React from 'react';
 import {
   ErrorImageOverlay,
   ErrorImageContainer,
-  ErrorImageText
+  ErrorImageText,
 } from './error-boundary.styles';
+import { Button } from 'antd';
 
 class ErrorBoundary extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      hasErrored: false
+      hasErrored: false,
     };
   }
 
@@ -30,6 +31,9 @@ class ErrorBoundary extends React.Component {
         <ErrorImageOverlay>
           <ErrorImageContainer imageUrl='https://i.imgur.com/yW2W9SC.png' />
           <ErrorImageText>Sorry this page is broken</ErrorImageText>
+          <Button size='large' href='/'>
+            Home
+          </Button>
         </ErrorImageOverlay>
       );
     }

@@ -75,9 +75,9 @@ class App extends React.Component {
     return (
       <div>
         <Loader />
-        <Nav />
-        <Layout className='App'>
-          <ErrorBoundary>
+        <ErrorBoundary>
+          <Nav />
+          <Layout className='App'>
             <Suspense fallback={<PlainLoader />}>
               <Switch>
                 <Route exact path='/' render={() => <HomePage />} />
@@ -104,8 +104,8 @@ class App extends React.Component {
                 <Redirect to='/404' />
               </Switch>
             </Suspense>
-          </ErrorBoundary>
-        </Layout>
+          </Layout>
+        </ErrorBoundary>
       </div>
     );
   }
