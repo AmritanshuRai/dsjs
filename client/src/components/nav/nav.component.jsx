@@ -17,7 +17,7 @@ import { selectDrawerVisible } from '../../redux/nav/nav.selector';
 import { signOutStart } from '../../redux/user/user.action';
 import Navmenu from './menu.component';
 import MenuItemSkeleton from './menuItem.skeleton';
-class Nav extends React.Component {
+class Nav extends React.PureComponent {
   itemStyle = {
     border: 'none',
     display: 'flex',

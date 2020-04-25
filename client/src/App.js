@@ -21,7 +21,7 @@ const Approve = lazy(() => import('./pages/approve/approve.page'));
 const PageNotFound = lazy(() => import('./pages/404/404.page'));
 const MyEditor = lazy(() => import('./pages/upload/upload.page'));
 
-class App extends React.Component {
+class App extends React.PureComponent {
   unsubscribeFromAuth = null;
 
   componentDidMount() {

@@ -18,7 +18,7 @@ import {
 } from '../../redux/user/user.selector';
 import { signOutStart } from '../../redux/user/user.action';
 
-class Navmenu extends React.Component {
+class Navmenu extends React.PureComponent {
   handleClick = (e) => {
     this.props.setCurrentNav(e.key);
     this.props.setDrawerVisible(false);

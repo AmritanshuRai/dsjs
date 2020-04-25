@@ -1,7 +1,7 @@
 import React from 'react';
 import { Skeleton } from 'antd';
 
-class MenuItemSkeleton extends React.Component {
+class MenuItemSkeleton extends React.PureComponent {
   render() {
     return (
       <>
