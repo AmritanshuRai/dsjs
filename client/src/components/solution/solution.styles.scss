@@ -1,0 +1,23 @@
+.solution {
+  .section {
+    margin-bottom: 40px;
+    .heading {
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      margin-bottom: 5px;
+    }
+  }
+  .hljs {
+    white-space: pre-wrap;
+    background: #fbfbfb;
+    color: rgba(0, 0, 0, 0.65);
+  }
+  .public-DraftStyleDefault-block {
+    margin: 0;
+  }
+  .previewBtn {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+  }
+}

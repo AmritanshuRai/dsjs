@@ -1,4 +1,5 @@
 import React from 'react';
+import './solution.styles.scss';
 import { selectEveryQuestion } from '../../redux/question/question.selector';
 import hljs from 'highlight.js/lib/highlight';
 import 'highlight.js/scss/github.scss';
@@ -47,7 +48,7 @@ class Solution extends React.Component {
     opts.space_in_empty_paren = true;
     opts.brace_style = 'collapse';
     opts.jslint_happy = true;
-    opts.wrap_line_length = 100;
+    // opts.wrap_line_length = 200;
     return opts;
   }
   afterSuccessCallback = () => {
@@ -106,9 +107,9 @@ class Solution extends React.Component {
     const userMode =
       this.props.currentModule !== 'pendingQuestions' && !this.id;
     return (
-      <>
+      <div className='solution'>
         {renderThisPage && Object.keys(finalData).length ? (
-          <div>
+          <>
             {userMode ? (
               <div className='previewBtn'>
                 <CustomButton
@@ -132,28 +133,35 @@ class Solution extends React.Component {
                 <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
               </div>
             ) : null}
-
-            <div>TITLE</div>
-            <Editor
-              toolbarHidden
-              editorState={toEditorState(finalData.title)}
-              readOnly
-            />
-            <div>SOLUTION</div>
-            <pre>
-              <code>{beautify(finalData.solution, this.beautifyConfig())}</code>
-            </pre>
-            <div>EXPLAIN THIS SHIT</div>
-            <Editor
-              toolbarHidden
-              editorState={toEditorState(finalData.explanation)}
-              readOnly
-            />
-          </div>
+            <div className='section'>
+              <div className='heading'>TITLE</div>
+              <Editor
+                toolbarHidden
+                editorState={toEditorState(finalData.title)}
+                readOnly
+              />
+            </div>
+            <div className='section'>
+              <div className='heading'>SOLUTION</div>
+              <pre>
+                <code>
+                  {beautify(finalData.solution, this.beautifyConfig())}
+                </code>
+              </pre>
+            </div>
+            <div className='section'>
+              <div className='heading'>EXPLANATION</div>
+              <Editor
+                toolbarHidden
+                editorState={toEditorState(finalData.explanation)}
+                readOnly
+              />
+            </div>
+          </>
         ) : (
           this.props.history.push('/404')
         )}
-      </>
+      </div>
     );
   }
 }

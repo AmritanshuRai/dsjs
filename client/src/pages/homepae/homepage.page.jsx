@@ -48,14 +48,13 @@ const mapDispatchToProps = (dispatch) => ({
 //match object is always newly created causing unnessary re-renders
 // https://github.com/ReactTraining/react-router/issues/5099
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const { match, ...filteredStateProps } = stateProps;
-  return Object.assign({}, filteredStateProps, dispatchProps);
-};
+// const mergeProps = (stateProps, dispatchProps) => {
+//   const { match, ...filteredStateProps } = stateProps;
+//   return Object.assign({}, filteredStateProps, dispatchProps);
+// };
 const ConnectedHomePage = connect(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps,
 )(HomePage);
 
 HomePage.whyDidYouRender = true;
