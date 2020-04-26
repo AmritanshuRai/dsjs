@@ -1,6 +1,5 @@
 const INITIAL_DATA = {
   currentNav: 'home',
-  drawerVisible: false,
 };
 
 const navReducer = (state = INITIAL_DATA, action) => {
@@ -9,11 +8,6 @@ const navReducer = (state = INITIAL_DATA, action) => {
       return {
         ...state,
         currentNav: action.payload,
-      };
-    case 'SET_DRAWER_VISIBLE':
-      return {
-        ...state,
-        drawerVisible: action.payload,
       };
 
     default:

@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { selectCurrentNav } from '../../redux/nav/nav.selector';
-import { setCurrentNav, setDrawerVisible } from '../../redux/nav/nav.action';
+import { setCurrentNav } from '../../redux/nav/nav.action';
 import {
   selectCurrentUser,
   selectShowBtnSkeleton,
@@ -22,7 +22,9 @@ import { clearStorage } from './nav.util';
 class Navmenu extends React.PureComponent {
   handleClick = (e) => {
     this.props.setCurrentNav(e.key);
-    this.props.setDrawerVisible(false);
+    if (!!this.props.hideDrawer) {
+      this.props.hideDrawer();
+    }
   };
   homeClick = () => {
     clearStorage();
@@ -71,7 +73,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentNav: (data) => dispatch(setCurrentNav(data)),
-  setDrawerVisible: (data) => dispatch(setDrawerVisible(data)),
+
   signOutStart: () => dispatch(signOutStart()),
 });
 export default withRouter(
