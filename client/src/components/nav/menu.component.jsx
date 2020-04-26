@@ -17,7 +17,8 @@ import {
   selectShowBtnSkeleton,
 } from '../../redux/user/user.selector';
 import { signOutStart } from '../../redux/user/user.action';
-
+import FailureMessage from '../message/failureMessage.component';
+import ShowConfirm from '../modal/modal.component';
 class Navmenu extends React.PureComponent {
   handleClick = (e) => {
     this.props.setCurrentNav(e.key);
@@ -33,7 +34,25 @@ class Navmenu extends React.PureComponent {
 
     this.props.history.push('/');
   };
-
+  uploadClick = () => {
+    this.props.currentUser
+      ? this.props.history.push('/upload')
+      : FailureMessage('Please sign in');
+  };
+  signOut = () => {
+    this.props.signOutStart();
+    this.homeClick();
+  };
+  handleSignOut = () => {
+    const { pathname } = this.props.location;
+    const title = 'Are you sure?';
+    let content = null;
+    if (pathname === '/upload' || pathname === '/preview') {
+      content =
+        "You'll be redirect to home page and the upload form will be cleared.";
+    }
+    ShowConfirm(title, this.signOut, content);
+  };
   render() {
     const {
       navStyle,
@@ -41,7 +60,7 @@ class Navmenu extends React.PureComponent {
       itemStyle,
       currentUser,
       showSignIn,
-      signOutStart,
+
       showBtnSkeleton,
     } = this.props;
     return (
@@ -55,9 +74,9 @@ class Navmenu extends React.PureComponent {
           <HomeOutlined />
           Home
         </Menu.Item>
-        <Menu.Item style={itemStyle} key='upload'>
+        <Menu.Item style={itemStyle} key='upload' onClick={this.uploadClick}>
           <UploadOutlined />
-          <Link to='/upload'>Upload</Link>
+          Upload
         </Menu.Item>
         <Menu.Item style={itemStyle} key='alipay'>
           <CoffeeOutlined />
@@ -70,7 +89,7 @@ class Navmenu extends React.PureComponent {
             <>
               <MailOutlined />
               {currentUser ? (
-                <span onClick={signOutStart}>Sign out</span>
+                <span onClick={this.handleSignOut}>Sign out</span>
               ) : (
                 <Link to='/signin'>Sign In</Link>
               )}

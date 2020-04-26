@@ -58,7 +58,13 @@ class App extends React.PureComponent {
                     )
                   }
                 />
-                <Route exact path='/upload' component={MyEditor}></Route>
+                <Route
+                  exact
+                  path='/upload'
+                  render={() =>
+                    this.props.currentUser ? <MyEditor /> : <Redirect to='/' />
+                  }
+                ></Route>
                 <Route exact path='/donate' component={Donate}></Route>
                 <Route exact path='/preview' component={Solution}></Route>
                 <Route exact path='/approve' component={Approve}></Route>
