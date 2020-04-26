@@ -1,11 +1,11 @@
 import React from 'react';
 import { Menu, Drawer } from 'antd';
 import './nav.styles.scss';
-import { MailOutlined, BarsOutlined } from '@ant-design/icons';
+import { BarsOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { handleSearchChange } from '../../redux/question/question.action';
 // import { auth } from '../../firebase/firebase.utils';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { selectFilteredText } from '../../redux/question/question.selector';
 import { selectShowSearchField } from '../../redux/universal/universal.selector';
 import {
@@ -16,7 +16,8 @@ import { setDrawerVisible } from '../../redux/nav/nav.action';
 import { selectDrawerVisible } from '../../redux/nav/nav.selector';
 import { signOutStart } from '../../redux/user/user.action';
 import Navmenu from './menu.component';
-import MenuItemSkeleton from './menuItem.skeleton';
+
+import AuthBtn from './authBtn.component';
 class Nav extends React.PureComponent {
   itemStyle = {
     border: 'none',
@@ -25,7 +26,6 @@ class Nav extends React.PureComponent {
   };
 
   render() {
-    const { signOutStart, showBtnSkeleton } = this.props;
     return (
       <div>
         <Menu className='nav nav-mobile' mode='horizontal'>
@@ -36,19 +36,8 @@ class Nav extends React.PureComponent {
               onClick={() => this.props.setDrawerVisible(true)}
             />
           </Menu.Item>
-          <Menu.Item style={this.itemStyle} key='mail' className='nav-sign'>
-            {showBtnSkeleton ? (
-              <MenuItemSkeleton />
-            ) : (
-              <>
-                <MailOutlined />
-                {this.props.currentUser ? (
-                  <span onClick={signOutStart}>Sign out</span>
-                ) : (
-                  <Link to='/signin'>Sign In</Link>
-                )}
-              </>
-            )}
+          <Menu.Item style={this.itemStyle} key='mailNav' className='nav-sign'>
+            <AuthBtn itemStyle={this.itemStyle} showSignIn />
           </Menu.Item>
         </Menu>
         <Drawer

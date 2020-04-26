@@ -25,4 +25,9 @@
   .ant-skeleton-element {
     display: flex;
   }
+  .ant-menu-item.ant-menu-item-only-child > .anticon,
+  .ant-menu-submenu-title.ant-menu-item-only-child > .anticon {
+    margin-right: 10px;
+    padding-top: 2px;
+  }
 }

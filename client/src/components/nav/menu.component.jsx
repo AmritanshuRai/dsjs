@@ -2,12 +2,10 @@ import React from 'react';
 import { Menu } from 'antd';
 import './nav.styles.scss';
 import {
-  MailOutlined,
   UploadOutlined,
   HomeOutlined,
   CoffeeOutlined,
 } from '@ant-design/icons';
-import MenuItemSkeleton from './menuItem.skeleton';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { selectCurrentNav } from '../../redux/nav/nav.selector';
@@ -18,20 +16,16 @@ import {
 } from '../../redux/user/user.selector';
 import { signOutStart } from '../../redux/user/user.action';
 import FailureMessage from '../message/failureMessage.component';
-import ShowConfirm from '../modal/modal.component';
+import AuthBtn from './authBtn.component';
+import { clearStorage } from './nav.util';
+
 class Navmenu extends React.PureComponent {
   handleClick = (e) => {
     this.props.setCurrentNav(e.key);
     this.props.setDrawerVisible(false);
   };
   homeClick = () => {
-    localStorage.removeItem('rawTitleState');
-    localStorage.removeItem('rawSolutionState');
-    localStorage.removeItem('rawExplanationState');
-    localStorage.removeItem('buttonEnabled');
-    localStorage.removeItem('finalData');
-    localStorage.removeItem('id');
-
+    clearStorage();
     this.props.history.push('/');
   };
   uploadClick = () => {
@@ -39,30 +33,9 @@ class Navmenu extends React.PureComponent {
       ? this.props.history.push('/upload')
       : FailureMessage('Please sign in');
   };
-  signOut = () => {
-    this.props.signOutStart();
-    this.homeClick();
-  };
-  handleSignOut = () => {
-    const { pathname } = this.props.location;
-    const title = 'Are you sure?';
-    let content = null;
-    if (pathname === '/upload' || pathname === '/preview') {
-      content =
-        "You'll be redirect to home page and the upload form will be cleared.";
-    }
-    ShowConfirm(title, this.signOut, content);
-  };
-  render() {
-    const {
-      navStyle,
-      currentNav,
-      itemStyle,
-      currentUser,
-      showSignIn,
 
-      showBtnSkeleton,
-    } = this.props;
+  render() {
+    const { navStyle, currentNav, itemStyle, showSignIn } = this.props;
     return (
       <Menu
         className={navStyle}
@@ -82,19 +55,8 @@ class Navmenu extends React.PureComponent {
           <CoffeeOutlined />
           <Link to='/donate'>Donate</Link>
         </Menu.Item>
-        <Menu.Item style={itemStyle} key='mail' className='nav-sign'>
-          {showBtnSkeleton ? (
-            <MenuItemSkeleton />
-          ) : showSignIn ? (
-            <>
-              <MailOutlined />
-              {currentUser ? (
-                <span onClick={this.handleSignOut}>Sign out</span>
-              ) : (
-                <Link to='/signin'>Sign In</Link>
-              )}
-            </>
-          ) : null}
+        <Menu.Item style={itemStyle} key='mailMenu' className='nav-sign'>
+          <AuthBtn itemStyle={itemStyle} showSignIn={showSignIn} />
         </Menu.Item>
       </Menu>
     );
