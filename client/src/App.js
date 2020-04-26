@@ -79,4 +79,10 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLoader: (data) => dispatch(toggleLoader(data)),
   checkUserSession: () => dispatch(checkUserSession()),
 });
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+
+App.whyDidYouRender = true;
+
+export default withRouter(ConnectedApp);

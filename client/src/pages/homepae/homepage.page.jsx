@@ -8,8 +8,9 @@ import {
   setCurrentModule,
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
-class HomePage extends React.Component {
+class HomePage extends React.PureComponent {
   componentDidMount() {
+    // console.warn(this.props);
     this.props.setCurrentModule('questions');
     this.props.setQuestionDataAsync();
     document.addEventListener('keydown', this.handleKeyPress, false);
@@ -43,6 +44,11 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
   setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
 });
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(HomePage),
-);
+const ConnectedHomePage = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomePage);
+
+HomePage.whyDidYouRender = true;
+
+export default withRouter(ConnectedHomePage);
