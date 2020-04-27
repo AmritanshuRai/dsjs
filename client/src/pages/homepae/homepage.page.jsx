@@ -10,7 +10,6 @@ import {
 } from '../../redux/question/question.action';
 class HomePage extends React.PureComponent {
   componentDidMount() {
-    // console.warn(this.props);
     this.props.setCurrentModule('questions');
     this.props.setQuestionDataAsync();
     document.addEventListener('keydown', this.handleKeyPress, false);
@@ -29,7 +28,7 @@ class HomePage extends React.PureComponent {
     return (
       <div className='homepage'>
         {this.props.skeletonLoading ? (
-          <HomepageSkeleton totalItems={18} />
+          <HomepageSkeleton totalItems={14} />
         ) : (
           <QuestionContainer />
         )}

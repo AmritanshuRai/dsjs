@@ -4,11 +4,7 @@ import { selectSkeletonLoading } from '../../redux/question/question.selector';
 import { Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import { Col, Row } from 'antd';
-const styleCol = {
-  width: '50%',
-  minWidth: '400px',
-  height: '46px',
-};
+
 class HomepageSkeleton extends React.Component {
   createCol = () => {
     const { skeletonLoading, totalItems } = this.props;
@@ -16,7 +12,7 @@ class HomepageSkeleton extends React.Component {
 
     for (let i = 0; i < totalItems; i++) {
       col.push(
-        <Col key={i} style={styleCol} flex='auto'>
+        <Col key={i} className='HomePage-skeleton' flex='auto'>
           <Skeleton
             loading={skeletonLoading}
             active
@@ -30,7 +26,7 @@ class HomepageSkeleton extends React.Component {
   render() {
     return (
       <div>
-        <Row gutter={[48, 96]}>{this.createCol()}</Row>
+        <Row gutter={[32, 8]}>{this.createCol()}</Row>
       </div>
     );
   }
