@@ -31,13 +31,6 @@ const collapseStyle = {
 };
 
 const Question = (props) => {
-  // const IconText = ({ icon, text }) => (
-  //   <span>
-  //     {React.createElement(icon, { style: { marginRight: 8 } })}
-  //     {text}
-  //   </span>
-  // );
-
   const {
     id = 1,
     question: { title = '', explanation = '' },
@@ -70,17 +63,6 @@ const Question = (props) => {
                 </span>
               </div>
             </div>
-            {/* <IconText
-              icon={StarOutlined}
-              text='156'
-              key='list-vertical-star-o'
-            />
-            ,
-            <IconText
-              icon={LikeOutlined}
-              text='156'
-              key='list-vertical-like-o'
-            /> */}
           </div>
         </Panel>
       </Collapse>

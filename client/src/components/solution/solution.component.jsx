@@ -52,8 +52,12 @@ class Solution extends React.Component {
     return opts;
   }
   afterSuccessCallback = () => {
+    const {
+      currentModule,
+      history: { push },
+    } = this.props;
     this.removeEditorData();
-    this.props.history.push('/');
+    currentModule === 'pendingQuestions' ? push('/') : push('/thanks');
   };
   removeEditorData = () => {
     localStorage.removeItem('rawTitleState');
