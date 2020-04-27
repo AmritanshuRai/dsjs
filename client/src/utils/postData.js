@@ -4,6 +4,7 @@ export const postData = async ({
   title,
   solution,
   explanation,
+  description,
   collectionName,
 }) => {
   //   const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
@@ -12,6 +13,7 @@ export const postData = async ({
     title,
     solution,
     explanation,
+    description,
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   });
 

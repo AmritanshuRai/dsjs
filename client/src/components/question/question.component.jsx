@@ -28,14 +28,14 @@ const collapseStyle = {
 const Question = (props) => {
   const {
     id = 1,
-    question: { title = '', explanation = '' },
+    question: { title = '', description = '' },
   } = props;
 
   return (
     <Col flex='auto' className='question'>
       <Collapse style={collapseStyle}>
         <Panel header={title} key={id}>
-          <Editor toolbarHidden editorState={someFunc(explanation)} readOnly />
+          <Editor toolbarHidden editorState={someFunc(description)} readOnly />
           <div className='f question_footer'>
             <Link className='question_link' to={`/solution/${id}`}>
               <Button>Solution</Button>

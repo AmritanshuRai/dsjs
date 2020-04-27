@@ -63,6 +63,7 @@ class Solution extends React.Component {
     localStorage.removeItem('rawTitleState');
     localStorage.removeItem('rawSolutionState');
     localStorage.removeItem('rawExplanationState');
+    localStorage.removeItem('rawDescriptionState');
     localStorage.removeItem('buttonEnabled');
     localStorage.removeItem('finalData');
     localStorage.removeItem('id');
@@ -142,6 +143,14 @@ class Solution extends React.Component {
               <Editor
                 toolbarHidden
                 editorState={toEditorState(finalData.title)}
+                readOnly
+              />
+            </div>
+            <div className='section'>
+              <div className='heading'>DESCRIPTION</div>
+              <Editor
+                toolbarHidden
+                editorState={toEditorState(finalData.description)}
                 readOnly
               />
             </div>
