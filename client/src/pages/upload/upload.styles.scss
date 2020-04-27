@@ -8,6 +8,9 @@
 .defaultWrapper {
   margin: 20px auto;
   width: 70%;
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 
   &:last-of-type {
     margin-bottom: 50px;
