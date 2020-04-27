@@ -11,7 +11,7 @@
   }
   &_footer {
     &-rating {
-      width: 300px;
+      width: 200px;
     }
     &-number {
       font-size: 12px;
@@ -26,7 +26,6 @@
     }
   }
   .ant-collapse-content > .ant-collapse-content-box {
-    // width: 75%;
     display: flex;
     flex-direction: column;
     line-height: 20px;

@@ -8,7 +8,12 @@ import { Row } from 'antd';
 class QuestionContainer extends React.Component {
   render() {
     return (
-      <Row gutter={[48, 48]}>
+      <Row
+        gutter={[
+          { md: 32, lg: 48 },
+          { xs: 16, sm: 24, md: 32, lg: 48 },
+        ]}
+      >
         {Object.keys(this.props.question_data).map((key, index) => (
           <Question
             key={key}
@@ -20,7 +25,7 @@ class QuestionContainer extends React.Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   question_data: selectQuestionData(state),
 });
 export default connect(mapStateToProps)(QuestionContainer);
