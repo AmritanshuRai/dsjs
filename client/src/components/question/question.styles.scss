@@ -1,4 +1,9 @@
 .question {
+  width: 50%;
+  min-width: 400px;
+  @media (max-width: 600px) {
+    min-width: 100%;
+  }
   .f {
     display: flex;
     justify-content: space-between;

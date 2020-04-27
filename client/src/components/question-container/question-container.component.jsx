@@ -11,7 +11,7 @@ class QuestionContainer extends React.Component {
       <Row
         gutter={[
           { md: 32, lg: 48 },
-          { xs: 16, sm: 24, md: 32, lg: 48 },
+          { xs: 24, sm: 24, md: 32, lg: 48 },
         ]}
       >
         {Object.keys(this.props.question_data).map((key, index) => (

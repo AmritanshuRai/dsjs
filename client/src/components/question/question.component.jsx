@@ -19,11 +19,6 @@ const someFunc = (htmlStr) => {
   return editorState;
 };
 
-const styleCol = {
-  width: '50%',
-  minWidth: '400px',
-};
-
 const collapseStyle = {
   backgroundColor: '#fcfcfc',
   fontSize: '16px',
@@ -37,7 +32,7 @@ const Question = (props) => {
   } = props;
 
   return (
-    <Col style={styleCol} flex='auto' className='question'>
+    <Col flex='auto' className='question'>
       <Collapse style={collapseStyle}>
         <Panel header={title} key={id}>
           <Editor toolbarHidden editorState={someFunc(explanation)} readOnly />
@@ -45,7 +40,6 @@ const Question = (props) => {
             <Link className='question_link' to={`/solution/${id}`}>
               <Button>Solution</Button>
             </Link>
-            {/* <Rate character={<HeartOutlined />} allowHalf /> */}
             <div className='f question_footer-rating'>
               <span className='f question_footer-icon'>
                 <Rate character={<StarOutlined />} count={1} />
