@@ -5,7 +5,8 @@ import { Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import { Col, Row } from 'antd';
 const styleCol = {
-  minWidth: '350px',
+  width: '50%',
+  minWidth: '400px',
   height: '46px',
 };
 class HomepageSkeleton extends React.Component {

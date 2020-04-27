@@ -3,7 +3,7 @@ import './draft-editor.styles.scss';
 import Draft from 'draft-js';
 const { Editor, EditorState, RichUtils } = Draft;
 
-class RichEditorExample extends React.Component {
+class RichEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
@@ -185,4 +185,4 @@ const InlineStyleControls = (props) => {
   );
 };
 
-export default RichEditorExample;
+export default RichEditor;

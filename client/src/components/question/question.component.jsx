@@ -1,23 +1,12 @@
 import React from 'react';
 import './question.styles.scss';
 import { Link } from 'react-router-dom';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { DislikeOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { Col, Collapse, Button, Rate } from 'antd';
+import { toEditorState } from '../../utils/editor.utils';
 
 const { Panel } = Collapse;
-const someFunc = (htmlStr) => {
-  const sampleMarkup = htmlStr;
-  const blocksFromHTML = convertFromHTML(sampleMarkup);
-  const state = ContentState.createFromBlockArray(
-    blocksFromHTML.contentBlocks,
-    blocksFromHTML.entityMap,
-  );
-
-  const editorState = EditorState.createWithContent(state);
-  return editorState;
-};
 
 const collapseStyle = {
   backgroundColor: '#fcfcfc',
@@ -35,7 +24,11 @@ const Question = (props) => {
     <Col flex='auto' className='question'>
       <Collapse style={collapseStyle}>
         <Panel header={title} key={id}>
-          <Editor toolbarHidden editorState={someFunc(description)} readOnly />
+          <Editor
+            toolbarHidden
+            editorState={toEditorState(description)}
+            readOnly
+          />
           <div className='f question_footer'>
             <Link className='question_link' to={`/solution/${id}`}>
               <Button>Solution</Button>
@@ -50,7 +43,6 @@ const Question = (props) => {
                   <Rate character={<DislikeOutlined />} count={1} />
                   <span className='question_footer-number'>{201}</span>
                 </span>
-
                 <span className='f question_footer-icon'>
                   <Rate character={<LikeOutlined />} count={1} />
                   <span className='question_footer-number'>{201}</span>

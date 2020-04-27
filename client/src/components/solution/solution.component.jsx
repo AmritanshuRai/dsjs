@@ -16,22 +16,11 @@ import {
 import { selectCurrentModule } from '../../redux/question/question.selector';
 // import jsbeautifier from 'js-beautify/js';
 import beautify from 'js-beautify/js';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-
+import { clearStorage } from '../nav/nav.util';
 import { toggleLoader } from '../../redux/universal/universal.action';
-// import { selectSolutionState } from '../../redux/editor/editor.selector';
-const toEditorState = (htmlStr) => {
-  const sampleMarkup = htmlStr;
-  const blocksFromHTML = convertFromHTML(sampleMarkup);
-  const state = ContentState.createFromBlockArray(
-    blocksFromHTML.contentBlocks,
-    blocksFromHTML.entityMap,
-  );
+import { toEditorState } from '../../utils/editor.utils';
 
-  const editorState = EditorState.createWithContent(state);
-  return editorState;
-};
 class Solution extends React.Component {
   componentDidMount() {
     hljs.registerLanguage('javascript', javascript);
@@ -56,17 +45,8 @@ class Solution extends React.Component {
       currentModule,
       history: { push },
     } = this.props;
-    this.removeEditorData();
+    clearStorage();
     currentModule === 'pendingQuestions' ? push('/') : push('/thanks');
-  };
-  removeEditorData = () => {
-    localStorage.removeItem('rawTitleState');
-    localStorage.removeItem('rawSolutionState');
-    localStorage.removeItem('rawExplanationState');
-    localStorage.removeItem('rawDescriptionState');
-    localStorage.removeItem('buttonEnabled');
-    localStorage.removeItem('finalData');
-    localStorage.removeItem('id');
   };
 
   handleSubmit = async () => {
