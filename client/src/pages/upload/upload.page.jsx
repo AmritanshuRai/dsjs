@@ -181,6 +181,16 @@ class MyEditor extends Component {
               wrapperClassName='demo-wrapper defaultWrapper'
               placeholder='Title description'
               editorClassName='demo-editor defaultEditor defaultEditor-explain'
+              toolbar={{
+                options: ['inline', 'blockType', 'emoji'],
+
+                list: { inDropdown: true },
+                blockType: { inDropdown: false },
+
+                textAlign: { inDropdown: true },
+                link: { inDropdown: true },
+                history: { inDropdown: true },
+              }}
               onEditorStateChange={(editorState) => {
                 this.setState(
                   {
@@ -214,6 +224,16 @@ class MyEditor extends Component {
               placeholder='Please explain your code in detail'
               wrapperClassName='demo-wrapper defaultWrapper'
               editorClassName='demo-editor defaultEditor defaultEditor-explain'
+              toolbar={{
+                options: ['inline', 'blockType', 'emoji'],
+
+                list: { inDropdown: true },
+                blockType: { inDropdown: false },
+
+                textAlign: { inDropdown: true },
+                link: { inDropdown: true },
+                history: { inDropdown: true },
+              }}
               onEditorStateChange={(editorState) => {
                 this.setState(
                   {
