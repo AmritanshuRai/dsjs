@@ -168,11 +168,13 @@ class MyEditor extends Component {
     if (this.myRef.current) {
       this.myRef.current.editor.blur();
     }
-    this.setState({
-      [this.state.activeTab + 'ReadOnly']: !this.state[
-        this.state.activeTab + 'ReadOnly'
-      ],
-    });
+    setTimeout(function () {
+      this.setState({
+        [this.state.activeTab + 'ReadOnly']: !this.state[
+          this.state.activeTab + 'ReadOnly'
+        ],
+      });
+    }, 1000);
   };
 
   handleTabClick = (key, event) => {
