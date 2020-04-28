@@ -17,9 +17,9 @@
     width: 100%;
   }
 
-  &:last-of-type {
-    margin-bottom: 50px;
-  }
+  // &:last-of-type {
+  //   margin-bottom: 50px;
+  // }
 }
 
 .myEditor {
@@ -68,7 +68,7 @@
         }
         &:nth-of-type(2) {
           &:after {
-            content: 'Bold';
+            content: 'Italic';
           }
         }
         &:nth-of-type(3) {

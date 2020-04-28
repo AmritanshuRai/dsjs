@@ -207,7 +207,7 @@ class MyEditor extends Component {
               toolbarHidden
               placeholder='Enter your program/code only'
               wrapperClassName='demo-wrapper defaultWrapper'
-              editorClassName='demo-editor defaultEditor'
+              editorClassName='demo-editor defaultEditor defaultEditor-explain'
               onEditorStateChange={(editorState) => {
                 this.setState(
                   {
