@@ -14,12 +14,14 @@ import {
   deletionStart,
 } from '../../redux/question/question.action';
 import { selectCurrentModule } from '../../redux/question/question.selector';
-// import jsbeautifier from 'js-beautify/js';
-import beautify from 'js-beautify/js';
-import { Editor } from 'react-draft-wysiwyg';
 import { clearStorage } from '../nav/nav.util';
 import { toggleLoader } from '../../redux/universal/universal.action';
-import { toEditorState } from '../../utils/editor.utils';
+import {
+  TitleSection,
+  DescriptionSection,
+  ExplanationSection,
+  SolutionSection,
+} from '../sections/sections.component';
 
 class Solution extends React.Component {
   componentDidMount() {
@@ -118,38 +120,10 @@ class Solution extends React.Component {
                 <CustomButton onClick={this.handleSubmit}>Submit</CustomButton>
               </div>
             ) : null}
-            <div className='section'>
-              <div className='heading'>TITLE</div>
-              <Editor
-                toolbarHidden
-                editorState={toEditorState(finalData.title)}
-                readOnly
-              />
-            </div>
-            <div className='section'>
-              <div className='heading'>DESCRIPTION</div>
-              <Editor
-                toolbarHidden
-                editorState={toEditorState(finalData.description)}
-                readOnly
-              />
-            </div>
-            <div className='section'>
-              <div className='heading'>SOLUTION</div>
-              <pre>
-                <code>
-                  {beautify(finalData.solution, this.beautifyConfig())}
-                </code>
-              </pre>
-            </div>
-            <div className='section'>
-              <div className='heading'>EXPLANATION</div>
-              <Editor
-                toolbarHidden
-                editorState={toEditorState(finalData.explanation)}
-                readOnly
-              />
-            </div>
+            <TitleSection title={finalData.title} />
+            <DescriptionSection description={finalData.description} />
+            <SolutionSection solution={finalData.solution} />
+            <ExplanationSection explanation={finalData.explanation} />
           </>
         ) : (
           this.props.history.push('/404')
