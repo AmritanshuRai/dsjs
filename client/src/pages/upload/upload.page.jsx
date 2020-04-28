@@ -164,17 +164,30 @@ class MyEditor extends Component {
     localStorage.setItem('finalData', JSON.stringify(dataObj));
     this.props.history.push(`/preview`);
   };
+  handleReadOnly = () => {
+    let state = this.state;
+    this.setState({
+      [state.activeTab + 'ReadOnly']: !state[state.activeTab + 'ReadOnly'],
+    });
+  };
   toggleEditor = () => {
-    if (this.myRef.current) {
-      this.myRef.current.editor.blur();
-    }
-    setTimeout(function () {
-      this.setState({
-        [this.state.activeTab + 'ReadOnly']: !this.state[
-          this.state.activeTab + 'ReadOnly'
-        ],
-      });
-    }, 1000);
+    // if (this.myRef.current) {
+    //   console.warn('entered');
+    //   this.myRef.current.editor.blur();
+    // }
+    // this.myRef.current.onEditorBlur(() => {
+    //   console.warn('blurred');
+    // });
+
+    // console.log(this.myRef);
+    this.handleReadOnly();
+
+    // setTimeout(() => {
+    //   let state = this.state;
+    //   this.setState({
+    //     [state.activeTab + 'ReadOnly']: !state[state.activeTab + 'ReadOnly'],
+    //   });
+    // }, 0);
   };
 
   handleTabClick = (key, event) => {
