@@ -8,12 +8,6 @@ import { toEditorState } from '../../utils/editor.utils';
 
 const { Panel } = Collapse;
 
-const collapseStyle = {
-  backgroundColor: '#fcfcfc',
-  fontSize: '16px',
-  overflowWrap: 'break-word',
-};
-
 const Question = (props) => {
   const {
     id = 1,
@@ -22,7 +16,7 @@ const Question = (props) => {
 
   return (
     <Col flex='auto' className='question'>
-      <Collapse style={collapseStyle}>
+      <Collapse className='question-collapseStyle'>
         <Panel header={title} key={id}>
           <Editor
             toolbarHidden
