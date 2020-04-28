@@ -38,6 +38,7 @@ class MyEditor extends Component {
       descriptionReadOnly: false,
       activeTab: 'title',
     };
+    this.myRef = React.createRef();
   }
 
   toEditorState = (htmlStr) => {
@@ -164,6 +165,9 @@ class MyEditor extends Component {
     this.props.history.push(`/preview`);
   };
   toggleEditor = () => {
+    if (this.myRef.current) {
+      this.myRef.current.editor.blur();
+    }
     this.setState({
       [this.state.activeTab + 'ReadOnly']: !this.state[
         this.state.activeTab + 'ReadOnly'
@@ -205,6 +209,7 @@ class MyEditor extends Component {
               <Editor
                 editorState={titleState}
                 toolbarHidden
+                ref={this.myRef}
                 readOnly={titleReadOnly}
                 wrapperClassName='demo-wrapper defaultWrapper'
                 placeholder='Enter title'
