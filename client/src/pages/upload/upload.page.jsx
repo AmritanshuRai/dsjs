@@ -182,7 +182,7 @@ class MyEditor extends Component {
               placeholder='Title description'
               editorClassName='demo-editor defaultEditor defaultEditor-explain'
               toolbar={{
-                options: ['inline', 'blockType', 'emoji'],
+                options: ['inline', 'blockType'],
 
                 list: { inDropdown: true },
                 blockType: { inDropdown: false },
@@ -225,7 +225,7 @@ class MyEditor extends Component {
               wrapperClassName='demo-wrapper defaultWrapper'
               editorClassName='demo-editor defaultEditor defaultEditor-explain'
               toolbar={{
-                options: ['inline', 'blockType', 'emoji'],
+                options: ['inline', 'blockType'],
 
                 list: { inDropdown: true },
                 blockType: { inDropdown: false },
