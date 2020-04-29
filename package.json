@@ -20,6 +20,7 @@
     "cors": "2.8.5",
     "dotenv": "7.0.0",
     "express": "^4.16.4",
+    "express-sslify": "^1.2.0",
     "react-device-detect": "^1.12.1",
     "stripe": "6.28.0"
   },
