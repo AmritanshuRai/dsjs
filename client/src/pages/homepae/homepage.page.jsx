@@ -8,10 +8,13 @@ import {
   setCurrentModule,
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
+// import { Offline, Online } from 'react-detect-offline';
 class HomePage extends React.PureComponent {
   componentDidMount() {
     this.props.setCurrentModule('questions');
-    this.props.setQuestionDataAsync();
+    if (!!navigator.onLine) {
+      this.props.setQuestionDataAsync();
+    }
     document.addEventListener('keydown', this.handleKeyPress, false);
   }
 
