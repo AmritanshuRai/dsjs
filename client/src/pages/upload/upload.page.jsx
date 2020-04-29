@@ -335,6 +335,13 @@ class MyEditor extends Component {
             Preview
           </CustomButton>
         </div>
+
+        {isMobile ? (
+          <div className='myEditor-warning'>
+            Draftjs editor by facebook is not supported for mobile devices.
+            <br /> Please use desktop for better experience.
+          </div>
+        ) : null}
       </div>
     );
   }
