@@ -22,6 +22,7 @@ import {
   ExplanationSection,
   SolutionSection,
 } from '../../components/sections/sections.component';
+import { isMobile } from 'react-device-detect';
 const { TabPane } = Tabs;
 
 class MyEditor extends Component {
@@ -38,9 +39,11 @@ class MyEditor extends Component {
       descriptionReadOnly: false,
       activeTab: 'title',
     };
-    this.myRef = React.createRef();
+    // this.myRef = React.createRef();
   }
-
+  // this.setState({
+  //   titleState: EditorState.moveFocusToEnd(this.state.titleState),
+  // });
   toEditorState = (htmlStr) => {
     const sampleMarkup = htmlStr;
     const blocksFromHTML = convertFromHTML(sampleMarkup);
@@ -164,30 +167,14 @@ class MyEditor extends Component {
     localStorage.setItem('finalData', JSON.stringify(dataObj));
     this.props.history.push(`/preview`);
   };
-  handleReadOnly = () => {
-    let state = this.state;
-    this.setState({
-      [state.activeTab + 'ReadOnly']: !state[state.activeTab + 'ReadOnly'],
-    });
-  };
+
   toggleEditor = () => {
-    // if (this.myRef.current) {
-    //   console.warn('entered');
-    //   this.myRef.current.editor.blur();
-    // }
-    // this.myRef.current.onEditorBlur(() => {
-    //   console.warn('blurred');
-    // });
-
-    // console.log(this.myRef);
-    this.handleReadOnly();
-
-    // setTimeout(() => {
-    //   let state = this.state;
-    //   this.setState({
-    //     [state.activeTab + 'ReadOnly']: !state[state.activeTab + 'ReadOnly'],
-    //   });
-    // }, 0);
+    this.setState({
+      [this.state.activeTab + 'ReadOnly']: !this.state[
+        this.state.activeTab + 'ReadOnly'
+      ],
+    });
+    // [text + 'ReadOnly']: !this.state[text + 'ReadOnly'],
   };
 
   handleTabClick = (key, event) => {
@@ -224,7 +211,6 @@ class MyEditor extends Component {
               <Editor
                 editorState={titleState}
                 toolbarHidden
-                ref={this.myRef}
                 readOnly={titleReadOnly}
                 wrapperClassName='demo-wrapper defaultWrapper'
                 placeholder='Enter title'
@@ -336,7 +322,12 @@ class MyEditor extends Component {
           </TabPane>
         </Tabs>
         <div className='myEditor-actionBtn'>
-          <CustomButton onClick={this.toggleEditor}>Toggle Editor</CustomButton>
+          {!isMobile ? (
+            <CustomButton onClick={this.toggleEditor}>
+              Toggle Editor
+            </CustomButton>
+          ) : null}
+
           <CustomButton
             inactive={!this.buttonEnabled}
             onClick={this.handlePreview}
