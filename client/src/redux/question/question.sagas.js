@@ -12,7 +12,6 @@ import {
   postSuccess,
   deletionSuccess,
   deleteFailure,
-  deletionStart,
   showSkeleton,
   hideSkeleton,
 } from './question.action';
@@ -41,17 +40,13 @@ export function* postQuestion({
 }) {
   try {
     yield put(toggleLoader(true));
-    yield call(postData, finalData);
-    yield put(postSuccess());
-
-    yield finalData.collectionName === 'questions'
-      ? put(
-          deletionStart({
-            afterSuccessCallback,
-            id: JSON.parse(localStorage.getItem('id')),
-          }),
-        )
-      : yield call(afterSuccessCallback);
+    const value = yield call(
+      postData,
+      finalData,
+      JSON.parse(localStorage.getItem('id')),
+    );
+    yield put(postSuccess(value));
+    yield call(afterSuccessCallback);
   } catch (error) {
     yield put(postFailure(error));
   } finally {

@@ -30,8 +30,9 @@ export const postQuestion = (data) => ({
   payload: data,
 });
 
-export const postSuccess = () => ({
+export const postSuccess = (data) => ({
   type: QuestionActionTypes.POST_SUCCESS,
+  payload: data,
 });
 
 export const postFailure = (error) => ({

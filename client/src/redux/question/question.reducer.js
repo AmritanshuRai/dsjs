@@ -2,7 +2,8 @@ import QuestionActionTypes from './question.types';
 
 const INITIAL_DATA = {
   question_data: {},
-  EVERY_QUESTION: {},
+  pending_data: {},
+  // EVERY_QUESTION: {},
   filteredText: '',
   currentModule: '',
   error: null,
@@ -21,16 +22,54 @@ const questionReducer = (state = INITIAL_DATA, action) => {
       };
 
     case QuestionActionTypes.FETCH_SUCCCESS:
+      let objType =
+        state.currentModule === 'questions' ? 'question_data' : 'pending_data';
+
       return {
         ...state,
-        question_data: action.payload,
-        EVERY_QUESTION: action.payload,
+        [objType]: action.payload,
+        // EVERY_QUESTION: action.payload,
         error: null,
       };
     case QuestionActionTypes.DELETION_SUCCESS:
-    case QuestionActionTypes.POST_SUCCESS:
       return {
         ...state,
+        error: null,
+      };
+    case QuestionActionTypes.POST_SUCCESS:
+      if (state.currentModule === 'questions') {
+        return {
+          ...state,
+          error: null,
+        };
+      }
+
+      const {
+        id,
+        title,
+        description,
+        explanation,
+        solution,
+        timestamp,
+      } = action.payload;
+      let newQuestion = {};
+      newQuestion[id] = {
+        title,
+        description,
+        explanation,
+        solution,
+        timestamp,
+      };
+      return {
+        ...state,
+        question_data: {
+          ...newQuestion,
+          ...state.question_data,
+        },
+        // EVERY_QUESTION: {
+        //   ...state.question_data,
+        //   ...newQuestion,
+        // },
         error: null,
       };
     case QuestionActionTypes.SET_CURRENT_MODULE:

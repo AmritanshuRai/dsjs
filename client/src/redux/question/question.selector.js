@@ -6,7 +6,10 @@ export const selectQuestionData = createSelector(
   [selectQuestion],
   (question) => question.question_data,
 );
-
+export const selectPendingData = createSelector(
+  [selectQuestion],
+  (question) => question.pending_data,
+);
 export const selectEveryQuestion = createSelector(
   [selectQuestion],
   (question) => question.EVERY_QUESTION,

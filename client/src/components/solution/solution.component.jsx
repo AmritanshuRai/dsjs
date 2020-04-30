@@ -1,6 +1,5 @@
 import React from 'react';
 import './solution.styles.scss';
-import { selectEveryQuestion } from '../../redux/question/question.selector';
 import hljs from 'highlight.js/lib/highlight';
 import 'highlight.js/scss/github.scss';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -15,7 +14,11 @@ import {
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
 
-import { selectCurrentModule } from '../../redux/question/question.selector';
+import {
+  selectCurrentModule,
+  selectQuestionData,
+  selectPendingData,
+} from '../../redux/question/question.selector';
 import { clearStorage } from '../nav/nav.util';
 import {
   TitleSection,
@@ -50,7 +53,7 @@ class Solution extends React.Component {
     } = this.props;
     clearStorage();
     if (currentModule === 'pendingQuestions') {
-      this.props.setQuestionDataAsync();
+      // this.props.setQuestionDataAsync();
       push('/');
     } else {
       push('/thanks');
@@ -81,6 +84,7 @@ class Solution extends React.Component {
   };
 
   render() {
+    const { currentModule, pending_data, question_data } = this.props;
     let finalData = {};
     let buttonEnabled = false;
     let renderThisPage = true;
@@ -93,7 +97,11 @@ class Solution extends React.Component {
       renderThisPage = finalData && buttonEnabled;
     } else {
       this.id = this.props.match.params.id;
-      finalData = !!this.id ? this.props.EVERY_QUESTION[this.id] : {};
+      finalData = !!this.id
+        ? currentModule === 'questions'
+          ? question_data[this.id]
+          : pending_data[this.id]
+        : {};
       localStorage.setItem('finalData', JSON.stringify(finalData));
       localStorage.setItem('id', JSON.stringify(this.id));
     }
@@ -140,7 +148,8 @@ class Solution extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  EVERY_QUESTION: selectEveryQuestion(state),
+  question_data: selectQuestionData(state),
+  pending_data: selectPendingData(state),
   currentModule: selectCurrentModule(state),
 });
 const mapDispatchToProps = (dispatch) => ({

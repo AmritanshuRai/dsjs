@@ -1,43 +1,102 @@
 import { firestore } from '../firebase/firebase.utils';
 import firebase from 'firebase/app';
-export const postData = async ({
-  title,
-  solution,
-  explanation,
-  description,
-  collectionName,
-}) => {
-  //   const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
+// import { fetchData } from './fetchData';
+// export const postData = async ({
+//   title,
+//   solution,
+//   explanation,
+//   description,
+//   collectionName,
+// }) => {
+//   //   const userRef = firestore.doc(`questions/b41rFEKQw3OOzuzImSci`);
 
-  await firestore.collection(collectionName).add({
-    title,
-    solution,
-    explanation,
-    description,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  });
+//   await firestore.collection(collectionName).add({
+//     title,
+//     solution,
+//     explanation,
+//     description,
+//     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+//   });
 
-  //   const snapShot = await userRef.get();
+//   const snapShot = await userRef.get();
 
-  //   const createdAt = new Date();
+//   const createdAt = new Date();
 
-  //   try {
-  //     userRef.update({
-  //       title,
-  //       solution,
-  //       explanation,
-  //       createdAt,
-  //     });
-  //   } catch (error) {
-  //     console.log('error creating user', error.message);
-  //   }
+//   try {
+//     userRef.update({
+//       title,
+//       solution,
+//       explanation,
+//       createdAt,
+//     });
+//   } catch (error) {
+//     console.log('error creating user', error.message);
+//   }
 
-  //   return userRef;
-  //   const value = await firestore
-  //     .collection('questions')
-  //     .orderBy('timestamp', 'desc')
-  //     .get();
-  //   value.forEach(doc => {
-  //     console.log(`${doc.id} => ${doc.data()}`);
-  //   });
+//   return userRef;
+//   const value = await firestore
+//     .collection('questions')
+//     .orderBy('timestamp', 'desc')
+//     .get();
+//   value.forEach(doc => {
+//     console.log(`${doc.id} => ${doc.data()}`);
+//   });
+// };
+
+// export const postAndDelete = async (dataObj, id) => {
+//   const { title, solution, explanation, description, collectionName } = dataObj;
+//   let batch = firestore.batch();
+//   let newDocRef = firestore.collection(collectionName).doc();
+//   batch.set(newDocRef, {
+//     title,
+//     solution,
+//     explanation,
+//     description,
+//     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+//   });
+
+//   if (collectionName === 'questions') {
+//     let toDel = firestore.collection('pendingQuestions').doc(id);
+//     batch.delete(toDel);
+//   }
+
+//   batch.commit().then(function () {});
+// };
+
+export const postData = async (dataObj, id) => {
+  const { title, solution, explanation, description, collectionName } = dataObj;
+  let newDocRef = firestore.collection(collectionName).doc();
+  return firestore
+    .runTransaction(function (transaction) {
+      return transaction.get(newDocRef).then(function (sfDoc) {
+        if (!!sfDoc.exists) {
+          throw new Error('Document already exists');
+        }
+        transaction.set(newDocRef, {
+          title,
+          solution,
+          explanation,
+          description,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        if (collectionName === 'questions') {
+          var toDel = firestore.collection('pendingQuestions').doc(id);
+          transaction.delete(toDel);
+        }
+        return {
+          title,
+          solution,
+          explanation,
+          description,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          id: newDocRef.id,
+        };
+      });
+    })
+    .then(function (data) {
+      return data;
+    })
+    .catch(function (error) {
+      console.log('Transaction failed: ', error);
+    });
 };
