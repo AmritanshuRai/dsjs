@@ -15,7 +15,6 @@ import {
 } from '../../redux/question/question.action';
 import { selectCurrentModule } from '../../redux/question/question.selector';
 import { clearStorage } from '../nav/nav.util';
-import { toggleLoader } from '../../redux/universal/universal.action';
 import {
   TitleSection,
   DescriptionSection,
@@ -141,7 +140,6 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
   postQuestion: (data) => dispatch(postQuestion(data)),
   deletionStart: (data) => dispatch(deletionStart(data)),
-  toggleLoader: (data) => dispatch(toggleLoader(data)),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(Solution),

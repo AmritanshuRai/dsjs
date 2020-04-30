@@ -7,7 +7,6 @@ import PlainLoader from './components/loader/plainLoader.component';
 import HomePage from './pages/homepae/homepage.page';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
-import { toggleLoader } from './redux/universal/universal.action';
 import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
@@ -37,7 +36,7 @@ class App extends React.PureComponent {
   }
   render() {
     return (
-      <div>
+      <>
         <Loader />
         <ErrorBoundary>
           <Nav />
@@ -77,7 +76,7 @@ class App extends React.PureComponent {
             </Suspense>
           </Layout>
         </ErrorBoundary>
-      </div>
+      </>
     );
   }
 }
@@ -85,7 +84,6 @@ const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
 });
 const mapDispatchToProps = (dispatch) => ({
-  toggleLoader: (data) => dispatch(toggleLoader(data)),
   checkUserSession: () => dispatch(checkUserSession()),
 });
 
