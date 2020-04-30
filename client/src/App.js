@@ -11,7 +11,7 @@ import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
 import ErrorBoundary from './components/error-boundary/error-boundary.component';
-
+import { setQuestionDataAsync } from './redux/question/question.action';
 const Solution = lazy(() => import('./components/solution/solution.component'));
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
@@ -27,6 +27,9 @@ class App extends React.PureComponent {
 
   componentDidMount() {
     const { checkUserSession } = this.props;
+    if (!!navigator.onLine) {
+      this.props.setQuestionDataAsync();
+    }
     checkUserSession();
   }
 
@@ -85,6 +88,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   checkUserSession: () => dispatch(checkUserSession()),
+  setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
 });
 
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);

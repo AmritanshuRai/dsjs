@@ -12,7 +12,9 @@ import {
   setCurrentModule,
   postQuestion,
   deletionStart,
+  setQuestionDataAsync,
 } from '../../redux/question/question.action';
+
 import { selectCurrentModule } from '../../redux/question/question.selector';
 import { clearStorage } from '../nav/nav.util';
 import {
@@ -47,6 +49,12 @@ class Solution extends React.Component {
       history: { push },
     } = this.props;
     clearStorage();
+    if (currentModule === 'pendingQuestions') {
+      this.props.setQuestionDataAsync();
+      push('/');
+    } else {
+      push('/thanks');
+    }
     currentModule === 'pendingQuestions' ? push('/') : push('/thanks');
   };
 
@@ -140,6 +148,7 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
   postQuestion: (data) => dispatch(postQuestion(data)),
   deletionStart: (data) => dispatch(deletionStart(data)),
+  setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(Solution),

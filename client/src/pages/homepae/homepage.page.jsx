@@ -4,17 +4,12 @@ import { withRouter } from 'react-router-dom';
 import QuestionContainer from '../../components/question-container/question-container.component';
 import { selectSkeletonLoading } from '../../redux/question/question.selector';
 import HomepageSkeleton from './homepage.skeleton';
-import {
-  setCurrentModule,
-  setQuestionDataAsync,
-} from '../../redux/question/question.action';
+import { setCurrentModule } from '../../redux/question/question.action';
 // import { Offline, Online } from 'react-detect-offline';
 class HomePage extends React.PureComponent {
   componentDidMount() {
     this.props.setCurrentModule('questions');
-    if (!!navigator.onLine) {
-      this.props.setQuestionDataAsync();
-    }
+
     document.addEventListener('keydown', this.handleKeyPress, false);
   }
 
@@ -44,7 +39,6 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
-  setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
 });
 
 //match object is always newly created causing unnessary re-renders
