@@ -5,6 +5,7 @@ import { deleteData } from '../../utils/deleteData';
 import { toggleLoader } from '../universal/universal.action';
 import QuestionActionTypes from './question.types';
 import { selectCurrentModule } from './question.selector';
+import FailureMessage from '../../components/message/failureMessage.component';
 import {
   fetchSuccess,
   fetchFailure,
@@ -49,6 +50,7 @@ export function* postQuestion({
     yield call(afterSuccessCallback);
   } catch (error) {
     yield put(postFailure(error));
+    yield call(FailureMessage);
   } finally {
     yield put(toggleLoader(false));
   }
