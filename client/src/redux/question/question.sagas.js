@@ -47,7 +47,7 @@ export function* postQuestion({
       JSON.parse(localStorage.getItem('id')),
     );
     yield put(postSuccess(value));
-    yield call(afterSuccessCallback);
+    yield call(afterSuccessCallback, value);
   } catch (error) {
     yield put(postFailure(error));
     yield call(FailureMessage);

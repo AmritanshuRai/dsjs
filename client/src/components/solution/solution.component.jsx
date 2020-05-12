@@ -46,14 +46,16 @@ class Solution extends React.Component {
     // opts.wrap_line_length = 200;
     return opts;
   }
-  afterSuccessCallback = () => {
+  afterSuccessCallback = (value) => {
     const {
       currentModule,
       history: { push },
     } = this.props;
     clearStorage();
     if (currentModule === 'pendingQuestions') {
-      // this.props.setQuestionDataAsync();
+      if (value === 'postedAndDeleted') {
+        this.props.setQuestionDataAsync();
+      }
       push('/');
     } else {
       push('/thanks');

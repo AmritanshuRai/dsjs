@@ -37,41 +37,42 @@ const questionReducer = (state = INITIAL_DATA, action) => {
         error: null,
       };
     case QuestionActionTypes.POST_SUCCESS:
-      if (state.currentModule === 'questions') {
-        return {
-          ...state,
-          error: null,
-        };
-      }
-
-      const {
-        id,
-        title,
-        description,
-        explanation,
-        solution,
-        timestamp,
-      } = action.payload;
-      let newQuestion = {};
-      newQuestion[id] = {
-        title,
-        description,
-        explanation,
-        solution,
-        timestamp,
-      };
       return {
         ...state,
-        question_data: {
-          ...newQuestion,
-          ...state.question_data,
-        },
-        // EVERY_QUESTION: {
-        //   ...state.question_data,
-        //   ...newQuestion,
-        // },
         error: null,
       };
+    // if (state.currentModule === 'questions') {
+    //   return {
+    //     ...state,
+    //     error: null,
+    //   };
+    // }
+
+    // const {
+    //   id,
+    //   title,
+    //   description,
+    //   explanation,
+    //   solution,
+    //   timestamp,
+    // } = action.payload;
+    // let newQuestion = {};
+    // newQuestion[id] = {
+    //   title,
+    //   description,
+    //   explanation,
+    //   solution,
+    //   timestamp,
+    // };
+    // return {
+    //   ...state,
+    //   question_data: {
+    //     ...newQuestion,
+    //     ...state.question_data,
+    //   },
+
+    //   error: null,
+    // };
     case QuestionActionTypes.SET_CURRENT_MODULE:
       return {
         ...state,
