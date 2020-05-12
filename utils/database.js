@@ -5,7 +5,7 @@ let _db;
 let _client;
 const mongoConnect = async (cb) => {
   try {
-    const client = await MongoClient.connect(process.env.MONGO_URI, {
+    const client = await MongoClient.connect(`${process.env.MONGO_URI}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
