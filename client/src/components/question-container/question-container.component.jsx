@@ -15,6 +15,9 @@ class QuestionContainer extends React.Component {
       this.props.currentModule === 'questions'
         ? 'question_data'
         : 'pending_data';
+    if (!this.props[dataObj]) {
+      return <></>;
+    }
     return (
       <Row
         gutter={[
