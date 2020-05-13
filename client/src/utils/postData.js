@@ -120,8 +120,8 @@ export const postData = async (dataObj, id) => {
     if (response.status !== 200 && response.status !== 201) {
       throw new Error('failed!');
     }
-    const { result } = await response.json();
-    return result;
+    const { shortMsg } = await response.json();
+    return shortMsg;
     // console.warn('result: ', results);
     // return results.result.ops[0];
   } catch (err) {

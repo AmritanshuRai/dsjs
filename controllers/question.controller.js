@@ -1,34 +1,48 @@
-const Question = require('../models/Question.model');
+const { Question, PendingQuestions } = require('../models/Question.model');
+const mongoose = require('mongoose');
 
 exports.postQuestion = async (req, res, next) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const solution = req.body.solution;
-  const explanation = req.body.explanation;
   const collectionName = req.url.split('/')[1];
-  const id = req.body.id;
-  try {
-    const question = new Question(title, description, solution, explanation);
-    const result = await question.save(collectionName, id);
-    res
-      .status(201)
-      .json({ message: `submitted to ${collectionName}!`, result });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
+  if (collectionName == 'pendingQuestions') {
+    try {
+      await new PendingQuestions(req.body).save();
+      return res
+        .status(201)
+        .json({ message: `posted to pendingQuestions!`, shortMsg: `posted` });
+    } catch (err) {
+      throw new Error('srewed!');
     }
-    next(err);
+  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    await new Question(req.body).save({ session });
+    await PendingQuestions.findByIdAndRemove(req.body.id).session(session);
+    await session.commitTransaction();
+    session.endSession();
+    res.status(201).json({
+      message: `posted to questions and deleted from pendingQuestions!`,
+      shortMsg: `postedAndDeleted`,
+    });
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error('srewed!');
   }
 };
 
 exports.getQuestions = async (req, res, next) => {
   const collectionName = req.url.split('/')[1];
   try {
-    let questionObj = await Question.fetchAll(collectionName);
-    console.log('questionObj: ', questionObj);
+    let questionObj;
+    if (collectionName == 'questions') {
+      questionObj = await Question.find().sort({ _id: -1 });
+    } else {
+      questionObj = await PendingQuestions.find();
+    }
     res
       .status(200)
-      .json({ questionObj: `fetched from ${collectionName}!`, questionObj });
+      .json({ message: `fetched from ${collectionName}!`, questionObj });
   } catch (err) {
     console.log('err: ', err);
     res.status(500).json({ error: 'something blew up' });
@@ -37,7 +51,7 @@ exports.getQuestions = async (req, res, next) => {
 
 exports.deleteQuestion = async (req, res, next) => {
   try {
-    let result = await Question.deleteById(req.params.id);
+    let result = await PendingQuestions.findByIdAndRemove(req.params.id);
     res.status(201).json({ questionObj: 'deleted!!', result });
   } catch (err) {
     console.log(err);
