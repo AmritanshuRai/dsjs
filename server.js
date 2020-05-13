@@ -40,26 +40,23 @@ function setNoCache(res) {
 if (process.env.NODE_ENV === 'production') {
   app.use(compression());
   app.use(enforce.HTTPS({ trustProtoHeader: true }));
-  app.use(
-    express.static(path.join(__dirname, 'client/build'), {
-      extensions: ['html'],
-      setHeaders(res, path) {
-        if (path.match(/(\.html|\/sw\.js)$/)) {
-          setNoCache(res);
-          return;
-        }
+  // app.use(
+  //   express.static(path.join(__dirname, 'client/build'), {
+  //     extensions: ['html'],
+  //     setHeaders(res, path) {
+  //       if (path.match(/(\.html|\/sw\.js)$/)) {
+  //         setNoCache(res);
+  //         return;
+  //       }
 
-        if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|json)$/)) {
-          setLongTermCache(res);
-        }
-      },
-    }),
-  );
+  //       if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|json)$/)) {
+  //         setLongTermCache(res);
+  //       }
+  //     },
+  //   }),
+  // );
 
-  app.get('*', function (req, res) {
-    setNoCache(res);
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
+  app.use(express.static(path.join(__dirname, 'client/build')));
 }
 
 app.get('/service-worker.js', (req, res) => {
@@ -81,12 +78,18 @@ app.post('/payment', (req, res) => {
     }
   });
 });
+
 app.get('/questions', getQuestions);
 app.get('/pendingQuestions', getQuestions);
 app.post('/pendingQuestions', postQuestion);
 app.post('/questions', postQuestion);
 app.delete('/:id', deleteQuestion);
 
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 mongoConnect(() => {
   app.listen(port, (error) => {
     if (error) throw error;

@@ -11,7 +11,6 @@ export const fetchData = async (collectionName) => {
       };
       return obj;
     }, {});
-    console.warn('questions: ', questions);
     return questions;
   } catch (err) {
     console.warn('err: ', err);

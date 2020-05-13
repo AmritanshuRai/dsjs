@@ -25,15 +25,13 @@ exports.getQuestions = async (req, res, next) => {
   const collectionName = req.url.split('/')[1];
   try {
     let questionObj = await Question.fetchAll(collectionName);
-    res.setHeader('content-type', 'application/json');
+    console.log('questionObj: ', questionObj);
     res
-      .status(201)
+      .status(200)
       .json({ questionObj: `fetched from ${collectionName}!`, questionObj });
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    console.log('err: ', err);
+    res.status(500).json({ error: 'something blew up' });
   }
 };
 
