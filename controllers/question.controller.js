@@ -10,7 +10,7 @@ exports.postQuestion = async (req, res, next) => {
         .status(201)
         .json({ message: `posted to pendingQuestions!`, shortMsg: `posted` });
     } catch (err) {
-      throw new Error('srewed!');
+      throw new Error('unable to post in pendingQuestion!');
     }
   }
   const session = await mongoose.startSession();
@@ -19,15 +19,15 @@ exports.postQuestion = async (req, res, next) => {
     await new Question(req.body).save({ session });
     await PendingQuestions.findByIdAndRemove(req.body.id).session(session);
     await session.commitTransaction();
-    session.endSession();
     res.status(201).json({
       message: `posted to questions and deleted from pendingQuestions!`,
       shortMsg: `postedAndDeleted`,
     });
   } catch (err) {
     await session.abortTransaction();
+    throw new Error('unable to post!');
+  } finally {
     session.endSession();
-    throw new Error('srewed!');
   }
 };
 
@@ -45,7 +45,7 @@ exports.getQuestions = async (req, res, next) => {
       .json({ message: `fetched from ${collectionName}!`, questionObj });
   } catch (err) {
     console.log('err: ', err);
-    res.status(500).json({ error: 'something blew up' });
+    res.status(500).json({ error: 'unable to fetch' });
   }
 };
 
@@ -54,6 +54,7 @@ exports.deleteQuestion = async (req, res, next) => {
     let result = await PendingQuestions.findByIdAndRemove(req.params.id);
     res.status(201).json({ questionObj: 'deleted!!', result });
   } catch (err) {
-    console.log(err);
+    console.log('err: ', err);
+    res.status(500).json({ error: 'unable to delete!' });
   }
 };
