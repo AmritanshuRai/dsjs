@@ -26,12 +26,7 @@ const questionSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
-
 exports.Question = mongoose.model('Questions', questionSchema, 'questions');
-exports.PendingQuestions = mongoose.model(
-  'PendingQuestions',
-  questionSchema,
-  'pendingQuestions',
-);
+exports.questionSchema = questionSchema;

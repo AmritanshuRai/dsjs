@@ -8,10 +8,9 @@ import rootSaga from './root-saga';
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware, thunk];
 
-// if (process.env.NODE_ENV === 'development') {
-//   middlewares.push(logger);
-// }
-middlewares.push(logger);
+if (process.env.NODE_ENV === 'development') {
+  middlewares.push(logger);
+}
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 sagaMiddleware.run(rootSaga);
 export const persistor = persistStore(store);

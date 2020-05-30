@@ -1,9 +1,25 @@
 const express = require('express');
+const { getQuestions } = require('../controllers/questions.controller');
+const { Question } = require('../models/Question.model');
+const advanceResult = require('../middlewares/advanceResult.middleware');
+const { extraKeysInReq } = require('../middlewares/extraKeysInReq.middleware');
+const {
+  protect,
+  authorize,
+  checkUserOwnership,
+} = require('../middlewares/auth.middleware');
 
-const authController = require('../controllers/auth');
+// const courseRouter = require('./courses.routes');
+// const reviewRouter = require('./reviews.route');
 
 const router = express.Router();
 
-router.post('/login', authController.login);
+// //redirect to course routes
+// router.use('/:id/courses', courseRouter);
+
+// //redirect to review routes
+// router.use('/:id/reviews', reviewRouter);
+
+router.route('/').get(advanceResult(Question), getQuestions);
 
 module.exports = router;
