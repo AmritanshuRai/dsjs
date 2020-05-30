@@ -56,3 +56,25 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
     data: question,
   };
 });
+
+// @desc      delete simgle question
+// @route     DELETE /api/v1/questions/:id
+// @access    private
+
+exports.deleteQuestion = asyncHandler(async (req, res, next) => {
+  const question = await Question.findByIdAndDelete(req.params.id);
+  return {
+    success: true,
+    data: question,
+  };
+});
+
+// @desc      delete all questions
+// @route     DELETE /api/v1/questions/
+// @access    private
+exports.deleteQuestions = asyncHandler(async (req, res, next) => {
+  await Question.deleteMany();
+  return {
+    success: true,
+  };
+});

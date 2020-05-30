@@ -4,6 +4,8 @@ const {
   getQuestion,
   createQuestion,
   updateQuestion,
+  deleteQuestion,
+  deleteQuestions,
 } = require('../controllers/questions.controller');
 const { Question, questionSchema } = require('../models/Question.model');
 const advanceResult = require('../middlewares/advanceResult.middleware');
@@ -28,11 +30,13 @@ const router = express.Router();
 router
   .route('/')
   .get(advanceResult(Question), getQuestions)
-  .post(extraKeysInReq(questionSchema), createQuestion);
+  .post(extraKeysInReq(questionSchema), createQuestion)
+  .delete(deleteQuestions);
 
 router
   .route('/:id')
   .get(getQuestion)
-  .put(extraKeysInReq(questionSchema), updateQuestion);
+  .put(extraKeysInReq(questionSchema), updateQuestion)
+  .delete(deleteQuestion);
 
 module.exports = router;
