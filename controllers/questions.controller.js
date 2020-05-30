@@ -10,3 +10,21 @@ const asyncHandler = require('../middlewares/asyncHandler.middleware');
 exports.getQuestions = asyncHandler(async (req, res, next) => {
   return res.advanceResult;
 });
+
+// @desc      Get single question
+// @route     GET /api/v1/questions/:id
+// @access    Public
+
+exports.getQuestion = asyncHandler(async (req, res, next) => {
+  const question = await Question.findById(req.params.id);
+  if (!question) {
+    return {
+      errorMessage: 'No question found',
+      errorStatus: 404,
+    };
+  }
+  return {
+    success: true,
+    data: question,
+  };
+});

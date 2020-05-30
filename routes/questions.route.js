@@ -1,5 +1,8 @@
 const express = require('express');
-const { getQuestions } = require('../controllers/questions.controller');
+const {
+  getQuestions,
+  getQuestion,
+} = require('../controllers/questions.controller');
 const { Question } = require('../models/Question.model');
 const advanceResult = require('../middlewares/advanceResult.middleware');
 const { extraKeysInReq } = require('../middlewares/extraKeysInReq.middleware');
@@ -21,5 +24,7 @@ const router = express.Router();
 // router.use('/:id/reviews', reviewRouter);
 
 router.route('/').get(advanceResult(Question), getQuestions);
+
+router.route('/:id').get(getQuestion);
 
 module.exports = router;
