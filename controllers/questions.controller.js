@@ -41,3 +41,18 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
     data: question,
   };
 });
+
+// @desc      update question
+// @route     PUT /api/v1/questions/:id
+// @access    private
+
+exports.updateQuestion = asyncHandler(async (req, res, next) => {
+  const question = await Question.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  return {
+    success: true,
+    data: question,
+  };
+});

@@ -3,6 +3,7 @@ const {
   getQuestions,
   getQuestion,
   createQuestion,
+  updateQuestion,
 } = require('../controllers/questions.controller');
 const { Question, questionSchema } = require('../models/Question.model');
 const advanceResult = require('../middlewares/advanceResult.middleware');
@@ -29,6 +30,9 @@ router
   .get(advanceResult(Question), getQuestions)
   .post(extraKeysInReq(questionSchema), createQuestion);
 
-router.route('/:id').get(getQuestion);
+router
+  .route('/:id')
+  .get(getQuestion)
+  .put(extraKeysInReq(questionSchema), updateQuestion);
 
 module.exports = router;
