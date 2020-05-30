@@ -28,3 +28,16 @@ exports.getQuestion = asyncHandler(async (req, res, next) => {
     data: question,
   };
 });
+
+// @desc      Create new question
+// @route     POST /api/v1/questions
+// @access    private
+
+exports.createQuestion = asyncHandler(async (req, res, next) => {
+  const question = await Question.create(req.body);
+
+  return {
+    success: true,
+    data: question,
+  };
+});

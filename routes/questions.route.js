@@ -2,8 +2,9 @@ const express = require('express');
 const {
   getQuestions,
   getQuestion,
+  createQuestion,
 } = require('../controllers/questions.controller');
-const { Question } = require('../models/Question.model');
+const { Question, questionSchema } = require('../models/Question.model');
 const advanceResult = require('../middlewares/advanceResult.middleware');
 const { extraKeysInReq } = require('../middlewares/extraKeysInReq.middleware');
 const {
@@ -23,7 +24,10 @@ const router = express.Router();
 // //redirect to review routes
 // router.use('/:id/reviews', reviewRouter);
 
-router.route('/').get(advanceResult(Question), getQuestions);
+router
+  .route('/')
+  .get(advanceResult(Question), getQuestions)
+  .post(extraKeysInReq(questionSchema), createQuestion);
 
 router.route('/:id').get(getQuestion);
 
