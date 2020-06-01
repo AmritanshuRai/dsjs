@@ -1,12 +1,15 @@
 const express = require('express');
 const {
-  getQuestions,
-  getQuestion,
-  createQuestion,
-  updateQuestion,
-  deleteQuestions,
-} = require('../controllers/questions.controller');
-const { Question, questionSchema } = require('../models/Question.model');
+  getPendingQuestion,
+  getPendingQuestions,
+  updatePendingQuestion,
+  createPendingQuestion,
+  deletePendingQuestions,
+} = require('../controllers/pendingQuestions.controller');
+const {
+  PendingQuestion,
+  pendingQuestionSchema,
+} = require('../models/PendingQuestion.model');
 const advanceResult = require('../middlewares/advanceResult.middleware');
 const { extraKeysInReq } = require('../middlewares/extraKeysInReq.middleware');
 const {
@@ -28,13 +31,13 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(advanceResult(Question), getQuestions)
-  .post(extraKeysInReq(questionSchema), protect, createQuestion)
-  .delete(deleteQuestions);
+  .get(advanceResult(PendingQuestion), getPendingQuestions)
+  .post(extraKeysInReq(pendingQuestionSchema), protect, createPendingQuestion)
+  .delete(deletePendingQuestions);
 
 router
   .route('/:id')
-  .get(getQuestion)
-  .put(extraKeysInReq(questionSchema), updateQuestion);
+  .get(getPendingQuestion)
+  .put(extraKeysInReq(pendingQuestionSchema), updatePendingQuestion);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('./asyncHandler.middleware');
 const ErrorResponse = require('../utils/errorResponse.utils');
-// const User = require('../models/User.model');
+const { User } = require('../models/User.model');
 const { seperator } = require('../utils/chalk.util');
 
 // Protect routes
@@ -39,7 +39,7 @@ exports.authorize = (...roles) =>
   asyncHandler(async (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return {
-        errorMessage: `user role ${req.user.role} is forbidden`,
+        errorMessage: `The role '${req.user.role}' is forbidden`,
         errorStatus: 403,
       };
       // return next(new ErrorResponse(`user role ${res.user.role} is forbidden`,403));

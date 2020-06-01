@@ -34,6 +34,8 @@ exports.getQuestion = asyncHandler(async (req, res, next) => {
 // @access    private
 
 exports.createQuestion = asyncHandler(async (req, res, next) => {
+  // Add user to req.body
+  req.body.user = req.user.id;
   const question = await Question.create(req.body);
 
   return {
@@ -57,23 +59,15 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
   };
 });
 
-// @desc      delete simgle question
-// @route     DELETE /api/v1/questions/:id
-// @access    private
-
-exports.deleteQuestion = asyncHandler(async (req, res, next) => {
-  const question = await Question.findByIdAndDelete(req.params.id);
-  return {
-    success: true,
-    data: question,
-  };
-});
-
 // @desc      delete all questions
 // @route     DELETE /api/v1/questions/
 // @access    private
 exports.deleteQuestions = asyncHandler(async (req, res, next) => {
-  await Question.deleteMany();
+  if (req.body.id.length) {
+    await Question.deleteMany({ _id: { $in: req.body.id } });
+  } else {
+    await Question.deleteMany();
+  }
   return {
     success: true,
   };

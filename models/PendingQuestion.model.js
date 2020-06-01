@@ -3,7 +3,7 @@ const slugify = require('slugify');
 
 const Schema = mongoose.Schema;
 
-const questionSchema = new Schema(
+const pendingQuestionSchema = new Schema(
   {
     title: {
       type: String,
@@ -26,19 +26,28 @@ const questionSchema = new Schema(
       required: [true, 'The explanation of the question is required'],
       trim: true,
     },
+
     slug: String,
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
   }
 );
 
 // // Create question slug from the title
-questionSchema.pre('save', function (next) {
+pendingQuestionSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
   next();
 });
 
-exports.Question = mongoose.model('Questions', questionSchema);
-exports.questionSchema = questionSchema;
+exports.PendingQuestion = mongoose.model(
+  'PendingQuestion',
+  pendingQuestionSchema,
+  'pendingQuestions'
+);
+exports.pendingQuestionSchema = pendingQuestionSchema;

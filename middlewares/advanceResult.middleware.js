@@ -6,7 +6,9 @@ const advanceResult = (model, populate) => async (req, res, next) => {
     /\b(gt|gte|lt|lte|in)/g,
     (match) => `$${match}`
   );
-  let query = model.find(JSON.parse(queryStrModified)).populate('courses');
+  let query = model
+    .find(JSON.parse(queryStrModified))
+    .populate('user', 'email name');
 
   if (req.query.select) {
     const fields = req.query.select.split(',').join(' ');

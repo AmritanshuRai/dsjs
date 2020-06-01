@@ -24,6 +24,9 @@ dotenv.config({ path: './config/config.env' });
 
 //routes
 const questions = require('./routes/questions.route');
+const pendingQuestions = require('./routes/pendingQuestions.route');
+const auth = require('./routes/auth.route');
+const users = require('./routes/user.route');
 
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -129,6 +132,9 @@ app.use(cors());
 
 //mount routers
 app.use('/api/v1/questions', questions);
+app.use('/api/v1/pendingquestions', pendingQuestions);
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/users', users);
 
 app.use(function (req, res, next) {
   res.status(404).json({
