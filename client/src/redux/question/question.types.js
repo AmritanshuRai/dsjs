@@ -13,6 +13,7 @@ const QuestionActionTypes = {
   DELETION_FAILURE: 'DELETION_FAILURE',
   SHOW_SKELETON: 'SHOW_SKELETON',
   HIDE_SKELETON: 'HIDE_SKELETON',
+  SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
 };
 
 export default QuestionActionTypes;

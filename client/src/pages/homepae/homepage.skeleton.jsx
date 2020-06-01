@@ -18,7 +18,7 @@ class HomepageSkeleton extends React.Component {
             active
             paragraph={false}
           ></Skeleton>
-        </Col>,
+        </Col>
       );
     }
     return col;

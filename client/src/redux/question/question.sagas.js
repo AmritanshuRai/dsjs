@@ -21,7 +21,7 @@ export function* fetchQuestions(action) {
   const collectionName = yield select(selectCurrentModule);
   try {
     yield put(showSkeleton());
-    const fetchedData = yield fetchData(collectionName);
+    const fetchedData = yield fetchData(collectionName, action.payload);
     yield put(fetchSuccess(fetchedData));
   } catch (error) {
     yield put(fetchFailure(error));
@@ -44,7 +44,7 @@ export function* postQuestion({
     const value = yield call(
       postData,
       finalData,
-      JSON.parse(localStorage.getItem('id')),
+      JSON.parse(localStorage.getItem('id'))
     );
     yield put(postSuccess(value));
     yield call(afterSuccessCallback, value);

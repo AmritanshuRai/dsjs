@@ -11,10 +11,13 @@ import Nav from './components/nav/nav.component';
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
 import ErrorBoundary from './components/error-boundary/error-boundary.component';
-import { setQuestionDataAsync } from './redux/question/question.action';
+import {
+  setQuestionDataAsync,
+  setCurrentPage,
+} from './redux/question/question.action';
 const Solution = lazy(() => import('./components/solution/solution.component'));
 const SignInAndSignUpPage = lazy(() =>
-  import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'),
+  import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component')
 );
 const Donate = lazy(() => import('./pages/donate/donate.page'));
 const Approve = lazy(() => import('./pages/approve/approve.page'));
@@ -28,6 +31,7 @@ class App extends React.PureComponent {
   componentDidMount() {
     const { checkUserSession } = this.props;
     if (!!navigator.onLine) {
+      this.props.setCurrentPage(1);
       this.props.setQuestionDataAsync();
     }
     checkUserSession();
@@ -89,6 +93,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   checkUserSession: () => dispatch(checkUserSession()),
   setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
+  setCurrentPage: (data) => dispatch(setCurrentPage(data)),
 });
 
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);

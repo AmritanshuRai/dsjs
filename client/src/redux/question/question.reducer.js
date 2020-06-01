@@ -6,6 +6,7 @@ const INITIAL_DATA = {
   // EVERY_QUESTION: {},
   filteredText: '',
   currentModule: '',
+  currentPage: 1,
   error: null,
   skeletonLoading: false,
 };
@@ -27,7 +28,8 @@ const questionReducer = (state = INITIAL_DATA, action) => {
 
       return {
         ...state,
-        [objType]: action.payload,
+        [objType]: action.payload.questions,
+        totalQueryCount: action.payload.totalQueryCount,
         // EVERY_QUESTION: action.payload,
         error: null,
       };
@@ -77,6 +79,11 @@ const questionReducer = (state = INITIAL_DATA, action) => {
       return {
         ...state,
         currentModule: action.payload,
+      };
+    case QuestionActionTypes.SET_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload,
       };
     case QuestionActionTypes.POST_FAILURE:
     case QuestionActionTypes.FETCH_FAILURE:

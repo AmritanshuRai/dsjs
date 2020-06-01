@@ -15,6 +15,11 @@ export const setCurrentModule = (data) => ({
   payload: data,
 });
 
+export const setCurrentPage = (data) => ({
+  type: QuestionActionTypes.SET_CURRENT_PAGE,
+  payload: data,
+});
+
 export const setQuestionDataAsync = (history) => ({
   type: QuestionActionTypes.FETCH_START,
   payload: history,

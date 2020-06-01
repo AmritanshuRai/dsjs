@@ -23,20 +23,14 @@ const advanceResult = (model, populate) => async (req, res, next) => {
 
   //pagination
   const pageNumber = parseInt(req.query.page, 10) || 1;
-  const limiter = parseInt(req.query.limit, 10) || 10;
+  const limiter = parseInt(req.query.limit, 10) || 20;
   const startIndex = (pageNumber - 1) * limiter;
   const endIndex = pageNumber * limiter;
   query = query.skip(startIndex).limit(limiter);
   const totalQueryCount = await model.countDocuments(
     JSON.parse(queryStrModified)
   );
-  // if (!!Object.keys(JSON.parse(queryStrModified)).length) {
-  //   totalQueryCount = await model.countDocuments(
-  //     JSON.parse(queryStrModified)
-  //   );
-  // } else {
-  //   totalQueryCount = await model.estimatedDocumentCount();
-  // }
+
   const pagination = {};
 
   if (endIndex < totalQueryCount) {
@@ -62,9 +56,17 @@ const advanceResult = (model, populate) => async (req, res, next) => {
     success: true,
     count: fetchedData.length,
     pagination,
+    totalQueryCount,
     data: fetchedData,
   };
   next();
 };
 
 module.exports = advanceResult;
+// if (!!Object.keys(JSON.parse(queryStrModified)).length) {
+//   totalQueryCount = await model.countDocuments(
+//     JSON.parse(queryStrModified)
+//   );
+// } else {
+//   totalQueryCount = await model.estimatedDocumentCount();
+// }

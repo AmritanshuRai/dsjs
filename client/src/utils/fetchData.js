@@ -1,8 +1,14 @@
-export const fetchData = async (collectionName) => {
+export const fetchData = async (collectionName, query) => {
   try {
-    let value = await fetch(`/${collectionName}`);
-    const { questionObj } = await value.json();
-    let questions = questionObj.reduce(function (obj, item) {
+    let value;
+    if (!query) {
+      value = await fetch(`${collectionName}`);
+    } else {
+      value = await fetch(`${collectionName}?${query}`);
+    }
+    const { data, totalQueryCount } = await value.json();
+
+    let questions = data.reduce(function (obj, item) {
       obj[item._id] = {
         title: item.title,
         description: item.description,
@@ -11,7 +17,7 @@ export const fetchData = async (collectionName) => {
       };
       return obj;
     }, {});
-    return questions;
+    return { questions, totalQueryCount };
   } catch (err) {
     console.warn('err: ', err);
   }
