@@ -27,3 +27,4 @@ yarn-error.log*
 /controllers0
 /config/config.env
 /config/notes.text
+seeder.js
