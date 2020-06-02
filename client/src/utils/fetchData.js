@@ -2,9 +2,9 @@ export const fetchData = async (collectionName, query) => {
   try {
     let value;
     if (!query) {
-      value = await fetch(`${collectionName}`);
+      value = await fetch(`/api/v1/${collectionName}`);
     } else {
-      value = await fetch(`${collectionName}?${query}`);
+      value = await fetch(`/api/v1/${collectionName}?${query}`);
     }
     const { data, totalQueryCount } = await value.json();
 

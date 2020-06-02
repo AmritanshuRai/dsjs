@@ -104,7 +104,7 @@
 export const postData = async (dataObj, id) => {
   const { collectionName, title, solution, explanation, description } = dataObj;
   try {
-    let response = await fetch(`/${collectionName}`, {
+    let response = await fetch(`/api/v1/${collectionName}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

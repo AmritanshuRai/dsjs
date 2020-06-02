@@ -1,5 +1,5 @@
 export const deleteData = async (id) => {
-  await fetch(`/${id}`, {
+  await fetch(`/api/v1/${id}`, {
     method: 'DELETE',
   });
 };

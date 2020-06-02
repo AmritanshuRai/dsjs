@@ -1,7 +1,7 @@
 {
   "name": "dsjs",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000/api/v1/",
+  "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
