@@ -26,7 +26,14 @@ class HomepageSkeleton extends React.Component {
   render() {
     return (
       <div>
-        <Row gutter={[32, 8]}>{this.createCol()}</Row>
+        <Row
+          gutter={[
+            { md: 32, lg: 48 },
+            { xs: 24, sm: 24, md: 32, lg: 48 },
+          ]}
+        >
+          {this.createCol()}
+        </Row>
       </div>
     );
   }

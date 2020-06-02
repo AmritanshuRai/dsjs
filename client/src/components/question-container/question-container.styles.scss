@@ -6,5 +6,11 @@
   &-pagination {
     margin-left: auto;
     padding-bottom: 40px;
+    @media (max-width: 767px) {
+      margin: 0 auto;
+    }
+    .ant-pagination-total-text {
+      display: block;
+    }
   }
 }
