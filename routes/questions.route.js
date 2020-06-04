@@ -15,21 +15,17 @@ const {
   checkUserOwnership,
 } = require('../middlewares/auth.middleware');
 
-// const courseRouter = require('./courses.routes');
-// const reviewRouter = require('./reviews.route');
+const levelRouter = require('./level.route');
 
 const router = express.Router();
 
-// //redirect to course routes
-// router.use('/:id/courses', courseRouter);
-
-// //redirect to review routes
-// router.use('/:id/reviews', reviewRouter);
+//redirect to level routes
+router.use('/:id/level', levelRouter);
 
 router
   .route('/')
   .get(advanceResult(Question), getQuestions)
-  .post(extraKeysInReq(questionSchema), protect, createQuestion)
+  .post(protect, createQuestion)
   .delete(deleteQuestions);
 
 router

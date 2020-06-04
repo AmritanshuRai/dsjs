@@ -8,7 +8,7 @@ const questionSchema = new Schema(
     title: {
       type: String,
       required: [true, 'The title of the question is required'],
-      trim: true,
+      text: true,
       unique: true,
     },
     description: {
@@ -26,6 +26,7 @@ const questionSchema = new Schema(
       required: [true, 'The explanation of the question is required'],
       trim: true,
     },
+    level: Number,
     slug: String,
   },
   {
@@ -40,5 +41,6 @@ questionSchema.pre('save', function (next) {
   next();
 });
 
-exports.Question = mongoose.model('Questions', questionSchema);
+const QuestionModel = mongoose.model('Question', questionSchema);
 exports.questionSchema = questionSchema;
+exports.Question = QuestionModel;

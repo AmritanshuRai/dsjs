@@ -2,7 +2,7 @@ const { Question } = require('../models/Question.model');
 const path = require('path');
 const { seperator } = require('../utils/chalk.util');
 const asyncHandler = require('../middlewares/asyncHandler.middleware');
-
+const { Level } = require('../models/Level.model');
 // @desc      Get all questions
 // @route     GET /api/v1/questions
 // @access    Public
@@ -37,7 +37,12 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
   // Add user to req.body
   req.body.user = req.user.id;
   const question = await Question.create(req.body);
-
+  levelObj = {
+    question: question._id,
+    user: req.user.id,
+    level: req.body.level,
+  };
+  await Level.create(levelObj);
   return {
     success: true,
     data: question,
