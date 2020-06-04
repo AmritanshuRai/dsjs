@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema(
       minlength: 6,
       select: false,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },
@@ -75,8 +79,13 @@ UserSchema.methods.getResetPasswordToken = function () {
   //Set expire
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
+  if (this._id === undefined) {
+    const self = this;
+    return { resetToken, self };
+  }
   return resetToken;
 };
 
-exports.User = mongoose.model('Users', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 exports.UserSchema = UserSchema;
+exports.User = UserModel;

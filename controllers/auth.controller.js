@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { seperator } = require('../utils/chalk.util');
-const { User } = require('../models/User.model');
+const { User, UserSchema } = require('../models/User.model');
 const asyncHandler = require('../middlewares/asyncHandler.middleware');
 const mail = require('../utils/mail.util');
 const crypto = require('crypto');
@@ -9,17 +9,79 @@ const crypto = require('crypto');
 // @route     POST /api/v1/auth/register
 // @access    Public
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role } = req.body;
+  const doesUserExist = await User.findOne({ email: req.body.email });
+
+  if (doesUserExist && doesUserExist.verified) {
+    return {
+      errorMessage: `${req.body.email} is already registered`,
+      errorStatus: 404,
+    };
+  }
+  const {
+    resetToken,
+    self: { resetPasswordExpire, resetPasswordToken },
+  } = UserSchema.methods.getResetPasswordToken();
+  const { name, email, password } = req.body;
 
   //Create user
   const user = await User.create({
     name,
     email,
     password,
-    role,
+    resetPasswordToken,
+    resetPasswordExpire,
+  });
+  const verificationUrl = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/auth/verifyemail/${resetToken}`;
+  const message = `Please Click ${verificationUrl}`;
+  try {
+    await mail({
+      email: user.email,
+      message,
+      subject: 'Verify Email',
+    });
+    return {
+      success: true,
+      message: 'Please verify your email',
+    };
+  } catch (error) {
+    console.log('error: ', error);
+    await User.findByIdAndDelete(user.id);
+    return {
+      errorMessage: 'Signup could not be completed',
+      errorStatus: 500,
+    };
+  }
+});
+
+// @desc      Verify Email is valid
+// @route     GET /api/v1/auth/verifyemail/:id
+// @access    Public
+
+exports.verifyEmail = asyncHandler(async (req, res, next) => {
+  //Get hashed token
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.id)
+    .digest('hex');
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
   });
 
-  // Create token
+  if (!user) {
+    return {
+      errorMessage: `Link expired or token doesn't exist`,
+      errorStatus: 400,
+    };
+  }
+  // verified
+  user.verified = true;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
   return sendTokenResponse(user);
 });
 

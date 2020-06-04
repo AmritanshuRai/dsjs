@@ -7,31 +7,36 @@ const questionSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, 'The title of the question is required'],
+      required: [true, 'The title is required'],
       text: true,
       unique: true,
     },
     description: {
       type: String,
-      required: [true, 'The description of the question is required'],
+      required: [true, 'The description is required'],
       trim: true,
     },
     solution: {
       type: String,
-      required: [true, 'The solution of the question is required'],
+      required: [true, 'The solution is required'],
       trim: true,
     },
     explanation: {
       type: String,
-      required: [true, 'The explanation of the question is required'],
+      required: [true, 'The explanation is required'],
       trim: true,
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true,
     },
     level: Number,
     slug: String,
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
+    // toJSON: { virtuals: true },
   }
 );
 

@@ -21,12 +21,14 @@ import {
   getCurrentUser,
 } from '../../firebase/firebase.utils';
 
+import { createUserWithEmailAndPassword } from '../../utils/auth';
+
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   try {
     const userRef = yield call(
       createUserProfileDocument,
       userAuth,
-      additionalData,
+      additionalData
     );
     const userSnapshot = yield userRef.get();
     yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
@@ -36,7 +38,7 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     const name = yield displayName.split(' ')[0];
     yield call(
       SuccessMessage,
-      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
     );
   } catch (error) {
     yield put(signInFailure(error));
@@ -97,7 +99,11 @@ export function* signOut() {
 export function* signUp({ payload: { email, password, displayName } }) {
   try {
     yield put(toggleLoader(true));
-    const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+    const { user } = yield createUserWithEmailAndPassword(
+      email,
+      password,
+      displayName
+    );
     yield put(signUpSuccess({ user, additionalData: { displayName } }));
   } catch (error) {
     yield put(signUpFailure(error));

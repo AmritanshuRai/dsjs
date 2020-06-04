@@ -31,8 +31,8 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(advanceResult(PendingQuestion), getPendingQuestions)
-  .post(extraKeysInReq(pendingQuestionSchema), protect, createPendingQuestion)
+  .get(advanceResult(PendingQuestion, 'user', 'name'), getPendingQuestions)
+  .post(protect, createPendingQuestion)
   .delete(deletePendingQuestions);
 
 router

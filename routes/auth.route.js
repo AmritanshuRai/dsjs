@@ -7,6 +7,7 @@ const {
   resetPassword,
   updateDetails,
   updatePassword,
+  verifyEmail,
   logout,
 } = require('../controllers/auth.controller');
 const { User, UserSchema } = require('../models/User.model');
@@ -27,7 +28,9 @@ router.put(
 router.put('/updatepassword', protect, updatePassword);
 
 router.post('/forgotpassword', forgotpassword);
-router.put('/resetpassword/:id', resetPassword);
+router.get('/resetpassword/:id', resetPassword);
+router.get('/verifyemail/:id', verifyEmail);
+
 router.get('/logout', logout);
 
 module.exports = router;

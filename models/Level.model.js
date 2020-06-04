@@ -7,9 +7,9 @@ const LevelSchema = new mongoose.Schema(
       enum: [1, 2, 3],
       required: [true, 'Please select a level'],
     },
-    question: {
+    pendingQuestion: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Question',
+      ref: 'PendingQuestion',
       required: true,
     },
     user: {

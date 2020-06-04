@@ -4,14 +4,14 @@ const mail = async (options) => {
   let transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
+    // secure: false,
     auth: {
       user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
+      pass: process.env.SENDGRID_API_KEY,
     },
   });
-
   const message = {
-    from: `${process.env.FROM_NAME} <${process.env.FRPM_EMAIL}>`,
+    from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,

@@ -7,31 +7,35 @@ const pendingQuestionSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, 'The title of the question is required'],
+      required: [true, 'The title is required'],
       trim: true,
       unique: true,
     },
     description: {
       type: String,
-      required: [true, 'The description of the question is required'],
+      required: [true, 'The description  is required'],
       trim: true,
     },
     solution: {
       type: String,
-      required: [true, 'The solution of the question is required'],
+      required: [true, 'The solution  is required'],
       trim: true,
     },
     explanation: {
       type: String,
-      required: [true, 'The explanation of the question is required'],
+      required: [true, 'The explanation  is required'],
       trim: true,
     },
-
-    slug: String,
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
+      required: true,
     },
+    level: {
+      type: Number,
+      required: true,
+    },
+    slug: String,
   },
   {
     timestamps: true,
@@ -44,9 +48,9 @@ pendingQuestionSchema.pre('save', function (next) {
   next();
 });
 
-exports.PendingQuestion = mongoose.model(
+const PendingQuestionModel = mongoose.model(
   'PendingQuestion',
-  pendingQuestionSchema,
-  'pendingQuestions'
+  pendingQuestionSchema
 );
 exports.pendingQuestionSchema = pendingQuestionSchema;
+exports.PendingQuestion = PendingQuestionModel;

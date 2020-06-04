@@ -2,6 +2,7 @@ const { PendingQuestion } = require('../models/PendingQuestion.model');
 const path = require('path');
 const { seperator } = require('../utils/chalk.util');
 const asyncHandler = require('../middlewares/asyncHandler.middleware');
+const { Level } = require('../models/Level.model');
 
 // @desc      Get all pending questions
 // @route     GET /api/v1/pendingQuestions
@@ -38,7 +39,12 @@ exports.createPendingQuestion = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
 
   const pendingQuestion = await PendingQuestion.create(req.body);
-
+  // levelObj = {
+  //   pendingQuestion: pendingQuestion._id,
+  //   user: req.user.id,
+  //   level: req.body.level,
+  // };
+  // await Level.create(levelObj);
   return {
     success: true,
     data: pendingQuestion,

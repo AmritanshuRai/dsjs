@@ -1,4 +1,4 @@
-const advanceResult = (model, populate) => async (req, res, next) => {
+const advanceResult = (model, ...toPopulate) => async (req, res, next) => {
   let { select, sort, page, limit, ...reqQuery } = req.query;
 
   const queryStr = JSON.stringify(reqQuery);
@@ -6,9 +6,7 @@ const advanceResult = (model, populate) => async (req, res, next) => {
     /\b(gt|gte|lt|lte|in)/g,
     (match) => `$${match}`
   );
-  let query = model
-    .find(JSON.parse(queryStrModified))
-    .populate('user', 'email name');
+  let query = model.find(JSON.parse(queryStrModified));
   // { title: new RegExp('ipsum dol', 'i')
   if (req.query.select) {
     const fields = req.query.select.split(',').join(' ');
@@ -47,8 +45,8 @@ const advanceResult = (model, populate) => async (req, res, next) => {
     };
   }
 
-  if (populate) {
-    query = query.populate(populate);
+  if (toPopulate.length) {
+    query = query.populate(...toPopulate);
   }
   const fetchedData = await query;
 
