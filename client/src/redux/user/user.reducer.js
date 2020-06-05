@@ -2,7 +2,7 @@ import UserActionTypes from './user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
-  error: null,
+  error: '',
   showBtnSkeleton: false,
 };
 
@@ -23,6 +23,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case UserActionTypes.SIGN_IN_FAILURE:
     case UserActionTypes.SIGN_OUT_FAILURE:
     case UserActionTypes.SIGN_UP_FAILURE:
+    case UserActionTypes.EMAIL_VERIFICATION_FAILURE:
       return {
         ...state,
         error: action.payload,
@@ -36,6 +37,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         showBtnSkeleton: false,
+      };
+    case UserActionTypes.EMAIL_VERIFICATION_SUCCESS:
+      return {
+        ...state,
+        currentUser: action.payload,
+        error: null,
       };
     default:
       return state;

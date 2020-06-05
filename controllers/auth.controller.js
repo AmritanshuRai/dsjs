@@ -31,9 +31,13 @@ exports.register = asyncHandler(async (req, res, next) => {
     resetPasswordToken,
     resetPasswordExpire,
   });
-  const verificationUrl = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/auth/verifyemail/${resetToken}`;
+  let forwardto;
+  if (req.get('host').split(':')[0] === 'localhost') {
+    forwardto = 'localhost:3000';
+  } else {
+    forwardto = req.get('host');
+  }
+  const verificationUrl = `${req.protocol}://${forwardto}/verifyemail/${resetToken}`;
   const message = `Please Click ${verificationUrl}`;
   try {
     await mail({
@@ -139,10 +143,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @access    Private
 
 exports.getMe = asyncHandler(async (req, res, next) => {
-  return {
-    success: true,
-    data: req.user,
-  };
+  return sendTokenResponse(req.user);
 });
 
 // @desc      Forgot password
@@ -263,22 +264,30 @@ const sendTokenResponse = (user) => {
 
   const token = user.getSignedJWTToken();
 
-  const options = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true,
-  };
+  // const options = {
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+  //   ),
+  //   httpOnly: true,
+  // };
   // if (!token) {
   //   options.expires = new Date(Date.now() + 10 * 1000);
   // }
-  if (process.env.NODE_ENV === 'production') {
-    options.secure = true;
-  }
-
+  // if (process.env.NODE_ENV === 'production') {
+  //   options.secure = true;
+  // }
   return {
     success: true,
-    cookie: ['token', token, options],
-    token,
+    data: {
+      token,
+      displayName: user.name,
+      email: user.email,
+      id: user._id.toString(),
+    },
   };
+  // return {
+  //   success: true,
+  //   cookie: ['token', token, options],
+  //   token,
+  // };
 };

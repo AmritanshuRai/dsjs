@@ -56,3 +56,18 @@ export const showBtnSkeleton = () => ({
 export const hideBtnSkeleton = () => ({
   type: UserActionTypes.HIDE_BTN_SKELETON,
 });
+
+export const emailVerificationStart = (tokenFromEmail) => ({
+  type: UserActionTypes.EMAIL_VERIFICATION_START,
+  payload: tokenFromEmail,
+});
+
+export const emailVerificationSuccess = (data) => ({
+  type: UserActionTypes.EMAIL_VERIFICATION_SUCCESS,
+  payload: data,
+});
+
+export const emailVerificationFailure = (data) => ({
+  type: UserActionTypes.EMAIL_VERIFICATION_FAILURE,
+  payload: data,
+});

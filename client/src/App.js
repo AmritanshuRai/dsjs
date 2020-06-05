@@ -8,6 +8,8 @@ import HomePage from './pages/homepae/homepage.page';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selector';
 import Nav from './components/nav/nav.component';
+// import VerifyEmail from './pages/verify-email/verifyEmail.page';
+
 import { Layout } from 'antd';
 import { checkUserSession } from './redux/user/user.action';
 import ErrorBoundary from './components/error-boundary/error-boundary.component';
@@ -16,6 +18,8 @@ import {
   setCurrentPage,
 } from './redux/question/question.action';
 const Solution = lazy(() => import('./components/solution/solution.component'));
+const VerifyEmail = lazy(() => import('./pages/verify-email/verifyEmail.page'));
+
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component')
 );
@@ -51,6 +55,10 @@ class App extends React.PureComponent {
             <Suspense fallback={<PlainLoader />}>
               <Switch>
                 <Route exact path='/' render={() => <HomePage />} />
+                <Route
+                  path='/verifyemail/:id'
+                  render={(props) => <VerifyEmail {...props} />}
+                />
                 <Route
                   path='/solution/:id'
                   render={(props) => <Solution {...props} />}

@@ -1,4 +1,4 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects';
+import { takeLatest, put, all, call, select } from 'redux-saga/effects';
 import SuccessMessage from '../../components/message/successMessage.component';
 import FailureMessage from '../../components/message/failureMessage.component';
 import UserActionTypes from './user.types';
@@ -8,20 +8,28 @@ import {
   signInFailure,
   signOutSuccess,
   signOutFailure,
-  signUpSuccess,
+  // signUpSuccess,
   signUpFailure,
   showBtnSkeleton,
   hideBtnSkeleton,
+  emailVerificationSuccess,
+  emailVerificationFailure,
 } from './user.action';
+import { selectCurrentUser } from './user.selector';
 
 import {
   auth,
   googleProvider,
   createUserProfileDocument,
-  getCurrentUser,
+  // getCurrentUser,
 } from '../../firebase/firebase.utils';
 
-import { createUserWithEmailAndPassword } from '../../utils/auth';
+import {
+  createUserWithEmailAndPassword,
+  verifyEmail,
+  signInWithEmailAndPassword,
+  fetchCurrentUser,
+} from '../../utils/auth';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   try {
@@ -62,11 +70,20 @@ export function* signInWithGoogle() {
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
     yield put(toggleLoader(true));
-    const { user } = yield auth.signInWithEmailAndPassword(email, password);
-    yield getSnapshotFromUserAuth(user);
+    const data = yield signInWithEmailAndPassword(email, password);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    const fetchedData = data.data;
+    yield put(signInSuccess(fetchedData));
+    const name = yield fetchedData.displayName.split(' ')[0];
+    yield call(
+      SuccessMessage,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
+    );
   } catch (error) {
     yield put(signInFailure(error));
-    yield call(FailureMessage, error.message.split('.')[0]);
+    yield call(FailureMessage, error.message);
   } finally {
     yield put(toggleLoader(false));
   }
@@ -75,9 +92,20 @@ export function* signInWithEmail({ payload: { email, password } }) {
 export function* isUserAuthenticated() {
   try {
     yield put(showBtnSkeleton());
-    const userAuth = yield getCurrentUser();
-    if (!userAuth) return;
-    yield getSnapshotFromUserAuth(userAuth);
+    const currentUser = yield select(selectCurrentUser);
+    if (!currentUser || !currentUser.token) return;
+    const fetchedUser = yield call(fetchCurrentUser, currentUser.token);
+    if (!fetchedUser.success) {
+      yield put(signOutSuccess());
+      return;
+    }
+    const fetchedData = fetchedUser.data;
+    yield put(signInSuccess(fetchedData));
+    const name = yield fetchedData.displayName.split(' ')[0];
+    yield call(
+      SuccessMessage,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
+    );
   } catch (error) {
     yield put(signInFailure(error));
     yield call(FailureMessage, error.message.split('.')[0]);
@@ -99,24 +127,55 @@ export function* signOut() {
 export function* signUp({ payload: { email, password, displayName } }) {
   try {
     yield put(toggleLoader(true));
-    const { user } = yield createUserWithEmailAndPassword(
+    const data = yield createUserWithEmailAndPassword(
       email,
       password,
       displayName
     );
-    yield put(signUpSuccess({ user, additionalData: { displayName } }));
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    yield call(SuccessMessage, `Please verify your email address`);
   } catch (error) {
+    console.warn('signUp: ', error);
     yield put(signUpFailure(error));
-    yield call(FailureMessage, error.message.split('.')[0]);
+    yield call(FailureMessage, error.message);
+  } finally {
     yield put(toggleLoader(false));
   }
 }
 
-export function* signInAfterSignUp({ payload: { user, additionalData } }) {
+// export function* signInAfterSignUp({ payload: { user, additionalData } }) {
+//   try {
+//     // yield getSnapshotFromUserAuth(user, additionalData);
+//     yield call(SuccessMessage, `Please verify your email address`);
+//   } catch (error) {
+//     console.warn('signInAfterSignUp: ', error);
+//     yield call(FailureMessage, error.message.split('.')[0]);
+//   } finally {
+//     yield put(toggleLoader(false));
+//   }
+// }
+
+export function* emailVerificationStart({ payload }) {
+  yield put(toggleLoader(true));
   try {
-    yield getSnapshotFromUserAuth(user, additionalData);
+    const data = yield call(verifyEmail, payload);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    const fetchedData = data.data;
+    yield put(emailVerificationSuccess(fetchedData));
+    const name = yield fetchedData.displayName.split(' ')[0];
+    yield call(
+      SuccessMessage,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
+    );
   } catch (error) {
-    yield call(FailureMessage, error.message.split('.')[0]);
+    console.warn(error);
+    yield put(emailVerificationFailure(error.message));
+
+    // yield call(FailureMessage, error.message);
   } finally {
     yield put(toggleLoader(false));
   }
@@ -142,9 +201,16 @@ export function* onSignUpStart() {
   yield takeLatest(UserActionTypes.SIGN_UP_START, signUp);
 }
 
-export function* onSignUpSuccess() {
-  yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
+export function* onEmailVerificationStart() {
+  yield takeLatest(
+    UserActionTypes.EMAIL_VERIFICATION_START,
+    emailVerificationStart
+  );
 }
+
+// export function* onSignUpSuccess() {
+//   yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
+// }
 
 export function* userSagas() {
   yield all([
@@ -153,6 +219,6 @@ export function* userSagas() {
     call(onCheckUserSession),
     call(onSignOutStart),
     call(onSignUpStart),
-    call(onSignUpSuccess),
+    call(onEmailVerificationStart),
   ]);
 }

@@ -13,12 +13,16 @@ const persistConfig = {
   // whitelist: ["question"]
   blacklist: ['universal'],
 };
+const userPersistConfig = {
+  key: 'user',
+  storage: storage,
+  whitelist: ['currentUser', 'showBtnSkeleton'],
+};
 
 const rootReducer = combineReducers({
   question: questionReducer,
-  user: userReducer,
   universal: unisersalReducer,
-
+  user: persistReducer(userPersistConfig, userReducer),
   nav: navReducer,
 });
 
