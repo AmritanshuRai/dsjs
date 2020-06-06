@@ -22,3 +22,10 @@ export const ButtonsBarContainer = styled.div`
     height: 100px;
   }
 `;
+
+export const ForgotPasswordContainer = styled.span`
+  color: #1890ff;
+  margin: 8px 0;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+`;

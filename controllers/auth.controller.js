@@ -162,11 +162,14 @@ exports.forgotpassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
-
-  const resetUrl = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/auth/resetpassword/${resetToken}`;
-  const message = `Make a PUT request to ${resetUrl}`;
+  let forwardto;
+  if (req.get('host').split(':')[0] === 'localhost') {
+    forwardto = 'localhost:3000';
+  } else {
+    forwardto = req.get('host');
+  }
+  const resetUrl = `${req.protocol}://${forwardto}/resetpassword/${resetToken}`;
+  const message = `Please click ${resetUrl}`;
 
   try {
     await mail({
@@ -208,7 +211,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   if (!user) {
     return {
-      errorMessage: `Invalid token`,
+      errorMessage: `Link expired or token doesn't exist`,
       errorStatus: 400,
     };
   }

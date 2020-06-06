@@ -28,7 +28,7 @@ router.put(
 router.put('/updatepassword', protect, updatePassword);
 
 router.post('/forgotpassword', forgotpassword);
-router.get('/resetpassword/:id', resetPassword);
+router.put('/resetpassword/:id', resetPassword);
 router.put('/verifyemail/:id', verifyEmail);
 
 router.get('/logout', logout);

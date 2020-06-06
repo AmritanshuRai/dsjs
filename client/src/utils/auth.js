@@ -67,3 +67,37 @@ exports.fetchCurrentUser = async (token) => {
     console.error(err);
   }
 };
+
+exports.forgotPassword = async ({ email }) => {
+  try {
+    let response = await fetch(`/api/v1/auth/forgotpassword`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+exports.resetPassword = async ({ resetToken, password }) => {
+  try {
+    let response = await fetch(`/api/v1/auth/resetpassword/${resetToken}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password,
+      }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+  }
+};

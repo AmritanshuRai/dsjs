@@ -71,3 +71,18 @@ export const emailVerificationFailure = (data) => ({
   type: UserActionTypes.EMAIL_VERIFICATION_FAILURE,
   payload: data,
 });
+
+export const forgotPasswordStart = (data) => ({
+  type: UserActionTypes.FORGOT_PASSWORD_START,
+  payload: data,
+});
+
+export const resetPasswordStart = (data) => ({
+  type: UserActionTypes.RESET_PASSWORD_START,
+  payload: data,
+});
+
+export const resetPasswordFailure = (data) => ({
+  type: UserActionTypes.RESET_PASSWORD_FAILURE,
+  payload: data,
+});

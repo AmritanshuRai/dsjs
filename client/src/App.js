@@ -19,6 +19,9 @@ import {
 } from './redux/question/question.action';
 const Solution = lazy(() => import('./components/solution/solution.component'));
 const VerifyEmail = lazy(() => import('./pages/verify-email/verifyEmail.page'));
+const ResetPassword = lazy(() =>
+  import('./pages/reset-password/resetPassword.page')
+);
 
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component')
@@ -58,6 +61,10 @@ class App extends React.PureComponent {
                 <Route
                   path='/verifyemail/:id'
                   render={(props) => <VerifyEmail {...props} />}
+                />
+                <Route
+                  path='/resetpassword/:id'
+                  render={(props) => <ResetPassword {...props} />}
                 />
                 <Route
                   path='/solution/:id'

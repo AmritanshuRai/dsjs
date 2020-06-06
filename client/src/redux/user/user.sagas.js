@@ -14,6 +14,7 @@ import {
   hideBtnSkeleton,
   emailVerificationSuccess,
   emailVerificationFailure,
+  resetPasswordFailure,
 } from './user.action';
 import { selectCurrentUser } from './user.selector';
 
@@ -29,6 +30,8 @@ import {
   verifyEmail,
   signInWithEmailAndPassword,
   fetchCurrentUser,
+  forgotPassword,
+  resetPassword,
 } from '../../utils/auth';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
@@ -181,6 +184,43 @@ export function* emailVerificationStart({ payload }) {
   }
 }
 
+export function* forgotPasswordStart({ payload }) {
+  yield put(toggleLoader(true));
+  try {
+    const data = yield call(forgotPassword, payload);
+    console.warn('data: ', data);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    yield call(SuccessMessage, `Please check your email`);
+  } catch (error) {
+    console.warn(error);
+    // yield put(emailVerificationFailure(error.message));
+    yield call(FailureMessage, error.message);
+  } finally {
+    yield put(toggleLoader(false));
+  }
+}
+
+export function* resetPasswordStart({ payload }) {
+  try {
+    yield put(toggleLoader(true));
+    const data = yield call(resetPassword, payload);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    const fetchedData = data.data;
+    yield put(signInSuccess(fetchedData));
+    yield call(payload.afterSuccessCallback);
+    yield call(SuccessMessage, `Password updated`);
+  } catch (error) {
+    console.warn(error);
+    yield put(resetPasswordFailure(error.message));
+    yield call(FailureMessage, error.message);
+  } finally {
+    yield put(toggleLoader(false));
+  }
+}
 export function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
@@ -208,6 +248,13 @@ export function* onEmailVerificationStart() {
   );
 }
 
+export function* onForgotPasswordStart() {
+  yield takeLatest(UserActionTypes.FORGOT_PASSWORD_START, forgotPasswordStart);
+}
+
+export function* onResetPasswordStart() {
+  yield takeLatest(UserActionTypes.RESET_PASSWORD_START, resetPasswordStart);
+}
 // export function* onSignUpSuccess() {
 //   yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
 // }
@@ -220,5 +267,7 @@ export function* userSagas() {
     call(onSignOutStart),
     call(onSignUpStart),
     call(onEmailVerificationStart),
+    call(onForgotPasswordStart),
+    call(onResetPasswordStart),
   ]);
 }
