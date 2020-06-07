@@ -114,10 +114,7 @@ exports.sendGoogleToken = async ({ profileObj, tokenId }) => {
         profileObj,
       }),
     });
-    // console.warn(' console.log(res.data);', response.json());
-    const lauda = await response.json();
-    console.log('sendGoogleToken: ', lauda);
-    return lauda;
+    return await response.json();
   } catch (err) {
     console.error(err);
   }
