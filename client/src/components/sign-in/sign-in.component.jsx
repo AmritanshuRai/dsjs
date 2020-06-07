@@ -6,6 +6,7 @@ import CustomButton from '../custom-button/custom-button.component';
 import { selectRenderSignIn } from '../../redux/universal/universal.selector';
 import { toggleRenderSignIn } from '../../redux/universal/universal.action';
 import ForgotPassword from './forgot-password.component';
+import { GoogleLogin } from 'react-google-login';
 
 import {
   googleSignInStart,
@@ -43,7 +44,9 @@ const SignIn = ({
 
     setCredentials({ ...userCredentials, [name]: value });
   };
-
+  const responseGoogle = ({ profileObj, tokenId }) => {
+    googleSignInStart({ profileObj, tokenId });
+  };
   return renderSignIn ? (
     <SignInContainer>
       <SignInTitle>I already have an account</SignInTitle>
@@ -68,13 +71,22 @@ const SignIn = ({
         />
         <ButtonsBarContainer>
           <CustomButton type='submit'> Sign in </CustomButton>
-          <CustomButton
-            type='button'
-            onClick={googleSignInStart}
-            isGoogleSignIn
-          >
-            Sign in with Google
-          </CustomButton>
+          <GoogleLogin
+            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT}`}
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+            render={(renderProps) => (
+              <CustomButton
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                type='button'
+                isGoogleSignIn
+              >
+                Sign in with Google
+              </CustomButton>
+            )}
+          ></GoogleLogin>
         </ButtonsBarContainer>
       </form>
       <ForgotPasswordContainer onClick={toggleRenderSignIn}>
@@ -87,7 +99,7 @@ const SignIn = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  googleSignInStart: () => dispatch(googleSignInStart()),
+  googleSignInStart: (data) => dispatch(googleSignInStart(data)),
   emailSignInStart: (email, password) =>
     dispatch(emailSignInStart({ email, password })),
   toggleRenderSignIn: () => dispatch(toggleRenderSignIn()),

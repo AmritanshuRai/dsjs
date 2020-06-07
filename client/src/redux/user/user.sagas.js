@@ -20,7 +20,7 @@ import { selectCurrentUser } from './user.selector';
 
 import {
   auth,
-  googleProvider,
+  // googleProvider,
   createUserProfileDocument,
   // getCurrentUser,
 } from '../../firebase/firebase.utils';
@@ -32,6 +32,7 @@ import {
   fetchCurrentUser,
   forgotPassword,
   resetPassword,
+  sendGoogleToken,
 } from '../../utils/auth';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
@@ -57,11 +58,21 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   }
 }
 
-export function* signInWithGoogle() {
+export function* signInWithGoogle({ payload }) {
   try {
     yield put(toggleLoader(true));
-    const { user } = yield auth.signInWithPopup(googleProvider);
-    yield getSnapshotFromUserAuth(user);
+    const data = yield sendGoogleToken(payload);
+    yield console.warn('signInWithGoogleSAGA: ', data);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    const fetchedData = data.data;
+    yield put(signInSuccess(fetchedData));
+    const name = yield fetchedData.displayName.split(' ')[0];
+    yield call(
+      SuccessMessage,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
+    );
   } catch (error) {
     yield put(signInFailure(error));
     yield call(FailureMessage, error.message.split('.')[0]);
@@ -140,7 +151,7 @@ export function* signUp({ payload: { email, password, displayName } }) {
     }
     yield call(SuccessMessage, `Please verify your email address`);
   } catch (error) {
-    console.warn('signUp: ', error);
+    console.error('signUp: ', error);
     yield put(signUpFailure(error));
     yield call(FailureMessage, error.message);
   } finally {
@@ -188,13 +199,12 @@ export function* forgotPasswordStart({ payload }) {
   yield put(toggleLoader(true));
   try {
     const data = yield call(forgotPassword, payload);
-    console.warn('data: ', data);
     if (!data.success) {
       throw new Error(data.error);
     }
     yield call(SuccessMessage, `Please check your email`);
   } catch (error) {
-    console.warn(error);
+    console.error(error);
     // yield put(emailVerificationFailure(error.message));
     yield call(FailureMessage, error.message);
   } finally {

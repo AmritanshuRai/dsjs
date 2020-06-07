@@ -101,3 +101,24 @@ exports.resetPassword = async ({ resetToken, password }) => {
     console.error(err);
   }
 };
+
+exports.sendGoogleToken = async ({ profileObj, tokenId }) => {
+  try {
+    let response = await fetch(`/api/v1/auth/googlelogin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idToken: tokenId,
+        profileObj,
+      }),
+    });
+    // console.warn(' console.log(res.data);', response.json());
+    const lauda = await response.json();
+    console.log('sendGoogleToken: ', lauda);
+    return lauda;
+  } catch (err) {
+    console.error(err);
+  }
+};

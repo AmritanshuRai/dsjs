@@ -1,9 +1,50 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const { seperator } = require('../utils/chalk.util');
 const { User, UserSchema } = require('../models/User.model');
+const { OAuth2Client } = require('google-auth-library');
+
 const asyncHandler = require('../middlewares/asyncHandler.middleware');
 const mail = require('../utils/mail.util');
 const crypto = require('crypto');
+
+// @desc      Google sign in
+// @route     POST /api/v1/auth/googlelogin
+// @access    Private
+exports.googleController = asyncHandler(async (req, res, next) => {
+  const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
+
+  const { idToken } = req.body;
+
+  const response = await client.verifyIdToken({
+    idToken,
+    audience: process.env.GOOGLE_CLIENT,
+  });
+  const { email_verified, name, email } = response.payload;
+  if (!name || !email) {
+    return {
+      errorMessage: `It's raining men, hallelujah`,
+      errorStatus: 400,
+    };
+  }
+  if (email_verified) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      const userInstance = new User({
+        name,
+        email,
+        role: 'user',
+        verified: true,
+      });
+      await userInstance.save({ validateBeforeSave: false });
+      return sendTokenResponse(userInstance);
+    }
+    return sendTokenResponse(user);
+  }
+  return {
+    errorMessage: 'Google login failed. Try again.',
+    errorStatus: 401,
+  };
+});
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register

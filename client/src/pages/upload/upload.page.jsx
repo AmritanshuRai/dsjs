@@ -49,7 +49,7 @@ class MyEditor extends Component {
     const blocksFromHTML = convertFromHTML(sampleMarkup);
     const state = ContentState.createFromBlockArray(
       blocksFromHTML.contentBlocks,
-      blocksFromHTML.entityMap,
+      blocksFromHTML.entityMap
     );
     const editorState = EditorState.createWithContent(state);
     return editorState;
@@ -152,15 +152,14 @@ class MyEditor extends Component {
       explanationState,
       descriptionState,
     } = this.state;
-    // console.warn(draftToHtml(convertToRaw(solutionState.getCurrentContent())));
     const dataObj = {
       title: this.generatePlainText(titleState),
       solution: this.generatePlainText(solutionState),
       explanation: draftToHtml(
-        convertToRaw(explanationState.getCurrentContent()),
+        convertToRaw(explanationState.getCurrentContent())
       ),
       description: draftToHtml(
-        convertToRaw(descriptionState.getCurrentContent()),
+        convertToRaw(descriptionState.getCurrentContent())
       ),
     };
 
@@ -220,7 +219,7 @@ class MyEditor extends Component {
                     {
                       titleState: editorState,
                     },
-                    () => this.saveEditorData('titleState'),
+                    () => this.saveEditorData('titleState')
                   );
                 }}
               />
@@ -249,7 +248,7 @@ class MyEditor extends Component {
                     {
                       descriptionState: editorState,
                     },
-                    () => this.saveEditorData('descriptionState'),
+                    () => this.saveEditorData('descriptionState')
                   );
                 }}
               />
@@ -285,7 +284,7 @@ class MyEditor extends Component {
                     {
                       solutionState: editorState,
                     },
-                    () => this.saveEditorData('solutionState'),
+                    () => this.saveEditorData('solutionState')
                   );
                 }}
               />
@@ -314,7 +313,7 @@ class MyEditor extends Component {
                     {
                       explanationState: editorState,
                     },
-                    () => this.saveEditorData('explanationState'),
+                    () => this.saveEditorData('explanationState')
                   );
                 }}
               />
