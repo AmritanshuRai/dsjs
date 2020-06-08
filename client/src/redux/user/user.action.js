@@ -4,6 +4,10 @@ export const googleSignInStart = (data) => ({
   type: UserActionTypes.GOOGLE_SIGN_IN_START,
   payload: data,
 });
+export const facebookSignInStart = (data) => ({
+  type: UserActionTypes.FACEBOOK_SIGN_IN_START,
+  payload: data,
+});
 
 export const signInSuccess = (user) => ({
   type: UserActionTypes.SIGN_IN_SUCCESS,

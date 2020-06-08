@@ -2,10 +2,38 @@
 const { seperator } = require('../utils/chalk.util');
 const { User, UserSchema } = require('../models/User.model');
 const { OAuth2Client } = require('google-auth-library');
-
+const fetch = require('node-fetch');
 const asyncHandler = require('../middlewares/asyncHandler.middleware');
 const mail = require('../utils/mail.util');
 const crypto = require('crypto');
+const shortid = require('shortid').generate;
+
+// @desc      Google sign in
+// @route     POST /api/v1/auth/googlelogin
+// @access    Private
+
+exports.facebookController = asyncHandler(async (req, res, next) => {
+  const { userID, accessToken } = req.body;
+  const url = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
+  let response = await fetch(url, {
+    method: 'GET',
+  });
+  response = await response.json();
+  const { email, name } = response;
+  const user = await User.findOne({ email });
+  if (!user) {
+    const userInstance = new User({
+      name,
+      email,
+      role: 'user',
+      verified: true,
+      password: shortid(),
+    });
+    await userInstance.save();
+    return sendTokenResponse(userInstance);
+  }
+  return sendTokenResponse(user);
+});
 
 // @desc      Google sign in
 // @route     POST /api/v1/auth/googlelogin
@@ -34,8 +62,9 @@ exports.googleController = asyncHandler(async (req, res, next) => {
         email,
         role: 'user',
         verified: true,
+        password: shortid(),
       });
-      await userInstance.save({ validateBeforeSave: false });
+      await userInstance.save();
       return sendTokenResponse(userInstance);
     }
     return sendTokenResponse(user);

@@ -10,6 +10,7 @@ const {
   verifyEmail,
   logout,
   googleController,
+  facebookController,
 } = require('../controllers/auth.controller');
 const { User, UserSchema } = require('../models/User.model');
 const { protect } = require('../middlewares/auth.middleware');
@@ -35,6 +36,6 @@ router.put('/verifyemail/:id', verifyEmail);
 router.get('/logout', logout);
 // Google and Facebook Login
 router.post('/googlelogin', googleController);
-// router.post('/facebooklogin', facebookController)
+router.post('/facebooklogin', facebookController);
 
 module.exports = router;

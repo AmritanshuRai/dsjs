@@ -119,3 +119,21 @@ exports.sendGoogleToken = async ({ profileObj, tokenId }) => {
     console.error(err);
   }
 };
+
+exports.sendFacebookToken = async ({ userID, accessToken }) => {
+  try {
+    let response = await fetch(`/api/v1/auth/facebooklogin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userID,
+        accessToken,
+      }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+  }
+};

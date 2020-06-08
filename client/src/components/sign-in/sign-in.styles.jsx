@@ -29,3 +29,10 @@ export const ForgotPasswordContainer = styled.span`
   cursor: pointer;
   letter-spacing: 0.5px;
 `;
+export const Icons = styled.div`
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  font-size: 28px;
+  color: black;
+`;

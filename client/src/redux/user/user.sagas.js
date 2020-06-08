@@ -33,6 +33,7 @@ import {
   forgotPassword,
   resetPassword,
   sendGoogleToken,
+  sendFacebookToken,
 } from '../../utils/auth';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
@@ -80,7 +81,28 @@ export function* signInWithGoogle({ payload }) {
     yield put(toggleLoader(false));
   }
 }
-
+export function* signInWithFacebook({ payload }) {
+  try {
+    yield put(toggleLoader(true));
+    const data = yield sendFacebookToken(payload);
+    yield console.warn('signInWithFacebbookSAGA: ', data);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    const fetchedData = data.data;
+    yield put(signInSuccess(fetchedData));
+    const name = yield fetchedData.displayName.split(' ')[0];
+    yield call(
+      SuccessMessage,
+      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
+    );
+  } catch (error) {
+    yield put(signInFailure(error));
+    yield call(FailureMessage, error.message.split('.')[0]);
+  } finally {
+    yield put(toggleLoader(false));
+  }
+}
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
     yield put(toggleLoader(true));
@@ -234,7 +256,9 @@ export function* resetPasswordStart({ payload }) {
 export function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
-
+export function* onFacebookSignInStart() {
+  yield takeLatest(UserActionTypes.FACEBOOK_SIGN_IN_START, signInWithFacebook);
+}
 export function* onEmailSignInStart() {
   yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
 }
@@ -272,6 +296,7 @@ export function* onResetPasswordStart() {
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
+    call(onFacebookSignInStart),
     call(onEmailSignInStart),
     call(onCheckUserSession),
     call(onSignOutStart),

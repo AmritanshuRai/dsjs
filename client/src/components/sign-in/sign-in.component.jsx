@@ -7,10 +7,12 @@ import { selectRenderSignIn } from '../../redux/universal/universal.selector';
 import { toggleRenderSignIn } from '../../redux/universal/universal.action';
 import ForgotPassword from './forgot-password.component';
 import { GoogleLogin } from 'react-google-login';
-
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { GoogleCircleFilled, FacebookFilled } from '@ant-design/icons';
 import {
   googleSignInStart,
   emailSignInStart,
+  facebookSignInStart,
 } from '../../redux/user/user.action';
 
 import {
@@ -18,6 +20,7 @@ import {
   SignInTitle,
   ButtonsBarContainer,
   ForgotPasswordContainer,
+  Icons,
 } from './sign-in.styles';
 
 const SignIn = ({
@@ -25,6 +28,7 @@ const SignIn = ({
   googleSignInStart,
   renderSignIn,
   toggleRenderSignIn,
+  facebookSignInStart,
 }) => {
   const [userCredentials, setCredentials] = useState({
     email: '',
@@ -46,6 +50,12 @@ const SignIn = ({
   };
   const responseGoogle = ({ profileObj, tokenId }) => {
     googleSignInStart({ profileObj, tokenId });
+  };
+  const responseFacebook = (response) => {
+    facebookSignInStart({
+      userID: response.userID,
+      accessToken: response.accessToken,
+    });
   };
   return renderSignIn ? (
     <SignInContainer>
@@ -77,16 +87,26 @@ const SignIn = ({
             onFailure={responseGoogle}
             cookiePolicy={'single_host_origin'}
             render={(renderProps) => (
-              <CustomButton
-                onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
-                type='button'
-                isGoogleSignIn
-              >
-                Sign in with Google
-              </CustomButton>
+              <Icons>
+                <GoogleCircleFilled
+                  className='signin_icon'
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                  type='button'
+                />
+              </Icons>
             )}
           ></GoogleLogin>
+          <FacebookLogin
+            appId={`${process.env.REACT_APP_FACEBOOK_CLIENT}`}
+            autoLoad={false}
+            callback={responseFacebook}
+            render={(renderProps) => (
+              <Icons>
+                <FacebookFilled type='button' onClick={renderProps.onClick} />
+              </Icons>
+            )}
+          />
         </ButtonsBarContainer>
       </form>
       <ForgotPasswordContainer onClick={toggleRenderSignIn}>
@@ -100,6 +120,7 @@ const SignIn = ({
 
 const mapDispatchToProps = (dispatch) => ({
   googleSignInStart: (data) => dispatch(googleSignInStart(data)),
+  facebookSignInStart: (data) => dispatch(facebookSignInStart(data)),
   emailSignInStart: (email, password) =>
     dispatch(emailSignInStart({ email, password })),
   toggleRenderSignIn: () => dispatch(toggleRenderSignIn()),
