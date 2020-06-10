@@ -8,6 +8,84 @@ const mail = require('../utils/mail.util');
 const crypto = require('crypto');
 const shortid = require('shortid').generate;
 
+// @desc      Github sign in
+// @route     POST /api/v1/auth/githubauth
+// @access    Private
+
+exports.githubController = asyncHandler(async (req, res, next) => {
+  // const {
+  //   query: { code },
+  // } = req;
+  const { code } = req.body;
+
+  if (!code) {
+    return {
+      errorMessage: `Github login failed: No code present`,
+      errorStatus: 400,
+    };
+  }
+  console.log('process.env', process.env);
+  const url = `https://github.com/login/oauth/access_token`;
+  let accessTokenRes = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_SECRET_KEY,
+      code,
+    }),
+  });
+
+  const accessToken = await accessTokenRes.json();
+  console.log('accessToken: ', accessToken);
+
+  let userDetailsRes = await fetch(`https://api.github.com/user`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `token ${accessToken.access_token}`,
+    },
+  });
+  const userDetails = await userDetailsRes.json();
+
+  const userEmailRes = await fetch(`https://api.github.com/user/emails`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `token ${accessToken.access_token}`,
+    },
+  });
+  const userEmail = await userEmailRes.json();
+  console.log('userEmail: ', userEmail);
+  if (!userEmail[0].email || !userEmail[0].verified) {
+    return {
+      errorMessage: `Cannot verify your email address.`,
+      errorStatus: 401,
+    };
+  }
+  const email = userEmail[0].email;
+  const name = userDetails.login;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    const userInstance = new User({
+      name,
+      email,
+      role: 'user',
+      verified: true,
+      password: shortid(),
+    });
+    await userInstance.save();
+    return sendTokenResponse(userInstance);
+  }
+  return sendTokenResponse(user);
+});
+
 // @desc      Google sign in
 // @route     POST /api/v1/auth/googlelogin
 // @access    Private

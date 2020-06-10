@@ -9,6 +9,14 @@ export const SignInContainer = styled.div`
     margin-bottom: 50px;
   }
 `;
+export const SocialLoginMobile = styled.div`
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+`;
 
 export const SignInTitle = styled.h2`
   margin: 10px 0;

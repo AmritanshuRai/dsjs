@@ -31,6 +31,7 @@ const Approve = lazy(() => import('./pages/approve/approve.page'));
 const PageNotFound = lazy(() => import('./pages/404/404.page'));
 const MyEditor = lazy(() => import('./pages/upload/upload.page'));
 const Thanks = lazy(() => import('./pages/thanks/thanks.page'));
+const GithubAuth = lazy(() => import('./pages/githubAuth/githubAuth.page'));
 
 class App extends React.PureComponent {
   unsubscribeFromAuth = null;
@@ -65,6 +66,16 @@ class App extends React.PureComponent {
                 <Route
                   path='/resetpassword/:id'
                   render={(props) => <ResetPassword {...props} />}
+                />
+                <Route
+                  path='/githubauth'
+                  render={(props) =>
+                    this.props.currentUser ? (
+                      <Redirect to='/' />
+                    ) : (
+                      <GithubAuth {...props} />
+                    )
+                  }
                 />
                 <Route
                   path='/solution/:id'

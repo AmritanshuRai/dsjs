@@ -35,7 +35,7 @@ exports.verifyEmail = async (tokenFromEmail) => {
   }
 };
 
-exports.signInWithEmailAndPassword = async (email, password) => {
+exports.signInWithEmailAndPassword = async ({ email, password }) => {
   try {
     let response = await fetch(`/api/v1/auth/login`, {
       method: 'POST',
@@ -130,6 +130,23 @@ exports.sendFacebookToken = async ({ userID, accessToken }) => {
       body: JSON.stringify({
         userID,
         accessToken,
+      }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+exports.sendGithubCode = async (code) => {
+  try {
+    let response = await fetch(`/api/v1/auth/getgithubcode`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code,
       }),
     });
     return await response.json();

@@ -8,7 +8,12 @@ import { toggleRenderSignIn } from '../../redux/universal/universal.action';
 import ForgotPassword from './forgot-password.component';
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import { GoogleCircleFilled, FacebookFilled } from '@ant-design/icons';
+
+import {
+  GoogleCircleFilled,
+  FacebookFilled,
+  GithubFilled,
+} from '@ant-design/icons';
 import {
   googleSignInStart,
   emailSignInStart,
@@ -21,6 +26,7 @@ import {
   ButtonsBarContainer,
   ForgotPasswordContainer,
   Icons,
+  SocialLoginMobile,
 } from './sign-in.styles';
 
 const SignIn = ({
@@ -57,6 +63,7 @@ const SignIn = ({
       accessToken: response.accessToken,
     });
   };
+
   return renderSignIn ? (
     <SignInContainer>
       <SignInTitle>I already have an account</SignInTitle>
@@ -81,32 +88,39 @@ const SignIn = ({
         />
         <ButtonsBarContainer>
           <CustomButton type='submit'> Sign in </CustomButton>
-          <GoogleLogin
-            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT}`}
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-            render={(renderProps) => (
-              <Icons>
-                <GoogleCircleFilled
-                  className='signin_icon'
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                  type='button'
-                />
-              </Icons>
-            )}
-          ></GoogleLogin>
-          <FacebookLogin
-            appId={`${process.env.REACT_APP_FACEBOOK_CLIENT}`}
-            autoLoad={false}
-            callback={responseFacebook}
-            render={(renderProps) => (
-              <Icons>
-                <FacebookFilled type='button' onClick={renderProps.onClick} />
-              </Icons>
-            )}
-          />
+          <SocialLoginMobile>
+            <GoogleLogin
+              clientId={`${process.env.REACT_APP_GOOGLE_CLIENT}`}
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+              render={(renderProps) => (
+                <Icons>
+                  <GoogleCircleFilled
+                    className='signin_icon'
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                    type='button'
+                  />
+                </Icons>
+              )}
+            ></GoogleLogin>
+            <FacebookLogin
+              appId={`${process.env.REACT_APP_FACEBOOK_CLIENT}`}
+              autoLoad={false}
+              callback={responseFacebook}
+              render={(renderProps) => (
+                <Icons>
+                  <FacebookFilled type='button' onClick={renderProps.onClick} />
+                </Icons>
+              )}
+            />
+            <Icons>
+              <a href='https://github.com/login/oauth/authorize?client_id=ab99db16bb8229a4df62&scope=user'>
+                <GithubFilled type='button'></GithubFilled>
+              </a>
+            </Icons>
+          </SocialLoginMobile>
         </ButtonsBarContainer>
       </form>
       <ForgotPasswordContainer onClick={toggleRenderSignIn}>

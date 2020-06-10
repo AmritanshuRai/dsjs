@@ -11,6 +11,7 @@ const {
   logout,
   googleController,
   facebookController,
+  githubController,
 } = require('../controllers/auth.controller');
 const { User, UserSchema } = require('../models/User.model');
 const { protect } = require('../middlewares/auth.middleware');
@@ -37,5 +38,6 @@ router.get('/logout', logout);
 // Google and Facebook Login
 router.post('/googlelogin', googleController);
 router.post('/facebooklogin', facebookController);
+router.post('/getgithubcode', githubController);
 
 module.exports = router;

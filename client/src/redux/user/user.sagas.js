@@ -19,13 +19,6 @@ import {
 import { selectCurrentUser } from './user.selector';
 
 import {
-  auth,
-  // googleProvider,
-  createUserProfileDocument,
-  // getCurrentUser,
-} from '../../firebase/firebase.utils';
-
-import {
   createUserWithEmailAndPassword,
   verifyEmail,
   signInWithEmailAndPassword,
@@ -34,21 +27,19 @@ import {
   resetPassword,
   sendGoogleToken,
   sendFacebookToken,
+  sendGithubCode,
 } from '../../utils/auth';
 
-export function* getSnapshotFromUserAuth(userAuth, additionalData) {
+export function* socialLogin(func, payload) {
   try {
-    const userRef = yield call(
-      createUserProfileDocument,
-      userAuth,
-      additionalData
-    );
-    const userSnapshot = yield userRef.get();
-    yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
-    const displayName = yield !!userSnapshot.data().displayName
-      ? userSnapshot.data().displayName
-      : additionalData.displayName;
-    const name = yield displayName.split(' ')[0];
+    yield put(toggleLoader(true));
+    const data = yield func(payload);
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    const fetchedData = data.data;
+    yield put(signInSuccess(fetchedData));
+    const name = yield fetchedData.displayName.split(' ')[0];
     yield call(
       SuccessMessage,
       `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
@@ -56,73 +47,24 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   } catch (error) {
     yield put(signInFailure(error));
     yield call(FailureMessage, error.message.split('.')[0]);
+  } finally {
+    yield put(toggleLoader(false));
   }
+}
+
+export function* signInWithGithub({ payload }) {
+  yield call(socialLogin, sendGithubCode, payload);
 }
 
 export function* signInWithGoogle({ payload }) {
-  try {
-    yield put(toggleLoader(true));
-    const data = yield sendGoogleToken(payload);
-    yield console.warn('signInWithGoogleSAGA: ', data);
-    if (!data.success) {
-      throw new Error(data.error);
-    }
-    const fetchedData = data.data;
-    yield put(signInSuccess(fetchedData));
-    const name = yield fetchedData.displayName.split(' ')[0];
-    yield call(
-      SuccessMessage,
-      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
-    );
-  } catch (error) {
-    yield put(signInFailure(error));
-    yield call(FailureMessage, error.message.split('.')[0]);
-  } finally {
-    yield put(toggleLoader(false));
-  }
+  yield call(socialLogin, sendGoogleToken, payload);
 }
 export function* signInWithFacebook({ payload }) {
-  try {
-    yield put(toggleLoader(true));
-    const data = yield sendFacebookToken(payload);
-    yield console.warn('signInWithFacebbookSAGA: ', data);
-    if (!data.success) {
-      throw new Error(data.error);
-    }
-    const fetchedData = data.data;
-    yield put(signInSuccess(fetchedData));
-    const name = yield fetchedData.displayName.split(' ')[0];
-    yield call(
-      SuccessMessage,
-      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
-    );
-  } catch (error) {
-    yield put(signInFailure(error));
-    yield call(FailureMessage, error.message.split('.')[0]);
-  } finally {
-    yield put(toggleLoader(false));
-  }
+  yield call(socialLogin, sendFacebookToken, payload);
 }
-export function* signInWithEmail({ payload: { email, password } }) {
-  try {
-    yield put(toggleLoader(true));
-    const data = yield signInWithEmailAndPassword(email, password);
-    if (!data.success) {
-      throw new Error(data.error);
-    }
-    const fetchedData = data.data;
-    yield put(signInSuccess(fetchedData));
-    const name = yield fetchedData.displayName.split(' ')[0];
-    yield call(
-      SuccessMessage,
-      `Hi, ${name.charAt(0).toUpperCase() + name.slice(1)}`
-    );
-  } catch (error) {
-    yield put(signInFailure(error));
-    yield call(FailureMessage, error.message);
-  } finally {
-    yield put(toggleLoader(false));
-  }
+
+export function* signInWithEmail({ payload }) {
+  yield call(socialLogin, signInWithEmailAndPassword, payload);
 }
 
 export function* isUserAuthenticated() {
@@ -152,7 +94,6 @@ export function* isUserAuthenticated() {
 
 export function* signOut() {
   try {
-    yield auth.signOut();
     yield put(signOutSuccess());
   } catch (error) {
     yield put(signOutFailure(error));
@@ -180,18 +121,6 @@ export function* signUp({ payload: { email, password, displayName } }) {
     yield put(toggleLoader(false));
   }
 }
-
-// export function* signInAfterSignUp({ payload: { user, additionalData } }) {
-//   try {
-//     // yield getSnapshotFromUserAuth(user, additionalData);
-//     yield call(SuccessMessage, `Please verify your email address`);
-//   } catch (error) {
-//     console.warn('signInAfterSignUp: ', error);
-//     yield call(FailureMessage, error.message.split('.')[0]);
-//   } finally {
-//     yield put(toggleLoader(false));
-//   }
-// }
 
 export function* emailVerificationStart({ payload }) {
   yield put(toggleLoader(true));
@@ -259,6 +188,9 @@ export function* onGoogleSignInStart() {
 export function* onFacebookSignInStart() {
   yield takeLatest(UserActionTypes.FACEBOOK_SIGN_IN_START, signInWithFacebook);
 }
+export function* onGithubSignInStart() {
+  yield takeLatest(UserActionTypes.GITHUB_SIGN_IN_START, signInWithGithub);
+}
 export function* onEmailSignInStart() {
   yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
 }
@@ -289,9 +221,6 @@ export function* onForgotPasswordStart() {
 export function* onResetPasswordStart() {
   yield takeLatest(UserActionTypes.RESET_PASSWORD_START, resetPasswordStart);
 }
-// export function* onSignUpSuccess() {
-//   yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
-// }
 
 export function* userSagas() {
   yield all([
@@ -304,5 +233,6 @@ export function* userSagas() {
     call(onEmailVerificationStart),
     call(onForgotPasswordStart),
     call(onResetPasswordStart),
+    call(onGithubSignInStart),
   ]);
 }
