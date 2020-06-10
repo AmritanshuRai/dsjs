@@ -179,12 +179,12 @@ exports.register = asyncHandler(async (req, res, next) => {
     resetPasswordToken,
     resetPasswordExpire,
   });
-  let forwardto;
-  if (req.get('host').split(':')[0] === 'localhost') {
-    forwardto = 'localhost:3000';
-  } else {
-    forwardto = req.get('host');
-  }
+  // let forwardto;
+  // if (req.get('host').split(':')[0] === 'localhost') {
+  //   forwardto = 'localhost:3000';
+  // } else {
+  //   forwardto = req.get('host');
+  // }
   const verificationUrl = `${req.headers.origin}/verifyemail/${resetToken}`;
   const message = `Please Click ${verificationUrl}`;
   try {
@@ -310,13 +310,14 @@ exports.forgotpassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
-  let forwardto;
-  if (req.get('host').split(':')[0] === 'localhost') {
-    forwardto = 'localhost:3000';
-  } else {
-    forwardto = req.get('host');
-  }
-  const resetUrl = `${req.protocol}://${forwardto}/resetpassword/${resetToken}`;
+  // let forwardto;
+  // if (req.get('host').split(':')[0] === 'localhost') {
+  //   forwardto = 'localhost:3000';
+  // } else {
+  //   forwardto = req.get('host');
+  // }
+  // const resetUrl = `${req.protocol}://${forwardto}/resetpassword/${resetToken}`;
+  const resetUrl = `${req.headers.origin}/resetpassword/${resetToken}`;
   const message = `Please click ${resetUrl}`;
 
   try {
