@@ -116,7 +116,7 @@ const SignIn = ({
               )}
             />
             <Icons>
-              <a href='https://github.com/login/oauth/authorize?client_id=ab99db16bb8229a4df62&scope=user'>
+              <a href='https://github.com/login/oauth/authorize?client_id=971e0b72257a604d5922&scope=user'>
                 <GithubFilled type='button'></GithubFilled>
               </a>
             </Icons>

@@ -185,7 +185,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   } else {
     forwardto = req.get('host');
   }
-  const verificationUrl = `${req.protocol}://${forwardto}/verifyemail/${resetToken}`;
+  const verificationUrl = `${req.headers.origin}/verifyemail/${resetToken}`;
   const message = `Please Click ${verificationUrl}`;
   try {
     await mail({

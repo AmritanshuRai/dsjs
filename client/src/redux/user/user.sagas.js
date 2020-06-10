@@ -19,7 +19,6 @@ import {
 import { selectCurrentUser } from './user.selector';
 
 import {
-  createUserWithEmailAndPassword,
   verifyEmail,
   signInWithEmailAndPassword,
   fetchCurrentUser,
@@ -28,6 +27,7 @@ import {
   sendGoogleToken,
   sendFacebookToken,
   sendGithubCode,
+  createUser,
 } from '../../utils/auth';
 
 export function* socialLogin(func, payload) {
@@ -104,11 +104,8 @@ export function* signOut() {
 export function* signUp({ payload: { email, password, displayName } }) {
   try {
     yield put(toggleLoader(true));
-    const data = yield createUserWithEmailAndPassword(
-      email,
-      password,
-      displayName
-    );
+    const data = yield call(createUser, email, password, displayName);
+    // const data = yield createUser(email, password, displayName);
     if (!data.success) {
       throw new Error(data.error);
     }

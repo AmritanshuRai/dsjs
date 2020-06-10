@@ -1,5 +1,17 @@
-exports.createUserWithEmailAndPassword = async (email, password, name) => {
-  // const { collectionName, title, solution, explanation, description } = dataObj;
+export const verifyEmail = async (tokenFromEmail) => {
+  try {
+    let response = await fetch(`/api/v1/auth/verifyemail/${tokenFromEmail}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+  }
+};
+export const createUser = async (email, password, name) => {
   try {
     let response = await fetch(`/api/v1/auth/register`, {
       method: 'POST',
@@ -20,22 +32,7 @@ exports.createUserWithEmailAndPassword = async (email, password, name) => {
     console.log(err);
   }
 };
-
-exports.verifyEmail = async (tokenFromEmail) => {
-  try {
-    let response = await fetch(`/api/v1/auth/verifyemail/${tokenFromEmail}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-exports.signInWithEmailAndPassword = async ({ email, password }) => {
+export const signInWithEmailAndPassword = async ({ email, password }) => {
   try {
     let response = await fetch(`/api/v1/auth/login`, {
       method: 'POST',
@@ -52,8 +49,7 @@ exports.signInWithEmailAndPassword = async ({ email, password }) => {
     console.error(err);
   }
 };
-
-exports.fetchCurrentUser = async (token) => {
+export const fetchCurrentUser = async (token) => {
   try {
     let response = await fetch(`/api/v1/auth/me`, {
       method: 'GET',
@@ -68,7 +64,7 @@ exports.fetchCurrentUser = async (token) => {
   }
 };
 
-exports.forgotPassword = async ({ email }) => {
+export const forgotPassword = async ({ email }) => {
   try {
     let response = await fetch(`/api/v1/auth/forgotpassword`, {
       method: 'POST',
@@ -85,7 +81,7 @@ exports.forgotPassword = async ({ email }) => {
   }
 };
 
-exports.resetPassword = async ({ resetToken, password }) => {
+export const resetPassword = async ({ resetToken, password }) => {
   try {
     let response = await fetch(`/api/v1/auth/resetpassword/${resetToken}`, {
       method: 'PUT',
@@ -102,7 +98,7 @@ exports.resetPassword = async ({ resetToken, password }) => {
   }
 };
 
-exports.sendGoogleToken = async ({ profileObj, tokenId }) => {
+export const sendGoogleToken = async ({ profileObj, tokenId }) => {
   try {
     let response = await fetch(`/api/v1/auth/googlelogin`, {
       method: 'POST',
@@ -120,7 +116,7 @@ exports.sendGoogleToken = async ({ profileObj, tokenId }) => {
   }
 };
 
-exports.sendFacebookToken = async ({ userID, accessToken }) => {
+export const sendFacebookToken = async ({ userID, accessToken }) => {
   try {
     let response = await fetch(`/api/v1/auth/facebooklogin`, {
       method: 'POST',
@@ -138,7 +134,7 @@ exports.sendFacebookToken = async ({ userID, accessToken }) => {
   }
 };
 
-exports.sendGithubCode = async (code) => {
+export const sendGithubCode = async (code) => {
   try {
     let response = await fetch(`/api/v1/auth/getgithubcode`, {
       method: 'POST',
