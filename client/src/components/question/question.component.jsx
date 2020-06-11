@@ -11,9 +11,18 @@ const { Panel } = Collapse;
 const Question = (props) => {
   const {
     id = 1,
-    question: { title = '', description = '' },
+    question: { title = '', description = '', level = 1 },
   } = props;
-
+  const difficulty = (rating) => {
+    switch (rating) {
+      case 1:
+        return 'E';
+      case 2:
+        return 'M';
+      default:
+        return 'H';
+    }
+  };
   return (
     <Col flex='auto' className='question'>
       <Collapse className='question-collapseStyle'>
@@ -23,10 +32,18 @@ const Question = (props) => {
             editorState={toEditorState(description)}
             readOnly
           />
+
           <div className='f question_footer'>
             <Link className='question_link' to={`/solution/${id}`}>
               <Button>Solution</Button>
             </Link>
+            <div
+              className={`question_footer-level question_footer-${difficulty(
+                level
+              )}`}
+            >
+              {difficulty(level)}
+            </div>
             <div className='f question_footer-rating'>
               <span className='f question_footer-icon'>
                 <Rate character={<StarOutlined />} count={1} />

@@ -7,12 +7,14 @@ import CustomButton from '../custom-button/custom-button.component';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { toggleSearchField } from '../../redux/universal/universal.action';
+import { Radio } from 'antd';
 import {
   setCurrentModule,
   postQuestion,
   deletionStart,
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
+import { addLevelStart } from '../../redux/user/user.action';
 
 import {
   selectCurrentModule,
@@ -84,6 +86,13 @@ class Solution extends React.Component {
     };
     this.props.deletionStart(objData);
   };
+  onChange = (e) => {
+    const data = {
+      level: e.target.value,
+      id: JSON.parse(localStorage.getItem('id')),
+    };
+    this.props.addLevelStart(data);
+  };
 
   render() {
     const { currentModule, pending_data, question_data } = this.props;
@@ -141,6 +150,25 @@ class Solution extends React.Component {
             <DescriptionSection description={finalData.description} />
             <SolutionSection solution={finalData.solution} />
             <ExplanationSection explanation={finalData.explanation} />
+            <div className='difficulty'>
+              <span className='text'>This was: </span>
+              <Radio.Group
+                onChange={this.onChange}
+                size='small'
+                className='difficulty_group'
+                // defaultValue='a'
+              >
+                <Radio.Button className='difficulty_easy' value='1'>
+                  Easy
+                </Radio.Button>
+                <Radio.Button className='difficulty_medium' value='2'>
+                  Medium
+                </Radio.Button>
+                <Radio.Button className='difficulty_hard' value='3'>
+                  Hard
+                </Radio.Button>
+              </Radio.Group>
+            </div>
           </>
         ) : (
           this.props.history.push('/404')
@@ -160,7 +188,8 @@ const mapDispatchToProps = (dispatch) => ({
   postQuestion: (data) => dispatch(postQuestion(data)),
   deletionStart: (data) => dispatch(deletionStart(data)),
   setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
+  addLevelStart: (data) => dispatch(addLevelStart(data)),
 });
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Solution),
+  connect(mapStateToProps, mapDispatchToProps)(Solution)
 );

@@ -96,3 +96,8 @@ export const resetPasswordFailure = (data) => ({
   type: UserActionTypes.RESET_PASSWORD_FAILURE,
   payload: data,
 });
+
+export const addLevelStart = (data) => ({
+  type: UserActionTypes.ADD_LEVEL_START,
+  payload: data,
+});

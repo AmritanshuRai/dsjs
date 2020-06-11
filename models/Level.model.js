@@ -7,9 +7,9 @@ const LevelSchema = new mongoose.Schema(
       enum: [1, 2, 3],
       required: [true, 'Please select a level'],
     },
-    pendingQuestion: {
+    question: {
       type: mongoose.Schema.ObjectId,
-      ref: 'PendingQuestion',
+      ref: 'Question',
       required: true,
     },
     user: {
@@ -40,10 +40,12 @@ LevelSchema.statics.setLevel = async function (questionId) {
       },
     },
   ]);
+  console.log('obj: ', obj);
   try {
-    await this.model('Question').findByIdAndUpdate(questionId, {
+    const updated = await this.model('Question').findByIdAndUpdate(questionId, {
       level: !!obj.length ? Math.ceil(obj[0].averageLevel) : 0,
     });
+    console.log('updated: ', updated);
   } catch (error) {
     console.log('error: ', error);
   }

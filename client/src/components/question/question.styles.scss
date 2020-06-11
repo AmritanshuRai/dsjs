@@ -16,6 +16,36 @@
   }
   &_footer {
     margin: 4px 0;
+    &-level {
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      border: 2px solid;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      margin: 0 6px;
+
+      @media (max-width: 600px) {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+      }
+    }
+    &-E {
+      border-color: green;
+      color: green;
+    }
+    &-H {
+      border-color: red;
+      color: red;
+    }
+    &-M {
+      border-color: orange;
+      color: orange;
+    }
     &-rating {
       width: 200px;
     }

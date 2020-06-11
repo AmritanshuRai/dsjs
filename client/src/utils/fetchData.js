@@ -14,6 +14,7 @@ export const fetchData = async (collectionName, query) => {
         description: item.description,
         solution: item.solution,
         explanation: item.explanation,
+        level: item.level,
       };
       return obj;
     }, {});

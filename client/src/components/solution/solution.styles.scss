@@ -20,4 +20,15 @@
     justify-content: space-around;
     margin-bottom: 40px;
   }
+  .text {
+    margin-right: 10px;
+    font-weight: 600;
+  }
+  .difficulty {
+    &_group {
+      width: 175px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }
