@@ -31,10 +31,10 @@ const pendingQuestionSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    level: {
-      type: Number,
-      required: true,
-    },
+    // level: {
+    //   type: Number,
+    //   required: true,
+    // },
     slug: String,
   },
   {

@@ -3,7 +3,7 @@ import SuccessMessage from '../../components/message/successMessage.component';
 import FailureMessage from '../../components/message/failureMessage.component';
 import UserActionTypes from './user.types';
 import { toggleLoader } from '../universal/universal.action';
-import { postLevel } from '../../utils/postLevel.util';
+import { postLevel, updateLevel } from '../../utils/postLevel.util';
 
 import {
   signInSuccess,
@@ -17,6 +17,7 @@ import {
   emailVerificationSuccess,
   emailVerificationFailure,
   resetPasswordFailure,
+  addLevelSucces,
 } from './user.action';
 import { selectCurrentUser } from './user.selector';
 
@@ -188,12 +189,13 @@ export function* addLevel({ payload }) {
     if (!currentUser || !currentUser.token) {
       throw new Error('Please sign in');
     }
-    console.log('payload, currentUser.token: ', payload, currentUser.token);
     const data = yield call(postLevel, payload, currentUser.token);
 
     if (!data.success) {
       throw new Error(data.error);
     }
+    yield put(addLevelSucces(data));
+
     yield call(SuccessMessage, `Thanks for voting!`);
     // yield put(deletionSuccess());
 
@@ -205,8 +207,40 @@ export function* addLevel({ payload }) {
   }
 }
 
+export function* updateLevelStart({ payload }) {
+  try {
+    const currentUser = yield select(selectCurrentUser);
+    if (!currentUser || !currentUser.token) {
+      throw new Error('Please sign in');
+    }
+    const levelId = yield currentUser.yayNay[payload.id].id;
+    const data = yield call(
+      updateLevel,
+      payload.level,
+      currentUser.token,
+      levelId
+    );
+
+    if (!data.success) {
+      throw new Error(data.error);
+    }
+    yield put(addLevelSucces(data));
+
+    yield call(SuccessMessage, `Vote updated successfully!`);
+    // yield put(deletionSuccess());
+
+    // yield call(afterSuccessCallback);
+  } catch (error) {
+    // yield put(deleteFailure(error));
+    yield call(FailureMessage, 'Vote updatation failed!');
+  } finally {
+  }
+}
 export function* onAddLevelStart() {
   yield takeLatest(UserActionTypes.ADD_LEVEL_START, addLevel);
+}
+export function* onUpdateLevelStart() {
+  yield takeLatest(UserActionTypes.UPDATE_LEVEL_START, updateLevelStart);
 }
 export function* onGoogleSignInStart() {
   yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
@@ -261,5 +295,6 @@ export function* userSagas() {
     call(onResetPasswordStart),
     call(onGithubSignInStart),
     call(onAddLevelStart),
+    call(onUpdateLevelStart),
   ]);
 }

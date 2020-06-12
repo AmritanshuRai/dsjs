@@ -38,6 +38,7 @@ const UserSchema = new mongoose.Schema(
   {
     timestamps: true,
     toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -84,6 +85,13 @@ UserSchema.methods.getResetPasswordToken = function () {
   }
   return resetToken;
 };
+
+UserSchema.virtual('level', {
+  ref: 'Level',
+  localField: '_id',
+  foreignField: 'user',
+  justOne: false,
+});
 
 const UserModel = mongoose.model('User', UserSchema);
 exports.UserSchema = UserSchema;

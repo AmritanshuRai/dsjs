@@ -44,11 +44,33 @@ export const signInWithEmailAndPassword = async ({ email, password }) => {
         password,
       }),
     });
-    return await response.json();
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }
 };
+export const normalizeUserData = (userRes) => {
+  let normalizedUser = userRes.data.level.reduce(function (obj, item) {
+    obj[item.question] = {
+      level: item.level,
+      id: item._id,
+    };
+    return obj;
+  }, {});
+  const userData = {
+    data: {
+      displayName: userRes.data.displayName,
+      email: userRes.data.email,
+      id: userRes.data.id,
+      token: userRes.data.token,
+      yayNay: normalizedUser,
+    },
+    success: userRes.success,
+  };
+  return userData;
+};
+
 export const fetchCurrentUser = async (token) => {
   try {
     let response = await fetch(`/api/v1/auth/me`, {
@@ -58,7 +80,8 @@ export const fetchCurrentUser = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return await response.json();
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }
@@ -110,7 +133,8 @@ export const sendGoogleToken = async ({ profileObj, tokenId }) => {
         profileObj,
       }),
     });
-    return await response.json();
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }
@@ -128,7 +152,8 @@ export const sendFacebookToken = async ({ userID, accessToken }) => {
         accessToken,
       }),
     });
-    return await response.json();
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }
@@ -145,7 +170,8 @@ export const sendGithubCode = async (code) => {
         code,
       }),
     });
-    return await response.json();
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }

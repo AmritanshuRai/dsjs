@@ -10,18 +10,14 @@ const asyncHandler = require('../middlewares/asyncHandler.middleware');
 exports.addLevel = asyncHandler(async (req, res, next) => {
   req.body.question = req.params.id;
   req.body.user = req.user.id;
-
   const question = await Question.findById(req.params.id);
-
   if (!question) {
     return {
       errorMessage: `Question with id ${req.params.id} not found`,
       errorStatus: 404,
     };
   }
-
   const level = await Level.create(req.body);
-
   return {
     success: true,
     data: level,

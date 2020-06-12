@@ -5,6 +5,7 @@ import { deleteData } from '../../utils/deleteData';
 import { toggleLoader } from '../universal/universal.action';
 import QuestionActionTypes from './question.types';
 import { selectCurrentModule } from './question.selector';
+import { selectCurrentUser } from '../user/user.selector';
 import FailureMessage from '../../components/message/failureMessage.component';
 import {
   fetchSuccess,
@@ -41,16 +42,21 @@ export function* postQuestion({
 }) {
   try {
     yield put(toggleLoader(true));
+    const currentUser = yield select(selectCurrentUser);
+    if (!currentUser || !currentUser.token) {
+      throw new Error('Please sign in');
+    }
     const value = yield call(
       postData,
       finalData,
-      JSON.parse(localStorage.getItem('id'))
+      JSON.parse(localStorage.getItem('id')),
+      currentUser.token
     );
     yield put(postSuccess(value));
     yield call(afterSuccessCallback, value);
   } catch (error) {
     yield put(postFailure(error));
-    yield call(FailureMessage);
+    yield call(FailureMessage, error.message);
   } finally {
     yield put(toggleLoader(false));
   }

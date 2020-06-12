@@ -25,8 +25,8 @@ router.use('/:id/level', levelRouter);
 router
   .route('/')
   .get(advanceResult(Question), getQuestions)
-  .post(protect, createQuestion)
-  .delete(deleteQuestions);
+  .post(protect, authorize('admin'), createQuestion)
+  .delete(protect, authorize('admin'), deleteQuestions);
 
 router
   .route('/:id')

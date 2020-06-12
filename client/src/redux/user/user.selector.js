@@ -10,4 +10,8 @@ export const selectShowBtnSkeleton = createSelector(
   [selectUser],
   (user) => user.showBtnSkeleton
 );
+export const selectCurrentLevel = createSelector(
+  [selectUser],
+  (user) => user.currentLevel
+);
 export const selectError = createSelector([selectUser], (user) => user.error);

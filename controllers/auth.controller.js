@@ -71,7 +71,10 @@ exports.githubController = asyncHandler(async (req, res, next) => {
   const email = userEmail[0].email;
   const name = userDetails.login;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate(
+    'level',
+    'question level'
+  );
   if (!user) {
     const userInstance = new User({
       name,
@@ -98,7 +101,10 @@ exports.facebookController = asyncHandler(async (req, res, next) => {
   });
   response = await response.json();
   const { email, name } = response;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate(
+    'level',
+    'question level'
+  );
   if (!user) {
     const userInstance = new User({
       name,
@@ -133,7 +139,10 @@ exports.googleController = asyncHandler(async (req, res, next) => {
     };
   }
   if (email_verified) {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate(
+      'level',
+      'question level'
+    );
     if (!user) {
       const userInstance = new User({
         name,
@@ -205,6 +214,7 @@ exports.register = asyncHandler(async (req, res, next) => {
       errorStatus: 500,
     };
   }
+  // return sendTokenResponse(user);
 });
 
 // @desc      Verify Email is valid
@@ -251,8 +261,9 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user existence
-  const user = await User.findOne({ email }).select('+password');
-
+  const user = await User.findOne({ email })
+    .select('+password')
+    .populate('level', 'question level');
   if (!user) {
     return {
       errorMessage: 'Invalid credentials',
@@ -435,6 +446,7 @@ const sendTokenResponse = (user) => {
       displayName: user.name,
       email: user.email,
       id: user._id.toString(),
+      level: user.level,
     },
   };
   // return {

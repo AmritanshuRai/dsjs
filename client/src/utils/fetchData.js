@@ -1,7 +1,7 @@
 export const fetchData = async (collectionName, query) => {
   try {
     let value;
-    if (!query) {
+    if (collectionName === 'pendingQuestions' || !query) {
       value = await fetch(`/api/v1/${collectionName}`);
     } else {
       value = await fetch(`/api/v1/${collectionName}?${query}`);

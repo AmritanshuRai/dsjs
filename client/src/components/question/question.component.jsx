@@ -11,7 +11,7 @@ const { Panel } = Collapse;
 const Question = (props) => {
   const {
     id = 1,
-    question: { title = '', description = '', level = 1 },
+    question: { title = '', description = '', level = '' },
   } = props;
   const difficulty = (rating) => {
     switch (rating) {
@@ -19,8 +19,10 @@ const Question = (props) => {
         return 'E';
       case 2:
         return 'M';
-      default:
+      case 3:
         return 'H';
+      default:
+        return null;
     }
   };
   return (
@@ -37,13 +39,16 @@ const Question = (props) => {
             <Link className='question_link' to={`/solution/${id}`}>
               <Button>Solution</Button>
             </Link>
-            <div
-              className={`question_footer-level question_footer-${difficulty(
-                level
-              )}`}
-            >
-              {difficulty(level)}
-            </div>
+            {level ? (
+              <div
+                className={`question_footer-level question_footer-${difficulty(
+                  level
+                )}`}
+              >
+                {difficulty(level)}
+              </div>
+            ) : null}
+
             <div className='f question_footer-rating'>
               <span className='f question_footer-icon'>
                 <Rate character={<StarOutlined />} count={1} />

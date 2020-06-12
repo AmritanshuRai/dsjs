@@ -101,3 +101,15 @@ export const addLevelStart = (data) => ({
   type: UserActionTypes.ADD_LEVEL_START,
   payload: data,
 });
+export const updateLevelStart = (data) => ({
+  type: UserActionTypes.UPDATE_LEVEL_START,
+  payload: data,
+});
+export const setCurrentLevel = (data) => ({
+  type: UserActionTypes.SET_CURRENT_LEVEL,
+  payload: data,
+});
+export const addLevelSucces = (data) => ({
+  type: UserActionTypes.ADD_LEVEL_SUCCESS,
+  payload: data,
+});

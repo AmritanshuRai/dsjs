@@ -14,7 +14,12 @@ import {
   deletionStart,
   setQuestionDataAsync,
 } from '../../redux/question/question.action';
-import { addLevelStart } from '../../redux/user/user.action';
+import {
+  addLevelStart,
+  setCurrentLevel,
+  updateLevelStart,
+} from '../../redux/user/user.action';
+import { selectCurrentLevel } from '../../redux/user/user.selector';
 
 import {
   selectCurrentModule,
@@ -35,6 +40,7 @@ class Solution extends React.Component {
     hljs.initHighlighting.called = false;
     hljs.initHighlighting();
     this.props.toggleSearchField();
+    this.props.setCurrentLevel(JSON.parse(localStorage.getItem('id')));
   }
   componentWillUnmount() {
     this.props.toggleSearchField();
@@ -87,11 +93,16 @@ class Solution extends React.Component {
     this.props.deletionStart(objData);
   };
   onChange = (e) => {
+    const { currentLevel, updateLevelStart, addLevelStart } = this.props;
     const data = {
       level: e.target.value,
       id: JSON.parse(localStorage.getItem('id')),
     };
-    this.props.addLevelStart(data);
+    if (!currentLevel) {
+      addLevelStart(data);
+    } else {
+      updateLevelStart(data);
+    }
   };
 
   render() {
@@ -116,7 +127,6 @@ class Solution extends React.Component {
       localStorage.setItem('finalData', JSON.stringify(finalData));
       localStorage.setItem('id', JSON.stringify(this.id));
     }
-
     const userMode =
       this.props.currentModule !== 'pendingQuestions' && !this.id;
     return (
@@ -156,7 +166,8 @@ class Solution extends React.Component {
                 onChange={this.onChange}
                 size='small'
                 className='difficulty_group'
-                // defaultValue='a'
+                value={`${this.props.currentLevel}`}
+                // defaultValue='1'
               >
                 <Radio.Button className='difficulty_easy' value='1'>
                   Easy
@@ -181,14 +192,17 @@ const mapStateToProps = (state) => ({
   question_data: selectQuestionData(state),
   pending_data: selectPendingData(state),
   currentModule: selectCurrentModule(state),
+  currentLevel: selectCurrentLevel(state),
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleSearchField: () => dispatch(toggleSearchField()),
   setCurrentModule: (data) => dispatch(setCurrentModule(data)),
+  setCurrentLevel: (data) => dispatch(setCurrentLevel(data)),
   postQuestion: (data) => dispatch(postQuestion(data)),
   deletionStart: (data) => dispatch(deletionStart(data)),
   setQuestionDataAsync: () => dispatch(setQuestionDataAsync()),
   addLevelStart: (data) => dispatch(addLevelStart(data)),
+  updateLevelStart: (data) => dispatch(updateLevelStart(data)),
 });
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(Solution)

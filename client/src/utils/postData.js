@@ -101,13 +101,14 @@
 //     });
 // };
 
-export const postData = async (dataObj, id) => {
+export const postData = async (dataObj, id, token) => {
   const { collectionName, title, solution, explanation, description } = dataObj;
   try {
     let response = await fetch(`/api/v1/${collectionName}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify({
         title,
