@@ -7,9 +7,17 @@ import { Result } from 'antd';
 class VerifyEmail extends React.Component {
   componentDidMount() {
     const { emailVerificationStart, match } = this.props;
-    emailVerificationStart(match.params.id);
+    emailVerificationStart({
+      id: match.params.id,
+      afterSuccessCallback: this.afterSuccessCallback,
+    });
   }
-
+  afterSuccessCallback = () => {
+    const {
+      history: { push },
+    } = this.props;
+    push('/');
+  };
   render() {
     const showError = typeof this.props.error === 'string' && this.props.error;
     return showError ? (

@@ -122,15 +122,18 @@ export function* signUp({ payload: { email, password, displayName } }) {
   }
 }
 
-export function* emailVerificationStart({ payload }) {
+export function* emailVerificationStart({
+  payload: { id, afterSuccessCallback },
+}) {
   yield put(toggleLoader(true));
   try {
-    const data = yield call(verifyEmail, payload);
+    const data = yield call(verifyEmail, id);
     if (!data.success) {
       throw new Error(data.error);
     }
     const fetchedData = data.data;
     yield put(emailVerificationSuccess(fetchedData));
+    yield call(afterSuccessCallback);
     const name = yield fetchedData.displayName.split(' ')[0];
     yield call(
       SuccessMessage,
