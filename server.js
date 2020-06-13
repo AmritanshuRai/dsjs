@@ -50,25 +50,25 @@ if (process.env.NODE_ENV !== 'production') {
 // File upload
 // app.use(fileupload());
 
-// //sanitize data
-// app.use(mongoSanitize());
+//sanitize data
+app.use(mongoSanitize());
 
-// //Set security headers
-// app.use(helmet());
+//Set security headers
+app.use(helmet());
 
-// //xss prevention
-// app.use(xss());
+//xss prevention
+app.use(xss());
 
-// //Rate Limit
-// const limiter = rateLimit({
-//   windowMs: 10 * 60 * 1000,
-//   max: 100,
-// });
+//Rate Limit
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100,
+});
 
-// app.use(limiter);
+app.use(limiter);
 
-// Prevent http param pollution
-// app.use(hpp());
+//Prevent http param pollution
+app.use(hpp());
 
 app.use(cors());
 
