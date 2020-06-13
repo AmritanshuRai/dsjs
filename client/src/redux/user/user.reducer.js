@@ -21,7 +21,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
           currentLevel: null,
         };
       }
-      const levelSelected = state.currentUser.yayNay[action.payload];
+      const levelSelected = state.currentUser.yayNay
+        ? state.currentUser.yayNay[action.payload]
+        : state.currentLevel;
       return {
         ...state,
         currentLevel: levelSelected ? levelSelected.level : null,

@@ -40,7 +40,6 @@ LevelSchema.statics.setLevel = async function (questionId) {
       },
     },
   ]);
-  console.log('obj: ', obj);
   try {
     const updated = await this.model('Question').findByIdAndUpdate(questionId, {
       level: !!obj.length ? Math.ceil(obj[0].averageLevel) : 0,
