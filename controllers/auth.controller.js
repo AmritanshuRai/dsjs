@@ -24,7 +24,6 @@ exports.githubController = asyncHandler(async (req, res, next) => {
       errorStatus: 400,
     };
   }
-  console.log('process.env', process.env);
   const url = `https://github.com/login/oauth/access_token`;
   let accessTokenRes = await fetch(url, {
     method: 'POST',
@@ -367,7 +366,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     resetPasswordToken,
     resetPasswordExpire: { $gt: Date.now() },
-  });
+  }).populate('level', 'question level');
 
   if (!user) {
     return {
