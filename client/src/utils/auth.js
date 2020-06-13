@@ -6,7 +6,8 @@ export const verifyEmail = async (tokenFromEmail) => {
         'Content-Type': 'application/json',
       },
     });
-    return await response.json();
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }
@@ -118,7 +119,9 @@ export const resetPassword = async ({ resetToken, password }) => {
         password,
       }),
     });
-    return await response.json();
+
+    const userRes = await response.json();
+    return normalizeUserData(userRes);
   } catch (err) {
     console.error(err);
   }
