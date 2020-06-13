@@ -51,6 +51,9 @@ export const signInWithEmailAndPassword = async ({ email, password }) => {
   }
 };
 export const normalizeUserData = (userRes) => {
+  if (!userRes.data.level) {
+    return userRes;
+  }
   let normalizedUser = userRes.data.level.reduce(function (obj, item) {
     obj[item.question] = {
       level: item.level,

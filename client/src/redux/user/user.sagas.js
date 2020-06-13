@@ -202,7 +202,7 @@ export function* addLevel({ payload }) {
     // yield call(afterSuccessCallback);
   } catch (error) {
     // yield put(deleteFailure(error));
-    yield call(FailureMessage, 'Not able to vote');
+    yield call(FailureMessage, error.message);
   } finally {
   }
 }
@@ -232,7 +232,8 @@ export function* updateLevelStart({ payload }) {
     // yield call(afterSuccessCallback);
   } catch (error) {
     // yield put(deleteFailure(error));
-    yield call(FailureMessage, 'Vote updatation failed!');
+
+    yield call(FailureMessage, error.message);
   } finally {
   }
 }
