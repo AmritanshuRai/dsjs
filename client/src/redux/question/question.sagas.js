@@ -4,7 +4,7 @@ import { postData } from '../../utils/postData';
 import { deleteData } from '../../utils/deleteData';
 import { toggleLoader } from '../universal/universal.action';
 import QuestionActionTypes from './question.types';
-import { selectCurrentModule } from './question.selector';
+import { selectCurrentModule, selectQuestionData } from './question.selector';
 import { selectCurrentUser } from '../user/user.selector';
 import FailureMessage from '../../components/message/failureMessage.component';
 import {
@@ -20,8 +20,13 @@ import {
 
 export function* fetchQuestions(action) {
   const collectionName = yield select(selectCurrentModule);
-  try {
+  const questions = yield select(selectQuestionData);
+
+  // show skeleton if localStorage is empty
+  if (!Object.keys(questions).length) {
     yield put(showSkeleton());
+  }
+  try {
     const fetchedData = yield fetchData(collectionName, action.payload);
     yield put(fetchSuccess(fetchedData));
   } catch (error) {
