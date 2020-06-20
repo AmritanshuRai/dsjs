@@ -1,3 +1,5 @@
+require('../utils/cache.util');
+
 const advanceResult = (model, ...toPopulate) => async (req, res, next) => {
   let { select, sort, page, limit, ...reqQuery } = req.query;
 
@@ -25,9 +27,11 @@ const advanceResult = (model, ...toPopulate) => async (req, res, next) => {
   const startIndex = (pageNumber - 1) * limiter;
   const endIndex = pageNumber * limiter;
   query = query.skip(startIndex).limit(limiter);
-  const totalQueryCount = await model.countDocuments(
-    JSON.parse(queryStrModified)
-  );
+  const totalQueryCount = await model
+    .countDocuments(JSON.parse(queryStrModified))
+    .cache({
+      hashKey: query.mongooseCollection.name + 'Count',
+    });
 
   const pagination = {};
 
@@ -48,7 +52,9 @@ const advanceResult = (model, ...toPopulate) => async (req, res, next) => {
   if (toPopulate.length) {
     query = query.populate(...toPopulate);
   }
-  const fetchedData = await query;
+  const fetchedData = await query.cache({
+    hashKey: query.mongooseCollection.name,
+  });
 
   res.advanceResult = {
     success: true,

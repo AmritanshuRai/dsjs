@@ -57,7 +57,7 @@ app.use(mongoSanitize());
 app.use(helmet());
 
 //xss prevention
-app.use(xss());
+// app.use(xss());
 
 //Rate Limit
 const limiter = rateLimit({
@@ -157,7 +157,7 @@ const server = app.listen(
 
 //handle unhandledRejection
 process.on('unhandledRejection', (err) => {
-  error(`unhandled error : ${err.message}`);
+  error(`unhandled error : ${err.stack}`);
   //close the server and exit process
   server.close(() => {
     return process.exit(1);

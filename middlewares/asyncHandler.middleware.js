@@ -1,4 +1,6 @@
 const ErrorResponse = require('../utils/errorResponse.utils');
+const { clearHash } = require('../utils/cache.util');
+
 // const statusCode = {
 //   GET: 200,
 //   DELETE: 204,
@@ -31,7 +33,22 @@ const asyncHandler = (fn) => (req, res, next) => {
     }
   };
   return Promise.resolve(fn(req, res, next))
-    .then((response) => sendToClient(response))
+
+    .then((response) => {
+      //send response to client
+      sendToClient(response);
+      // clear redis cache if database is modified
+      if (response && response.success && req.method !== 'GET') {
+        const reqUrl = req.originalUrl.toLowerCase();
+        if (reqUrl === `/api/v1/pendingquestions`) {
+          clearHash('pendingquestions');
+          clearHash('pendingquestionsCount');
+        } else if (reqUrl === `/api/v1/questions`) {
+          clearHash('questions');
+          clearHash('questionsCount');
+        }
+      }
+    })
     .catch(next);
 };
 
