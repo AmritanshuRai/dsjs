@@ -24,6 +24,7 @@ const socialLogin = async (testName, selector, testUrl) => {
 };
 
 beforeEach(async () => {
+  jest.setTimeout(30000);
   browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox'],
