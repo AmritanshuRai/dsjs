@@ -15,7 +15,7 @@
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "dev": "nodemon server ",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "test": "jest"
+    "test": "jest --runInBand --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "@welldone-software/why-did-you-render": "^4.1.2",
