@@ -24,14 +24,13 @@ const socialLogin = async (testName, selector, testUrl) => {
 };
 
 beforeEach(async () => {
-  // jest.setTimeout(30000);
-  const browser = await puppeteer.launch({
+  browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox'],
   });
 
   page = await browser.newPage();
-  await page.goto('localhost:3000');
+  await page.goto('http://localhost:3000');
 });
 
 afterEach(async () => {
@@ -64,7 +63,7 @@ describe('social login icons getting clicked and taking to right url', () => {
   socialLogin(
     'google',
     '.anticon-google-circle',
-    'https://accounts.google.com/signin/oauth?'
+    'https://accounts.google.com/'
   );
 });
 

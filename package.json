@@ -5,15 +5,16 @@
     "node": "12.16.1",
     "npm": "6.13.4"
   },
-  "jest": "jest --runInBand --detectOpenHandles --forceExit",
+  "setupFilesAfterEnv": [
+    "./tests/setup.js"
+  ],
   "scripts": {
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
-    "buildtest": "cd client && yarn build",
+    "build": "cd client && yarn build",
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "dev": "nodemon server ",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "test": "jest"
   },
   "dependencies": {
