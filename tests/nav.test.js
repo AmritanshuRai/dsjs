@@ -27,11 +27,15 @@ beforeEach(async () => {
   jest.setTimeout(30000);
   browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox'],
+    args: ['--no-sandbox', '--single-process'],
   });
 
   page = await browser.newPage();
   await page.goto('http://localhost:3000');
+  // await Promise.race([
+  //   page.goto('http://localhost:3000'),
+  //   page.waitFor('body'),
+  // ]);
 });
 
 afterEach(async () => {
