@@ -108,6 +108,7 @@ const SignIn = ({
             <FacebookLogin
               appId={`${process.env.REACT_APP_FACEBOOK_CLIENT}`}
               autoLoad={false}
+              isMobile={false}
               callback={responseFacebook}
               render={(renderProps) => (
                 <Icons>
