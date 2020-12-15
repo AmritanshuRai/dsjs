@@ -16,18 +16,19 @@ a {
 }
 
 .App {
-  padding: 40px 100px;
+  padding: 15px 100px;
   background-color: white;
+  min-height: 95vh;
   /* margin: 20px; */
 }
 @media only screen and (max-width: 767px) {
   .App {
-    padding: 40px 60px;
+    padding: 15px 60px;
   }
 }
 
 @media only screen and (max-width: 420px) {
   .App {
-    padding: 20px;
+    padding: 15px 20px;
   }
 }

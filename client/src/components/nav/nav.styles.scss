@@ -1,7 +1,8 @@
 .nav {
   padding: 0 80px;
   display: flex;
-  height: 48px;
+  // height: 48px;
+  min-height: 5vh;
   @media only screen and (max-width: 767px) {
     padding: 0 40px;
   }

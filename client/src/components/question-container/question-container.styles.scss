@@ -5,7 +5,8 @@
   // margin: 50px auto;
   &-pagination {
     margin-left: auto;
-    padding-bottom: 40px;
+    // padding-bottom: 40px;
+    min-height: 5vh;
     @media (max-width: 767px) {
       margin: 0 auto;
     }
