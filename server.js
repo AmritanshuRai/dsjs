@@ -104,7 +104,7 @@ app.use(cors());
 //   });
 // });
 
-app.post('/create-checkout-session', async (req, res) => {
+app.post('/api/v1/create-checkout-session', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     locale : 'auto',
     billing_address_collection: 'auto',
