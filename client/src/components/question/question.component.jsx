@@ -2,8 +2,8 @@ import React from 'react';
 import './question.styles.scss';
 import { Link } from 'react-router-dom';
 import { Editor } from 'react-draft-wysiwyg';
-import { DislikeOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
-import { Col, Collapse, Button, Rate } from 'antd';
+// import { DislikeOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import { Col, Collapse, Button } from 'antd';
 import { toEditorState } from '../../utils/editor.utils';
 
 const { Panel } = Collapse;
@@ -48,7 +48,7 @@ const Question = (props) => {
                 {difficulty(level)}
               </div>
             ) : null}
-
+{/* 
             <div className='f question_footer-rating'>
               <span className='f question_footer-icon'>
                 <Rate character={<StarOutlined />} count={1} />
@@ -64,7 +64,7 @@ const Question = (props) => {
                   <span className='question_footer-number'>{201}</span>
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
         </Panel>
       </Collapse>

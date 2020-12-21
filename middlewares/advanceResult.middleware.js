@@ -23,7 +23,7 @@ const advanceResult = (model, ...toPopulate) => async (req, res, next) => {
 
   //pagination
   const pageNumber = parseInt(req.query.page, 10) || 1;
-  const limiter = parseInt(req.query.limit, 10) || 20;
+  const limiter = parseInt(req.query.limit, 10) || 14;
   const startIndex = (pageNumber - 1) * limiter;
   const endIndex = pageNumber * limiter;
   query = query.skip(startIndex).limit(limiter);

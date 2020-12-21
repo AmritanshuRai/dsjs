@@ -29,8 +29,8 @@ const auth = require('./routes/auth.route');
 const users = require('./routes/user.route');
 const level = require('./routes/level.route');
 
-// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+let YOUR_DOMAIN = 'https://jsalgo.com/';
 //connect to database
 connectDB();
 
@@ -45,6 +45,7 @@ app.use(express.json());
 // Dev logger middleware
 if (process.env.NODE_ENV !== 'production') {
   app.use(morganMiddleware);
+  YOUR_DOMAIN = 'http://localhost:3000';
 }
 
 // File upload
@@ -102,6 +103,31 @@ app.use(cors());
 //     }
 //   });
 // });
+
+app.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    locale : 'auto',
+    billing_address_collection: 'auto',
+    submit_type: 'donate',
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'inr',
+          product_data: {
+            name: 'You are donating',
+          },
+          unit_amount: req.body.priceForStripe,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}/success`,
+    cancel_url: `${YOUR_DOMAIN}/canceled`,
+  });
+  res.json({ id: session.id });
+});
 
 // app.get('/questions', getQuestions);
 // app.get('/pendingQuestions', getQuestions);

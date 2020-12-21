@@ -29,6 +29,10 @@ const SignInAndSignUpPage = lazy(() =>
 const Donate = lazy(() => import('./pages/donate/donate.page'));
 const Approve = lazy(() => import('./pages/approve/approve.page'));
 const PageNotFound = lazy(() => import('./pages/404/404.page'));
+const Success = lazy(() => import('./pages/success/success.page'));
+
+const Canceled = lazy(() => import('./pages/canceled/canceled.page'));
+
 const MyEditor = lazy(() => import('./pages/upload/upload.page'));
 const Thanks = lazy(() => import('./pages/thanks/thanks.page'));
 const GithubAuth = lazy(() => import('./pages/githubAuth/githubAuth.page'));
@@ -103,6 +107,10 @@ class App extends React.PureComponent {
                 <Route exact path='/preview' component={Solution}></Route>
                 <Route exact path='/approve' component={Approve}></Route>
                 <Route exact path='/thanks' component={Thanks}></Route>
+                <Route exact path='/success' component={Success}></Route>
+                <Route exact path='/canceled' component={Canceled}></Route>
+
+
                 <Route path='/404' component={PageNotFound} />
                 <Redirect to='/404' />
               </Switch>
