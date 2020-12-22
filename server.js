@@ -30,7 +30,7 @@ const users = require('./routes/user.route');
 const level = require('./routes/level.route');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-let YOUR_DOMAIN = 'https://jsalgo.com/';
+let YOUR_DOMAIN = 'https://jsalgo.com';
 //connect to database
 connectDB();
 
