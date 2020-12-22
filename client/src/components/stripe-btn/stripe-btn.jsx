@@ -8,7 +8,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import CustomButton from '../custom-button/custom-button.component';
 
 
-const stripePromise = loadStripe("pk_test_sBHmQKJP8gGI9Id9J9XsAOD900I2ksR5i2");
+const stripePromise = loadStripe("pk_live_RQGt28gnqDdyLQRkUyHBGeEK00bEHK2Pcd");
 
 const StripeCheckoutButton = ({price=10}) => {
   const [loading, setLoading] =  useState(false)
