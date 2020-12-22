@@ -10,7 +10,7 @@ import CustomButton from '../custom-button/custom-button.component';
 
 const stripePromise = loadStripe("pk_live_RQGt28gnqDdyLQRkUyHBGeEK00bEHK2Pcd");
 
-const StripeCheckoutButton = ({price=10}) => {
+const StripeCheckoutButton = ({price=10, country}) => {
   const [loading, setLoading] =  useState(false)
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -26,7 +26,8 @@ const StripeCheckoutButton = ({price=10}) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-       priceForStripe
+       priceForStripe,
+       country
       }),
     });
     const session = await response.json();

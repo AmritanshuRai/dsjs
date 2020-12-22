@@ -6,11 +6,16 @@
   align-items: center;
   margin: 4vh auto;
   // min-height: 100vh;
-  color: chocolate;
+color: #b3b3b3;
 
   .donateContainer{
     width: 100%;
     display: flex;
     justify-content: space-evenly;
+  }
+  span {
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
   }
 }

@@ -105,6 +105,8 @@ app.use(cors());
 // });
 
 app.post('/api/v1/create-checkout-session', async (req, res) => {
+  const price = req.body.priceForStripe < 100 ? 100 : req.body.priceForStripe;
+  const currency = req.body.country === 'IN' ? 'inr' : 'usd'; 
   const session = await stripe.checkout.sessions.create({
     locale : 'auto',
     billing_address_collection: 'auto',
@@ -113,11 +115,11 @@ app.post('/api/v1/create-checkout-session', async (req, res) => {
     line_items: [
       {
         price_data: {
-          currency: 'inr',
+          currency,
           product_data: {
             name: 'You are donating',
           },
-          unit_amount: req.body.priceForStripe,
+          unit_amount: price,
         },
         quantity: 1,
       },
