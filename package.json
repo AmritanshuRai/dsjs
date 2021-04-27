@@ -43,7 +43,7 @@
     "nodemailer": "^6.4.6",
     "puppeteer": "^4.0.0",
     "react-device-detect": "^1.12.1",
-    "redis": "^3.0.2",
+    "redis": "^3.1.1",
     "shortid": "^2.2.15",
     "slugify": "^1.4.0",
     "stripe": "6.28.0",
